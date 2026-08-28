@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { chipFor, type Product } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
+import VintageBadge from "@/components/VintageBadge";
 
 /**
  * Editorial card: a pale panel holding a style chip, the piece, its name and a
@@ -91,14 +92,16 @@ export default function EditCard({
           </motion.div>
 
           {product.compareAt && product.compareAt > product.price && (
-            <span className="absolute left-3 top-3 rounded-full bg-[#241a10] px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-[#f2e8d0]">
-              Sale
-            </span>
+            <VintageBadge
+              lines={["Sale"]}
+              className="absolute left-3 top-3 -rotate-6 group-hover:rotate-0"
+            />
           )}
           {!product.available && (
-            <span className="absolute left-3 top-3 rounded-full border border-[#f2e8d0]/60 bg-[#241a10]/75 px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-[#f2e8d0] backdrop-blur-sm">
-              Sold out
-            </span>
+            <VintageBadge
+              lines={["Sold", "Out"]}
+              className="absolute left-3 top-3 rotate-6 group-hover:rotate-0"
+            />
           )}
         </div>
 

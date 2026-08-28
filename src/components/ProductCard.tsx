@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
+import VintageBadge from "@/components/VintageBadge";
 
 /**
  * Product tile. Cross-fades to the second product shot on hover and reveals a
@@ -78,14 +79,16 @@ export default function ProductCard({
           </motion.div>
 
           {discount && (
-            <span className="absolute left-3 top-3 rounded-full bg-[#241a10] px-3 py-1 font-display text-[0.58rem] uppercase tracking-[0.16em] text-[#f2e8d0]">
-              {discount}% off
-            </span>
+            <VintageBadge
+              lines={[`${discount}%`, "Off"]}
+              className="absolute left-3 top-3 -rotate-6 group-hover:rotate-0"
+            />
           )}
           {!product.available && (
-            <span className="absolute left-3 top-3 rounded-full border border-[#f2e8d0]/60 bg-[#241a10]/75 px-3 py-1 font-display text-[0.58rem] uppercase tracking-[0.16em] text-[#f2e8d0] backdrop-blur-sm">
-              Sold out
-            </span>
+            <VintageBadge
+              lines={["Sold", "Out"]}
+              className="absolute left-3 top-3 rotate-6 group-hover:rotate-0"
+            />
           )}
 
           <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[#241a10]/88 py-3.5 text-center backdrop-blur-sm transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0">
