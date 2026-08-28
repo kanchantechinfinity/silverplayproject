@@ -65,7 +65,7 @@ export default function JournalShowcase() {
 
   return (
     <section className="bg-ink py-24 md:py-32">
-      <div className="mx-auto max-w-[1100px] px-5 md:px-10">
+      <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="text-center">
           <Reveal>
             <p className="eyebrow text-ash-3">From The Journal</p>
@@ -135,7 +135,7 @@ function JournalRow({
           initial={false}
           animate={{ opacity: isActive ? 1 : 0 }}
           transition={{ duration: 0.4, ease }}
-          className="absolute inset-0 rounded-[var(--radius-md)]"
+          className="absolute inset-0"
           style={{ background: "#d9b66c" }}
         />
 
@@ -147,7 +147,11 @@ function JournalRow({
           {String(index + 1).padStart(2, "0")}
         </span>
 
-        <div className="relative min-w-0 flex-1">
+        <div
+          className={`relative min-w-0 flex-1 transition-[padding] duration-400 ${
+            isActive ? "md:pr-36 lg:pr-44" : ""
+          }`}
+        >
           <h3
             className={`font-display text-[1.15rem] font-semibold leading-snug transition-colors duration-400 md:text-[1.4rem] ${
               isActive ? "text-[#241a10]" : "text-bone"
@@ -162,7 +166,7 @@ function JournalRow({
                 animate={{ height: "auto", opacity: 1, marginTop: 8 }}
                 exit={{ height: 0, opacity: 0, marginTop: 0 }}
                 transition={{ duration: 0.4, ease }}
-                className="max-w-md overflow-hidden font-body text-[0.86rem] leading-relaxed text-[#241a10]/70 md:pr-40"
+                className="max-w-md overflow-hidden font-body text-[0.86rem] leading-relaxed text-[#241a10]/70"
               >
                 {row.excerpt}
               </motion.p>
@@ -187,11 +191,11 @@ function JournalRow({
       <AnimatePresence>
         {isActive && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85, rotate: -6, y: "-50%" }}
-            animate={{ opacity: 1, scale: 1, rotate: -4, y: "-50%" }}
-            exit={{ opacity: 0, scale: 0.85, rotate: -6, y: "-50%" }}
+            initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
+            animate={{ opacity: 1, scale: 1, rotate: -4 }}
+            exit={{ opacity: 0, scale: 0.85, rotate: -6 }}
             transition={{ duration: 0.4, ease }}
-            className="pointer-events-none absolute right-24 top-1/2 z-20 hidden h-[130px] w-[96px] overflow-hidden rounded-[var(--radius-md)] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.55)] md:block lg:h-[150px] lg:w-[112px]"
+            className="pointer-events-none absolute -top-6 -bottom-6 right-24 z-20 hidden w-[96px] overflow-hidden rounded-[var(--radius-md)] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.55)] md:block lg:w-[112px]"
           >
             <Image
               src={row.image}
