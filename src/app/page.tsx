@@ -11,6 +11,7 @@ import SpotlightGlam from "@/components/sections/SpotlightGlam";
 import TheTreasures from "@/components/sections/TheTreasures";
 import EffortlessElegance from "@/components/sections/EffortlessElegance";
 import JournalShowcase from "@/components/sections/JournalShowcase";
+import Testimonials from "@/components/sections/Testimonials";
 
 export default function Home() {
   return (
@@ -38,6 +39,8 @@ export default function Home() {
         <SpotlightGlam />
 
         <EffortlessElegance />
+
+        <Testimonials />
 
         <JournalShowcase />
       </main>
