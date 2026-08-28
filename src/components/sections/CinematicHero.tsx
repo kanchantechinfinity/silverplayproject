@@ -289,6 +289,18 @@ function ScrubbingHero({ src, isMobile }: { src: string; isMobile: boolean }) {
       <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-transparent to-ink/45" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/55 via-ink/10 to-transparent" />
 
+      {/* Masks a small watermark baked into the source footage's bottom-right
+          corner — that corner sits in shadow for the whole clip, so a soft
+          dark vignette there blends in rather than reading as a patch. */}
+      <div
+        aria-hidden
+        className="absolute bottom-0 right-0 h-[26vh] w-[22vw] min-h-[160px] min-w-[160px]"
+        style={{
+          background:
+            'radial-gradient(circle at 100% 100%, rgba(26,22,20,0.95) 0%, rgba(26,22,20,0.75) 40%, transparent 72%)',
+        }}
+      />
+
       <div className="relative z-10 h-full w-full">
         {cinematicHero.chapters.map((chapter) => (
           <div
