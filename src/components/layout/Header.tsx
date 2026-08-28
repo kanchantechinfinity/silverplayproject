@@ -79,7 +79,7 @@ export default function Header() {
               priority
               className={cn(
                 "w-auto transition-all duration-500",
-                pinned ? "h-12" : "h-16 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-20",
+                pinned ? "h-16" : "h-20 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-28",
                 pinned && "invert",
               )}
             />

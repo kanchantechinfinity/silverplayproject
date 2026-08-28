@@ -132,7 +132,7 @@ export default function JournalShowcase() {
           style={{ perspective: "1800px" }}
         >
           <div
-            className="relative h-[44vh] w-[min(64vw,860px)] max-h-[520px]"
+            className="relative h-[44vh] w-[min(50vw,620px)] max-h-[520px]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {cards.map((card, i) => (
