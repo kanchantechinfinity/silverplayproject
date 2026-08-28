@@ -39,6 +39,156 @@ export const nav = [
   { label: "Contact", href: "/contact" },
 ];
 
+/**
+ * The "Collections" mega-menu: tabs down the left (matching Silver Play's
+ * real catalogue split — Earrings / Pendants / Rakhi), a column of real
+ * collection links per tab, and a small real-product preview on the right —
+ * the same three-part layout the live site's own mega-menu uses, and the
+ * standard e-commerce mega-nav pattern (category rail + links + featured
+ * products) generally.
+ */
+export const megaNav = {
+  tabs: [
+    {
+      key: "earrings",
+      label: "Earrings",
+      href: "/collections/earrings",
+      links: [
+        { label: "All Earrings", href: "/collections/earrings" },
+        { label: "Bali Collection", href: "/collections/baali-collection" },
+        { label: "Jhumka Earrings", href: "/collections/jhumka-earrings" },
+        { label: "Hoop Earrings", href: "/collections/hoop-earrings" },
+        { label: "Stud Earrings", href: "/collections/stud-earrings-tops" },
+        { label: "Long Earrings", href: "/collections/long-earrings" },
+        { label: "Gen-Z Edit", href: "/collections/gen-z-edit-everyday-silver" },
+      ],
+      featuredLabel: "Bestsellers",
+      products: [
+        {
+          handle: "sterling-silver-silver-cascade-chains-earring",
+          title: "Sterling Silver Silver Cascade Chains Earring",
+          price: 5450,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-cascade-chains-earring.png?v=1786310334",
+        },
+        {
+          handle: "sterling-silver-designer-monarch-elegance-drop-earring",
+          title: "Sterling Silver Designer Monarch Elegance Drop Earring",
+          price: 4999,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-designer-monarch-elegance-drop-earring.png?v=1786310352",
+        },
+        {
+          handle: "sterling-silver-floral-radiance-indo-western-earring",
+          title: "Sterling Silver Floral Radiance Indo Western Earring",
+          price: 13500,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-floral-radiance-indo-western-earring.png?v=1786310330",
+        },
+        {
+          handle:
+            "sterling-silver-heritage-anarkali-rani-style-earring-with-self-antique-design",
+          title: "Sterling Silver Heritage Anarkali Rani Style Earring",
+          price: 29999,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-heritage-anarkali-rani-style-earring-with-self-antique-design.png?v=1786310368",
+        },
+      ],
+    },
+    {
+      key: "pendants",
+      label: "Pendants",
+      href: "/collections/pendants",
+      links: [
+        { label: "All Pendants", href: "/collections/pendants" },
+        { label: "Kavach", href: "/collections/kavach" },
+        { label: "Moonlight Sparkle", href: "/collections/moonlit-sparkle" },
+        {
+          label: "Lakshmi Ratna",
+          href: "/collections/lakshmi-ratna-wealth-prosperity-abundance",
+        },
+        {
+          label: "Shakti Kavach",
+          href: "/collections/shakti-kavach-protection-strength-grounding",
+        },
+        { label: "Gemstone", href: "/collections/gemstone-jewellery" },
+      ],
+      featuredLabel: "Best of Pendants",
+      products: [
+        {
+          handle: "sterling-silver-royal-medallion-pyrite-pendant",
+          title: "Sterling Silver Royal Medallion Pyrite Pendant",
+          price: 25000,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/SterlingSilverRoyalMedallionPyritePendant.png?v=1787114961",
+        },
+        {
+          handle: "sterling-silver-divine-lakshmi-pyrite-pendant",
+          title: "Sterling Silver Divine Lakshmi Pyrite Pendant",
+          price: 25000,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/LaxmiPendant.png?v=1786971061",
+        },
+        {
+          handle: "sterling-silver-trishul-naga-amethyst-pendant",
+          title: "Sterling Silver Trishul Naga Amethyst Pendant",
+          price: 21000,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/amethyst-trishul.png?v=1785367993",
+        },
+        {
+          handle: "sterling-silver-trinetra-naga-sunstone-pendant",
+          title: "Sterling Silver Trinetra Naga Sunstone Pendant",
+          price: 25000,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sunstone-serpent.png?v=1785367993",
+        },
+      ],
+    },
+    {
+      key: "rakhi",
+      label: "Rakhi",
+      href: "/collections/rakhi",
+      links: [
+        { label: "All Rakhi", href: "/collections/rakhi" },
+        { label: "For the Special Bond", href: "/collections/for-the-special-bond" },
+        { label: "Gift for Her", href: "/collections/gift-for-her" },
+      ],
+      featuredLabel: "Rakhi Edit",
+      products: [
+        {
+          handle: "sterling-silver-ek-onkar-golden-rakhi",
+          title: "Sterling Silver Ek Onkar Golden Rakhi",
+          price: 1250,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/silver-play-gift-box-ek-onkar-golden-rakhi.png?v=1785833719",
+        },
+        {
+          handle: "sterling-silver-golden-trishul-rakhi",
+          title: "Sterling Silver Golden Trishul Rakhi",
+          price: 1250,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-golden-trishul-rakhi-closeup.png?v=1785833718",
+        },
+        {
+          handle: "sterling-silver-floral-om-rakhi",
+          title: "Sterling Silver Floral Om Rakhi",
+          price: 1250,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-floral-om-rakhi-closeup.png?v=1785833698",
+        },
+        {
+          handle: "sterling-silver-shiva-trishul-rakhi",
+          title: "Sterling Silver Shiva Trishul Rakhi",
+          price: 1250,
+          image:
+            "https://cdn.shopify.com/s/files/1/0702/4456/5101/files/sterling-silver-shiva-trishul-rakhi-gift-box.png?v=1785833712",
+        },
+      ],
+    },
+  ],
+} as const;
+
 export const hero = {
   headline: "Think Silver. Think Silver Play",
   sub: "Handcrafted sterling silver jewellery, forged for the woman who wears her story",

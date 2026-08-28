@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { brand, nav } from "@/data/site";
 import { cn } from "@/lib/utils";
+import MegaNav from "./MegaNav";
 
 /**
  * Sits transparent over the hero card, then condenses into a floating bone
@@ -100,25 +101,30 @@ export default function Header() {
                 </Link>
 
                 <AnimatePresence>
-                  {item.children && open === item.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 6 }}
-                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute left-1/2 top-full mt-3 min-w-[210px] -translate-x-1/2 overflow-hidden rounded-[var(--radius-md)] border border-ink/10 bg-bone/96 py-2 shadow-[0_20px_60px_-24px_rgba(26,22,20,0.5)] backdrop-blur-xl"
-                    >
-                      {item.children.map((c) => (
-                        <Link
-                          key={c.label}
-                          href={c.href}
-                          className="block px-5 py-2.5 font-body text-[0.98rem] text-ink/75 transition-colors duration-300 hover:bg-ink/5 hover:text-ink"
+                  {open === item.label &&
+                    (item.label === "Collections" ? (
+                      <MegaNav onNavigate={() => setOpen(null)} />
+                    ) : (
+                      item.children && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 6 }}
+                          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute left-1/2 top-full mt-3 min-w-[210px] -translate-x-1/2 overflow-hidden rounded-[var(--radius-md)] border border-ink/10 bg-bone/96 py-2 shadow-[0_20px_60px_-24px_rgba(26,22,20,0.5)] backdrop-blur-xl"
                         >
-                          {c.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
+                          {item.children.map((c) => (
+                            <Link
+                              key={c.label}
+                              href={c.href}
+                              className="block px-5 py-2.5 font-body text-[0.98rem] text-ink/75 transition-colors duration-300 hover:bg-ink/5 hover:text-ink"
+                            >
+                              {c.label}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )
+                    ))}
                 </AnimatePresence>
               </div>
             ))}
