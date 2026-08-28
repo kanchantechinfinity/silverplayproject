@@ -2,55 +2,55 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValueEvent,
-  type MotionValue,
-} from "framer-motion";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { journal, heritage } from "@/data/site";
 
-const DEPTH = 640; // px the side cards recede into the screen, in 3D space
-const ANGLE = 30; // degrees each neighbouring card rotates away from facing the viewer
-const STEP_VW = 36; // horizontal distance between card slots, in vw — viewport-relative
-                     // so the arc always reaches the section's full width, on any screen
+const ease = [0.22, 1, 0.36, 1] as const;
 
-type Card = {
+type Row = {
   key: string;
   href: string;
   image: string;
   title: string;
+  excerpt: string;
 };
 
-/**
- * Six real stories: the three published Journal posts plus three heritage
- * collections — both are genuine editorial content on the live site, just
- * living under different sections there. No invented posts or imagery.
- */
-function useShowcase(): Card[] {
+/** Hand-written editorial lines for the two heritage collections that have no
+ *  storefront description on the live site — real collections, real names,
+ *  just no body copy to quote. Virasat keeps its actual Shopify description. */
+const heritageCopy: Record<string, string> = {
+  virasat:
+    "The Eternal Archive. Heritage-inspired silver jewellery rooted in tradition — temple motifs, ancestral jhumkas, and timeless Indian craftsmanship.",
+  "karigari-1":
+    "कारीगरी — the hand behind every piece: Jaipur's karigars, shaping sterling silver the old way.",
+  "ratna-virasat-1":
+    "रत्न विरासत — gemstone-set silver, drawn from generations of stone-setting tradition.",
+};
+
+/** Six real stories: the three published Journal posts interleaved with three
+ *  heritage collections — both genuine editorial content on the live site. */
+function useShowcase(): Row[] {
   return useMemo(() => {
-    const posts: Card[] = journal.map((p) => ({
+    const posts: Row[] = journal.map((p) => ({
       key: p.slug,
       href: `/journal/${p.slug}`,
       image: p.image,
       title: p.title,
+      excerpt: p.excerpt,
     }));
 
-    const stories: Card[] = heritage.slice(0, 3).map((h) => ({
+    const stories: Row[] = heritage.slice(0, 3).map((h) => ({
       key: h.handle,
       href: `/collections/${h.handle}`,
       image: h.image,
       title: h.title,
+      excerpt: heritageCopy[h.handle] ?? h.deva,
     }));
 
-    // Interleave rather than block the two sets, so the ring doesn't read as
-    // "journal half, then heritage half" as it loops.
-    const merged: Card[] = [];
+    const merged: Row[] = [];
     for (let i = 0; i < 3; i++) {
       merged.push(posts[i]);
       merged.push(stories[i]);
@@ -59,191 +59,150 @@ function useShowcase(): Card[] {
   }, []);
 }
 
-/** Shortest signed distance from `index` to continuous position `p` around
- *  an N-slot ring — e.g. for N=6, an index "behind" p by 1 slot reads as
- *  -1, whether that's because p just passed it or is about to wrap onto it.
- *  This one function is what makes the arc loop seamlessly instead of
- *  resetting at the ends. */
-function ringOffset(index: number, p: number, n: number) {
-  const raw = index - p;
-  return raw - n * Math.round(raw / n);
-}
-
 export default function JournalShowcase() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const cards = useShowcase();
-  const n = cards.length;
-  const [active, setActive] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: wrapRef,
-    offset: ["start start", "end end"],
-  });
-
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 110,
-    damping: 30,
-    restDelta: 0.0005,
-  });
-
-  // One full pass around the ring across the pinned track. Combined with
-  // ringOffset's wraparound math, the last card eases straight back into
-  // the first rather than the carousel stopping dead at either end.
-  const position = useTransform(smooth, [0, 1], [0, n]);
-
-  useMotionValueEvent(position, "change", (p) => {
-    const i = ((Math.round(p) % n) + n) % n;
-    setActive((prev) => (prev === i ? prev : i));
-  });
-
-  const goTo = useCallback(
-    (index: number) => {
-      const wrap = wrapRef.current;
-      if (!wrap) return;
-      const wrapped = ((index % n) + n) % n;
-      const travel = wrap.offsetHeight - window.innerHeight;
-      const top = wrap.offsetTop + (wrapped / n) * travel;
-      const lenis = window.__lenis;
-      if (lenis) lenis.scrollTo(top, { duration: 1 });
-      else window.scrollTo({ top, behavior: "smooth" });
-    },
-    [n],
-  );
+  const rows = useShowcase();
+  const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section
-      ref={wrapRef}
-      className="relative bg-bone"
-      style={{ height: `${(n + 0.6) * 82}vh` }}
-    >
-      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        <div className="mx-auto w-full max-w-2xl px-5 pb-2 pt-8 text-center md:pt-10">
+    <section className="bg-ink py-24 md:py-32">
+      <div className="mx-auto max-w-[1100px] px-5 md:px-10">
+        <div className="text-center">
           <Reveal>
             <p className="eyebrow text-ash-3">From The Journal</p>
           </Reveal>
           <SplitText
             text="Stories, Worn as Silver"
-            className="mt-2 text-[clamp(1.5rem,3.2vw,2.3rem)] text-ink"
+            className="mt-3 text-[clamp(1.7rem,3.4vw,2.6rem)] text-bone"
           />
         </div>
 
-        <div
-          className="relative flex flex-1 items-center justify-center"
-          style={{ perspective: "1800px" }}
-        >
-          <div
-            className="relative h-[44vh] w-[min(64vw,860px)] max-h-[520px]"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {cards.map((card, i) => (
-              <ArcCard
-                key={card.key}
-                card={card}
-                position={position}
-                index={i}
-                total={n}
-                isActive={i === active}
-              />
-            ))}
+        <div className="relative mt-14 border-t border-bone/12">
+          {rows.map((row, i) => (
+            <JournalRow
+              key={row.key}
+              row={row}
+              index={i}
+              isActive={active === i}
+              onEnter={() => setActive(i)}
+              onLeave={() => setActive(null)}
+            />
+          ))}
+        </div>
+
+        <Reveal delay={0.2}>
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/journal"
+              className="group inline-flex items-center gap-2 font-display text-[0.64rem] uppercase tracking-[0.22em] text-bone/55 transition-colors duration-500 hover:text-bone"
+            >
+              Read The Journal
+              <span className="transition-transform duration-500 group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
           </div>
-        </div>
-
-        <div className="relative z-10 flex items-center justify-center gap-3 pb-12">
-          <button
-            onClick={() => goTo(active - 1)}
-            aria-label="Previous story"
-            className="grid h-11 w-11 place-items-center rounded-full border border-ink/15 text-ink transition-all duration-500 hover:border-ink/40"
-          >
-            &larr;
-          </button>
-          <button
-            onClick={() => goTo(active + 1)}
-            aria-label="Next story"
-            className="grid h-11 w-11 place-items-center rounded-full bg-ink text-bone transition-all duration-500 hover:bg-ink-3"
-          >
-            &rarr;
-          </button>
-
-          <Link
-            href="/journal"
-            className="group ml-4 inline-flex items-center gap-2 font-display text-[0.62rem] uppercase tracking-[0.22em] text-ink/55 transition-colors duration-500 hover:text-ink"
-          >
-            Read The Journal
-            <span className="transition-transform duration-500 group-hover:translate-x-1">
-              &rarr;
-            </span>
-          </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-function ArcCard({
-  card,
-  position,
+function JournalRow({
+  row,
   index,
-  total,
   isActive,
+  onEnter,
+  onLeave,
 }: {
-  card: Card;
-  position: MotionValue<number>;
+  row: Row;
   index: number;
-  total: number;
   isActive: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
 }) {
-  const offset = useTransform(position, (p) => ringOffset(index, p, total));
-
-  const rotateY = useTransform(offset, (o) => `${o * -ANGLE}deg`);
-  const x = useTransform(offset, (o) => `${o * STEP_VW}vw`);
-  const z = useTransform(offset, (o) => -Math.abs(o) * DEPTH);
-  const scale = useTransform(offset, (o) => 1 - Math.min(Math.abs(o), 2) * 0.16);
-  const opacity = useTransform(offset, (o) =>
-    Math.max(0, 1 - Math.min(Math.abs(o), 2.4) * 0.42),
-  );
-
   return (
-    <motion.div
-      className="absolute inset-0"
-      style={{
-        x,
-        rotateY,
-        scale,
-        opacity,
-        translateZ: z,
-        transformStyle: "preserve-3d",
-      }}
+    <div
+      className="group relative border-b border-bone/12"
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
     >
       <Link
-        href={card.href}
-        className="group pointer-events-auto block h-full w-full"
-        tabIndex={isActive ? 0 : -1}
-        aria-hidden={!isActive}
+        href={row.href}
+        className="relative z-10 flex items-center gap-4 px-4 py-6 md:gap-8 md:px-8 md:py-7"
       >
-        <div className="relative h-full w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(26,22,20,0.35)]">
-          <Image
-            src={card.image}
-            alt={card.title}
-            fill
-            sizes="(max-width: 768px) 80vw, 860px"
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-            priority={index === 0}
-          />
-          {/* A single bottom scrim, just enough for the one label to read —
-              the reference keeps every card down to one name and one arrow,
-              nothing stacked on top of the image beyond that. */}
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent" />
+        <motion.div
+          aria-hidden
+          initial={false}
+          animate={{ opacity: isActive ? 1 : 0 }}
+          transition={{ duration: 0.4, ease }}
+          className="absolute inset-0 rounded-[var(--radius-md)]"
+          style={{ background: "#d9b66c" }}
+        />
 
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
-            <h3 className="font-display text-[1.05rem] font-semibold leading-snug text-bone">
-              {card.title}
-            </h3>
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-bone text-ink transition-transform duration-500 group-hover:translate-x-0.5">
-              &rarr;
-            </span>
-          </div>
+        <span
+          className={`relative font-display text-[0.72rem] tracking-[0.1em] transition-colors duration-400 ${
+            isActive ? "text-[#241a10]/50" : "text-bone/40"
+          }`}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        <div className="relative min-w-0 flex-1">
+          <h3
+            className={`font-display text-[1.15rem] font-semibold leading-snug transition-colors duration-400 md:text-[1.4rem] ${
+              isActive ? "text-[#241a10]" : "text-bone"
+            }`}
+          >
+            {row.title}
+          </h3>
+          <AnimatePresence initial={false}>
+            {isActive && (
+              <motion.p
+                initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                animate={{ height: "auto", opacity: 1, marginTop: 8 }}
+                exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                transition={{ duration: 0.4, ease }}
+                className="max-w-md overflow-hidden font-body text-[0.86rem] leading-relaxed text-[#241a10]/70 md:pr-40"
+              >
+                {row.excerpt}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
+
+        <span
+          className={`relative grid h-11 w-11 shrink-0 place-items-center rounded-full border transition-all duration-400 ${
+            isActive
+              ? "border-[#241a10]/30 text-[#241a10]"
+              : "border-bone/25 text-bone group-hover:border-bone/50"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M6 14 14 6" />
+            <path d="M7.5 6H14v6.5" />
+          </svg>
+        </span>
       </Link>
-    </motion.div>
+
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, rotate: -6, y: "-50%" }}
+            animate={{ opacity: 1, scale: 1, rotate: -4, y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.85, rotate: -6, y: "-50%" }}
+            transition={{ duration: 0.4, ease }}
+            className="pointer-events-none absolute right-24 top-1/2 z-20 hidden h-[130px] w-[96px] overflow-hidden rounded-[var(--radius-md)] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.55)] md:block lg:h-[150px] lg:w-[112px]"
+          >
+            <Image
+              src={row.image}
+              alt=""
+              fill
+              sizes="112px"
+              className="object-cover"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
