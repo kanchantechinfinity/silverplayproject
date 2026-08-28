@@ -34,21 +34,31 @@ export default function EditCard({
       <motion.div
         animate={{ y: hover ? -8 : 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={cn(
-          "flex h-full flex-col rounded-[var(--radius-lg)] bg-bone p-3 transition-shadow duration-700",
-          "shadow-[0_2px_10px_-6px_rgba(26,22,20,0.14)]",
-          "group-hover:shadow-[0_26px_50px_-24px_rgba(26,22,20,0.34)]",
-        )}
+        className="rounded-[var(--radius-lg)] p-[3px] transition-shadow duration-700"
+        style={{
+          background:
+            "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+          boxShadow: hover
+            ? "0 26px 50px -24px rgba(26,22,20,0.4)"
+            : "0 2px 10px -6px rgba(26,22,20,0.2)",
+        }}
       >
+        <div
+          className="flex h-full flex-col rounded-[calc(var(--radius-lg)-3px)] p-3"
+          style={{
+            background:
+              "radial-gradient(140% 160% at 15% -10%, #f8f0da 0%, #f2e8d0 45%, #e6d3a8 100%)",
+          }}
+        >
         {/* Style chip */}
         <div className="flex justify-center pb-3 pt-2">
-          <span className="rounded-full border border-ink/15 px-4 py-1.5 font-display text-[0.56rem] uppercase tracking-[0.2em] text-ink/60 transition-colors duration-500 group-hover:border-ink/35 group-hover:text-ink">
+          <span className="rounded-full border border-[#8a6a2e]/35 bg-[#f8f0da]/60 px-4 py-1.5 font-display text-[0.56rem] uppercase tracking-[0.2em] text-[#6b5326] transition-colors duration-500 group-hover:border-[#8a6a2e]/60">
             {chipFor(product)}
           </span>
         </div>
 
         {/* Piece */}
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-md)] bg-bone-2">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-md)] bg-bone-2 shadow-[inset_0_0_0_1px_rgba(138,106,46,0.25)]">
           <motion.div
             animate={{ scale: hover ? 1.07 : 1 }}
             transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
@@ -81,12 +91,12 @@ export default function EditCard({
           </motion.div>
 
           {product.compareAt && product.compareAt > product.price && (
-            <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-bone">
+            <span className="absolute left-3 top-3 rounded-full bg-[#241a10] px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-[#f2e8d0]">
               Sale
             </span>
           )}
           {!product.available && (
-            <span className="absolute left-3 top-3 rounded-full border border-bone/60 bg-ink/70 px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-bone backdrop-blur-sm">
+            <span className="absolute left-3 top-3 rounded-full border border-[#f2e8d0]/60 bg-[#241a10]/75 px-3 py-1 font-display text-[0.54rem] uppercase tracking-[0.16em] text-[#f2e8d0] backdrop-blur-sm">
               Sold out
             </span>
           )}
@@ -94,18 +104,19 @@ export default function EditCard({
 
         {/* Name + price */}
         <div className="mt-auto px-2 pb-2 pt-5 text-center">
-          <h3 className="font-body text-[0.98rem] leading-snug text-ash-3 transition-colors duration-500 group-hover:text-ink/80">
+          <h3 className="font-body text-[0.98rem] leading-snug text-[#6b5326] transition-colors duration-500 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
-          <p className="mt-2.5 flex items-center justify-center gap-2 font-display text-[1.06rem] font-semibold tracking-[0.02em] text-ink">
+          <p className="mt-2.5 flex items-center justify-center gap-2 font-display text-[1.06rem] font-semibold tracking-[0.02em] text-[#3a2b1c]">
             {inr(product.price)}
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-ash-2" />
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#8a6a2e]/50" />
             {product.compareAt && product.compareAt > product.price && (
-              <span className="font-normal text-[0.78rem] text-ash-3 line-through">
+              <span className="font-normal text-[0.78rem] text-[#8a6a2e] line-through">
                 {inr(product.compareAt)}
               </span>
             )}
           </p>
+        </div>
         </div>
       </motion.div>
     </Link>

@@ -30,8 +30,10 @@ export default function Header() {
   }, []);
 
   const link = cn(
-    "font-display text-[0.66rem] uppercase tracking-[0.2em] transition-colors duration-500",
-    pinned ? "text-ink/70 hover:text-ink" : "text-bone/85 hover:text-bone",
+    "font-display text-[0.8rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-500",
+    pinned
+      ? "text-ink/85 hover:text-ink"
+      : "text-bone drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] hover:text-bone",
   );
 
   return (
@@ -72,11 +74,12 @@ export default function Header() {
             <Image
               src={brand.logoMark}
               alt={brand.name}
-              width={130}
-              height={130}
+              width={160}
+              height={160}
               priority
               className={cn(
-                "h-8 w-auto transition-all duration-500 md:h-9",
+                "w-auto transition-all duration-500",
+                pinned ? "h-9" : "h-12 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-16",
                 pinned && "invert",
               )}
             />
@@ -137,10 +140,10 @@ export default function Header() {
             <Link
               href="/cart"
               className={cn(
-                "rounded-full border px-4 py-2 font-display text-[0.62rem] uppercase tracking-[0.18em] transition-colors duration-500",
+                "rounded-full border px-4 py-2 font-display text-[0.72rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-500",
                 pinned
-                  ? "border-ink/20 text-ink hover:bg-ink hover:text-bone"
-                  : "border-bone/35 text-bone hover:bg-bone hover:text-ink",
+                  ? "border-ink/25 text-ink hover:bg-ink hover:text-bone"
+                  : "border-bone/60 text-bone drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] hover:bg-bone hover:text-ink",
               )}
             >
               Bag (0)

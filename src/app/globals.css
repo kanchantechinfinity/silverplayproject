@@ -2,24 +2,26 @@
 
 /* ── Palette ───────────────────────────────────────────────────────── */
 :root {
-  /* Neutral ramp — warm near-black */
-  --sp-ink: #1a1614;
-  --sp-ink-2: #211d1a;
-  --sp-ink-3: #2b2622;
-  --sp-ink-4: #3a342f;
+  /* Neutral ramp — deep espresso, not neutral charcoal: every dark surface
+     site-wide reads as old wood/leather rather than modern near-black. */
+  --sp-ink: #241a10;
+  --sp-ink-2: #2e2115;
+  --sp-ink-3: #3a2b1c;
+  --sp-ink-4: #4a3826;
 
-  /* Tertiary ramp — warm bone */
-  --sp-bone: #f5f2ed;
-  --sp-bone-2: #ebe7e0;
-  --sp-bone-3: #ded9d1;
+  /* Tertiary ramp — aged parchment, not clinical off-white. */
+  --sp-bone: #f2e8d0;
+  --sp-bone-2: #e8d8b3;
+  --sp-bone-3: #dbc596;
 
-  /* T80 — muted mid grey */
-  --sp-ash: #c9c6c0;
-  --sp-ash-2: #a9a59f;
-  --sp-ash-3: #8a857f;
+  /* T80 — warm khaki/taupe instead of neutral grey, so muted text reads as
+     faded ink rather than modern grey. */
+  --sp-ash: #c3b189;
+  --sp-ash-2: #a48d63;
+  --sp-ash-3: #86714d;
 
-  --sp-line: rgba(26, 22, 20, 0.12);
-  --sp-line-inv: rgba(245, 242, 237, 0.16);
+  --sp-line: rgba(36, 26, 16, 0.16);
+  --sp-line-inv: rgba(242, 232, 208, 0.18);
 
   --background: var(--sp-bone);
   --foreground: var(--sp-ink);
