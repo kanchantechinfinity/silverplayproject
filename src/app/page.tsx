@@ -12,6 +12,7 @@ import TheTreasures from "@/components/sections/TheTreasures";
 import EffortlessElegance from "@/components/sections/EffortlessElegance";
 import JournalShowcase from "@/components/sections/JournalShowcase";
 import Testimonials from "@/components/sections/Testimonials";
+import FAQ from "@/components/sections/FAQ";
 
 export default function Home() {
   return (
@@ -43,6 +44,8 @@ export default function Home() {
         <Testimonials />
 
         <JournalShowcase />
+
+        <FAQ />
       </main>
       <Footer />
     </>
