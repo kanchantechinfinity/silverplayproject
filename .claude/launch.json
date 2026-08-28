@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "silverplay",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/apple/Desktop/silverplay && exec node ./node_modules/next/dist/bin/next dev -p 3000"
+      ],
+      "port": 3000
+    }
+  ]
+}
