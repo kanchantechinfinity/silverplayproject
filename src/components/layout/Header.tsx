@@ -70,7 +70,7 @@ export default function Header() {
             <span className={cn("block h-px w-4", pinned ? "bg-ink" : "bg-bone")} />
           </button>
 
-          <Link href="/" className="shrink-0">
+          <Link href="/" className="shrink-0 origin-left">
             <Image
               src={brand.logoMark}
               alt={brand.name}
@@ -78,8 +78,8 @@ export default function Header() {
               height={160}
               priority
               className={cn(
-                "w-auto transition-all duration-500",
-                pinned ? "h-16" : "h-20 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-28",
+                "w-auto origin-left scale-150 transition-all duration-500",
+                pinned ? "h-12" : "h-16 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-20",
                 pinned && "invert",
               )}
             />
