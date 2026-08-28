@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { brand, nav } from "@/data/site";
 import { cn } from "@/lib/utils";
@@ -79,7 +79,7 @@ export default function Header() {
               priority
               className={cn(
                 "w-auto transition-all duration-500",
-                pinned ? "h-9" : "h-12 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-16",
+                pinned ? "h-12" : "h-16 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)] md:h-20",
                 pinned && "invert",
               )}
             />
@@ -133,21 +133,22 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-5 lg:ml-0">
-            <Link href="/account" className={cn(link, "hidden sm:block")}>
-              Account
-            </Link>
-            <Link
-              href="/cart"
-              className={cn(
-                "rounded-full border px-4 py-2 font-display text-[0.72rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-500",
-                pinned
-                  ? "border-ink/25 text-ink hover:bg-ink hover:text-bone"
-                  : "border-bone/60 text-bone drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] hover:bg-bone hover:text-ink",
-              )}
-            >
-              Bag (0)
-            </Link>
+          <div className="ml-auto flex items-center gap-1 lg:ml-0">
+            <HeaderIconLink href="/search" label="Search" pinned={pinned}>
+              <circle cx="11" cy="11" r="7.5" />
+              <path d="m20.5 20.5-4.35-4.35" />
+            </HeaderIconLink>
+            <HeaderIconLink href="/wishlist" label="Wishlist" pinned={pinned} className="hidden sm:flex">
+              <path d="M12 20.5s-7.5-4.6-9.9-9.3C.6 8 1.8 4.3 5.2 3.4c2-.5 4 .3 5.2 2 .5.7 1 1.4 1.6 2.1.6-.7 1.1-1.4 1.6-2.1 1.2-1.7 3.2-2.5 5.2-2 3.4.9 4.6 4.6 3.1 7.8-2.4 4.7-9.9 9.3-9.9 9.3Z" />
+            </HeaderIconLink>
+            <HeaderIconLink href="/account" label="Account" pinned={pinned} className="hidden sm:flex">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20.5c1.4-4 4.4-6 8-6s6.6 2 8 6" />
+            </HeaderIconLink>
+            <HeaderIconLink href="/cart" label="Bag, 0 items" pinned={pinned} badge={0}>
+              <path d="M6.5 8.5h11l1 12.5h-13l1-12.5Z" />
+              <path d="M9 8.5v-2a3 3 0 0 1 6 0v2" />
+            </HeaderIconLink>
           </div>
         </motion.div>
       </header>
@@ -189,5 +190,61 @@ export default function Header() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/** One thin-stroke header icon — the standard Shopify-header set (search,
+ *  wishlist, account, bag), all sharing the same size, stroke weight and
+ *  pinned/unpinned colour logic as the text links beside them. */
+function HeaderIconLink({
+  href,
+  label,
+  pinned,
+  badge,
+  className,
+  children,
+}: {
+  href: string;
+  label: string;
+  pinned: boolean;
+  badge?: number;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className={cn(
+        "relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-500",
+        pinned ? "text-ink/80 hover:bg-ink/5 hover:text-ink" : "text-bone hover:bg-bone/10",
+        !pinned && "drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]",
+        className,
+      )}
+    >
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 23 23"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        {children}
+      </svg>
+      {typeof badge === "number" && (
+        <span
+          className={cn(
+            "absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full font-display text-[0.55rem] font-semibold",
+            pinned ? "bg-ink text-bone" : "bg-bone text-ink",
+          )}
+        >
+          {badge}
+        </span>
+      )}
+    </Link>
   );
 }
