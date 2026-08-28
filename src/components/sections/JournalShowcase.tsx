@@ -15,9 +15,10 @@ import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { journal, heritage } from "@/data/site";
 
-const RADIUS = 680; // px the side cards sit back/inward, in 3D space
-const ANGLE = 40; // degrees each neighbouring card rotates away from facing the viewer
-const SPACING = 0.52; // horizontal step between card slots, as a fraction of RADIUS — tight enough that neighbours overlap, not float apart
+const DEPTH = 640; // px the side cards recede into the screen, in 3D space
+const ANGLE = 30; // degrees each neighbouring card rotates away from facing the viewer
+const STEP_VW = 36; // horizontal distance between card slots, in vw — viewport-relative
+                     // so the arc always reaches the section's full width, on any screen
 
 type Card = {
   key: string;
@@ -131,7 +132,7 @@ export default function JournalShowcase() {
           style={{ perspective: "1800px" }}
         >
           <div
-            className="relative h-[84vh] w-[min(42vw,540px)]"
+            className="relative h-[44vh] w-[min(64vw,860px)] max-h-[520px]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {cards.map((card, i) => (
@@ -194,8 +195,8 @@ function ArcCard({
   const offset = useTransform(position, (p) => ringOffset(index, p, total));
 
   const rotateY = useTransform(offset, (o) => `${o * -ANGLE}deg`);
-  const x = useTransform(offset, (o) => `${o * (RADIUS * SPACING)}px`);
-  const z = useTransform(offset, (o) => -Math.abs(o) * RADIUS * 0.95);
+  const x = useTransform(offset, (o) => `${o * STEP_VW}vw`);
+  const z = useTransform(offset, (o) => -Math.abs(o) * DEPTH);
   const scale = useTransform(offset, (o) => 1 - Math.min(Math.abs(o), 2) * 0.16);
   const opacity = useTransform(offset, (o) =>
     Math.max(0, 1 - Math.min(Math.abs(o), 2.4) * 0.42),
@@ -224,7 +225,7 @@ function ArcCard({
             src={card.image}
             alt={card.title}
             fill
-            sizes="(max-width: 768px) 66vw, 340px"
+            sizes="(max-width: 768px) 80vw, 860px"
             className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             priority={index === 0}
           />
