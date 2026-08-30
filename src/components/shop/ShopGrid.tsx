@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -81,8 +81,10 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
         <span aria-hidden>⊞</span>
       </button>
 
-      {/* Sidebar (desktop) */}
-      <aside className="hidden md:block">
+      {/* Sidebar (desktop) — sticks under the header while the grid scrolls,
+          and scrolls internally if the filter list runs taller than the
+          viewport. */}
+      <aside className="hidden md:block md:sticky md:top-28 md:max-h-[calc(100vh-8rem)] md:self-start md:overflow-y-auto md:pr-2">
         <FilterPanel
           vibeCollections={vibeCollections}
           types={types}
@@ -147,17 +149,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
           <p className="font-body text-[0.85rem] text-ink/55">
             {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
           </p>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as typeof sort)}
-            className="rounded-full border border-ink/15 bg-transparent px-4 py-2 font-display text-[0.68rem] uppercase tracking-[0.14em] text-ink outline-none"
-          >
-            {SORTS.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
+          <SortDropdown value={sort} onChange={setSort} />
         </div>
 
         {filtered.length === 0 ? (
@@ -175,6 +167,90 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
           </Stagger>
         )}
       </div>
+    </div>
+  );
+}
+
+function SortDropdown({
+  value,
+  onChange,
+}: {
+  value: (typeof SORTS)[number]["value"];
+  onChange: (v: (typeof SORTS)[number]["value"]) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const current = SORTS.find((s) => s.value === value)!;
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex items-center gap-2.5 rounded-full border border-ink/15 bg-transparent px-4 py-2 font-display text-[0.68rem] uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:border-[#8a6a2e]/50"
+      >
+        {current.label}
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.3, ease }}
+          aria-hidden
+          className="text-[0.6rem] text-[#8a6a2e]"
+        >
+          ▾
+        </motion.span>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, x: 16, scale: 0.97 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 16, scale: 0.97 }}
+            transition={{ duration: 0.3, ease }}
+            className="absolute right-0 top-[calc(100%+0.5rem)] z-20 w-56 origin-top-right overflow-hidden rounded-[var(--radius-md)] p-[3px] shadow-[0_20px_45px_-15px_rgba(26,22,20,0.45)]"
+            style={{
+              background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+            }}
+          >
+            <div
+              className="rounded-[calc(var(--radius-md)-3px)] py-2"
+              style={{
+                background: "radial-gradient(140% 120% at 15% -10%, #f8f0da 0%, #f2e8d0 55%, #e6d3a8 100%)",
+              }}
+            >
+              {SORTS.map((s) => (
+                <button
+                  key={s.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(s.value);
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "flex w-full items-center gap-2.5 px-4 py-2.5 text-left font-display text-[0.68rem] uppercase tracking-[0.12em] transition-colors duration-200 hover:bg-[#8a6a2e]/10",
+                    s.value === value ? "text-[#6b5326]" : "text-[#6b5326]/60",
+                  )}
+                >
+                  <span className="w-3 shrink-0" aria-hidden>
+                    {s.value === value ? "✓" : ""}
+                  </span>
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
