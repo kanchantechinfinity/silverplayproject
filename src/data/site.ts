@@ -16,9 +16,10 @@ export const brand = {
   logo: "https://silverplay.in/cdn/shop/files/SP_logo_1.png",
   logoMark: "https://silverplay.in/cdn/shop/files/SP_WHite_log_SHort.png",
   email: "care@silverplay.in",
+  hours: "Mon–Sat: 10am – 7pm IST",
   social: [
-    { label: "Instagram", href: "https://instagram.com" },
-    { label: "Facebook", href: "https://facebook.com" },
+    { label: "Instagram", href: "https://www.instagram.com/thesilverplay/" },
+    { label: "Facebook", href: "https://facebook.com/thesilverplay" },
   ],
 };
 
