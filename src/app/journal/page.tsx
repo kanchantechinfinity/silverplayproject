@@ -1,8 +1,8 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import Reveal from "@/components/motion/Reveal";
-import SplitText from "@/components/motion/SplitText";
+import PageHero from "@/components/layout/PageHero";
 import JournalArchiveGrid from "@/components/journal/JournalArchiveGrid";
+import { journal } from "@/data/site";
 
 export const metadata = {
   title: "Journal — Silver Play",
@@ -10,18 +10,20 @@ export const metadata = {
 };
 
 export default function JournalIndexPage() {
+  const banner = journal.find((p) => p.slug === "inside-the-jaipur-atelier")!;
+
   return (
     <>
       <Header />
-      <main className="flex-1 pt-28 md:pt-32">
-        <div className="mx-auto max-w-[1500px] px-5 pb-12 text-center md:px-10 md:pb-16">
-          <Reveal>
-            <p className="eyebrow text-ash-3">Silver Stories</p>
-          </Reveal>
-          <SplitText text="Journal" className="mt-3 text-[clamp(2.4rem,6vw,4.2rem)] text-ink" />
-        </div>
+      <main className="flex-1">
+        <PageHero
+          eyebrow="Silver Stories"
+          heading="Journal"
+          image={banner.image}
+          description="Guides, craft and the people behind Silver Play's handcrafted jewellery."
+        />
 
-        <div className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pb-32">
+        <div className="mx-auto max-w-[1500px] px-5 py-16 md:px-10 md:py-24">
           <JournalArchiveGrid />
         </div>
       </main>

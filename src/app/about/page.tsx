@@ -3,8 +3,10 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Founder from "@/components/sections/Founder";
+import Testimonials from "@/components/sections/Testimonials";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { aboutPage } from "@/data/site";
 
 export const metadata = {
@@ -13,7 +15,7 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  const { hero, craft, values, closing } = aboutPage;
+  const { hero, craft, vision, values, closing } = aboutPage;
 
   return (
     <>
@@ -63,9 +65,9 @@ export default function AboutPage() {
 
         {/* Craft */}
         <section className="bg-bone py-20 md:py-28">
-          <div className="mx-auto max-w-[1500px] px-5 md:px-10">
-            <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-16 lg:gap-20">
-              <div className="order-2 md:order-1">
+          <div className="mx-auto w-full max-w-[1500px] px-5 md:px-10">
+            <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20">
+              <div className="order-2 flex flex-col justify-center md:order-1">
                 <Reveal>
                   <p className="eyebrow text-ash-3">{craft.eyebrow}</p>
                 </Reveal>
@@ -82,8 +84,8 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              <Reveal direction="right" className="order-1 md:order-2">
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(26,22,20,0.4)]">
+              <Reveal direction="right" className="order-1 md:order-2 md:h-full">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(26,22,20,0.4)] md:aspect-auto md:h-full">
                   <Image
                     src={craft.image}
                     alt={craft.heading}
@@ -97,50 +99,130 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Values */}
+        {/* Vision — three cards, a different rhythm from the alternating text/image rows */}
         <section className="bg-ink py-20 md:py-28">
-          <div className="mx-auto max-w-2xl px-5 text-center md:px-10">
-            <Reveal>
-              <p className="eyebrow text-ash-3">{values.eyebrow}</p>
-            </Reveal>
-            <SplitText
-              text={values.heading}
-              className="mt-4 text-[clamp(1.9rem,4vw,3rem)] text-bone"
-            />
-            <Reveal delay={0.15}>
-              <p aria-hidden className="mt-6 font-display text-[1.3rem] text-[#d8b466]">
-                ❧
-              </p>
-              <p className="mt-6 font-body text-[1.05rem] leading-relaxed text-bone/65">
-                {values.paragraph}
-              </p>
-            </Reveal>
+          <div className="mx-auto w-full max-w-[1500px] px-5 md:px-10">
+            <div className="text-center">
+              <Reveal>
+                <p className="eyebrow text-ash-3">Our Vision</p>
+              </Reveal>
+              <SplitText
+                text="What We Choose, Every Time"
+                className="mt-4 text-[clamp(1.9rem,4vw,3rem)] text-bone"
+              />
+            </div>
+
+            <Stagger className="mt-14 grid gap-6 sm:grid-cols-3 sm:gap-8">
+              {vision.map((v) => (
+                <StaggerItem key={v.title}>
+                  <div
+                    className="h-full rounded-[var(--radius-lg)] p-[3px]"
+                    style={{
+                      background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+                    }}
+                  >
+                    <div
+                      className="flex h-full flex-col items-center gap-4 rounded-[calc(var(--radius-lg)-3px)] px-7 py-10 text-center"
+                      style={{
+                        background: "radial-gradient(140% 120% at 50% -10%, #2e2115 0%, #241a10 60%)",
+                      }}
+                    >
+                      <span className="font-display text-[1.6rem] text-[#d8b466]" aria-hidden>
+                        {v.glyph}
+                      </span>
+                      <h3 className="font-display text-[1.1rem] uppercase tracking-[0.08em] text-bone">
+                        {v.title}
+                      </h3>
+                      <p className="font-body text-[0.92rem] leading-relaxed text-bone/60">
+                        {v.body}
+                      </p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
         </section>
 
-        {/* Closing CTA */}
-        <section className="bg-bone-2 py-24 md:py-32">
-          <div className="mx-auto max-w-xl px-5 text-center md:px-10">
-            <SplitText
-              text={closing.heading}
-              className="text-[clamp(2.2rem,5vw,3.6rem)] text-ink"
-            />
-            <Reveal delay={0.15}>
-              <p className="mt-6 font-body text-[1.05rem] leading-relaxed text-ink/65">
-                {closing.paragraph}
-              </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <Link
-                href={closing.ctaHref}
-                className="group mt-9 inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 font-display text-[0.68rem] uppercase tracking-[0.22em] text-bone transition-colors duration-500 hover:bg-ink-3"
-              >
-                {closing.ctaLabel}
-                <span className="transition-transform duration-500 group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
-            </Reveal>
+        {/* Values — text + image, matching the alternating home-page rhythm */}
+        <section className="bg-bone-2 py-20 md:py-28">
+          <div className="mx-auto w-full max-w-[1500px] px-5 md:px-10">
+            <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20">
+              <Reveal className="md:h-full">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(26,22,20,0.4)] md:aspect-auto md:h-full">
+                  <Image
+                    src={values.image}
+                    alt={values.heading}
+                    fill
+                    sizes="(max-width: 768px) 92vw, 44vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
+
+              <div className="flex flex-col justify-center">
+                <Reveal>
+                  <p className="eyebrow text-ash-3">{values.eyebrow}</p>
+                </Reveal>
+                <SplitText
+                  text={values.heading}
+                  className="mt-4 text-[clamp(1.9rem,4vw,3rem)] text-ink"
+                />
+                <Reveal delay={0.15}>
+                  <p aria-hidden className="mt-6 font-display text-[1.2rem] text-[#8a6a2e]">
+                    ❧
+                  </p>
+                  <p className="mt-4 max-w-xl font-body text-[1.02rem] leading-relaxed text-ink/65">
+                    {values.paragraph}
+                  </p>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Real brand statements — same component as the homepage */}
+        <Testimonials />
+
+        {/* Closing — text + image */}
+        <section className="bg-bone py-20 md:py-28">
+          <div className="mx-auto w-full max-w-[1500px] px-5 md:px-10">
+            <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20">
+              <div className="order-2 flex flex-col justify-center text-left md:order-1">
+                <SplitText
+                  text={closing.heading}
+                  className="text-[clamp(2rem,4.6vw,3.4rem)] text-ink"
+                />
+                <Reveal delay={0.15}>
+                  <p className="mt-6 max-w-xl font-body text-[1.02rem] leading-relaxed text-ink/65">
+                    {closing.paragraph}
+                  </p>
+                </Reveal>
+                <Reveal delay={0.3}>
+                  <Link
+                    href={closing.ctaHref}
+                    className="group mt-9 inline-flex w-fit items-center gap-2 rounded-full bg-ink px-8 py-4 font-display text-[0.68rem] uppercase tracking-[0.22em] text-bone transition-colors duration-500 hover:bg-ink-3"
+                  >
+                    {closing.ctaLabel}
+                    <span className="transition-transform duration-500 group-hover:translate-x-1">
+                      &rarr;
+                    </span>
+                  </Link>
+                </Reveal>
+              </div>
+
+              <Reveal direction="right" className="order-1 md:order-2 md:h-full">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(26,22,20,0.4)] md:aspect-auto md:h-full">
+                  <Image
+                    src={closing.image}
+                    alt={closing.heading}
+                    fill
+                    sizes="(max-width: 768px) 92vw, 44vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
+            </div>
           </div>
         </section>
       </main>

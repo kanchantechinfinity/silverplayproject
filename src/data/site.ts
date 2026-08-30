@@ -446,16 +446,37 @@ export const aboutPage = {
       "Our collection spans a wide range of natural gemstones — each chosen for its visual character and the story it carries. We work with Jaspers from across the world, Opals in colours that shift with the light, grounding stones like Pyrite and Tiger Eye, and rare finds like Scolecite and Purpurite. Each stone is hand-selected. Each has its own mood.",
     ],
   },
+  vision: [
+    {
+      glyph: "◈",
+      title: "Slow Making",
+      body: "We believe in slow making over mass production. Every piece takes the time real craft requires, shaped by hand rather than rushed off a line.",
+    },
+    {
+      glyph: "✿",
+      title: "Natural Over Synthetic",
+      body: "We work with natural, lightly finished stones wherever possible — the earth's imperfections are part of the beauty, not a flaw to be hidden.",
+    },
+    {
+      glyph: "❧",
+      title: "Stories Over Trends",
+      body: "We take pride in being transparent about what goes into each piece: the metal grade, the stone type, the craft involved, the story it carries.",
+    },
+  ],
   values: {
     eyebrow: "What We Stand For",
     heading: "Slow Making, Honest Materials",
     paragraph:
       "We are an independent Indian jewellery brand. We believe in slow making over mass production, in natural over synthetic, in stories over trends. We take pride in being transparent about what goes into each piece — the metal grade, the stone type, the craft involved. When you wear a Silver Play piece, you are wearing a moment of craft: a connection between the person who made it, the stone that was chosen, and you. We ship from India to jewellery lovers around the world, and we welcome questions, custom conversations, and customers who want to know what they are wearing and why it matters. Thank you for being here.",
+    image:
+      "https://silverplay.in/cdn/shop/files/Rajsi_SP_Website_41ccae1d-7e58-4695-b942-459bc0411093_800x1200_crop_center.png?v=1781610360",
   },
   closing: {
     heading: "Wear Your Story",
     paragraph:
       "Silver Play promises jewellery that is elegant, expressive and thoughtfully made. We create 925 silver pieces that feel premium, meaningful and easy to wear — jewellery that adds beauty to everyday moments, grace to celebrations and emotion to gifting. Because silver is not just something you wear. It is something you feel.",
+    image:
+      "https://silverplay.in/cdn/shop/files/10_bd25934c-b7a1-4db5-adaf-80994f406f55_800x1200_crop_center.png?v=1781618694",
     ctaLabel: "Explore The Collection",
     ctaHref: "/shop",
   },

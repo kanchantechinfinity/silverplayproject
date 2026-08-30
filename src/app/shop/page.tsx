@@ -1,8 +1,8 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import Reveal from "@/components/motion/Reveal";
-import SplitText from "@/components/motion/SplitText";
+import PageHero from "@/components/layout/PageHero";
 import ShopGrid from "@/components/shop/ShopGrid";
+import { heritage } from "@/data/site";
 
 export const metadata = {
   title: "Shop All — Silver Play",
@@ -10,18 +10,20 @@ export const metadata = {
 };
 
 export default function ShopPage() {
+  const banner = heritage.find((h) => h.handle === "raajsi-shahi")!;
+
   return (
     <>
       <Header />
-      <main className="flex-1 pt-28 md:pt-32">
-        <div className="mx-auto max-w-[1500px] px-5 pb-10 md:px-10">
-          <Reveal>
-            <p className="eyebrow text-ash-3">Every Piece</p>
-          </Reveal>
-          <SplitText text="Shop All Silver" className="mt-3 text-[clamp(2rem,5vw,3.4rem)] text-ink" />
-        </div>
+      <main className="flex-1">
+        <PageHero
+          eyebrow="Every Piece"
+          heading="Shop All Silver"
+          image={banner.image}
+          description="233 pieces of handcrafted 92.5% sterling silver — earrings, pendants and rakhis, all BIS hallmarked."
+        />
 
-        <div className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pb-32">
+        <div className="mx-auto max-w-[1500px] px-5 py-16 md:px-10 md:py-24">
           <ShopGrid />
         </div>
       </main>

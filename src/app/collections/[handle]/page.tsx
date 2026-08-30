@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import Reveal from "@/components/motion/Reveal";
-import SplitText from "@/components/motion/SplitText";
+import PageHero from "@/components/layout/PageHero";
 import ShopGrid from "@/components/shop/ShopGrid";
-import { getCollection, collectionProducts, collections } from "@/lib/catalog";
+import { getCollection, collectionProducts, collectionImage, collections } from "@/lib/catalog";
 
 export function generateStaticParams() {
   return collections.filter((c) => c.count > 0).map((c) => ({ handle: c.handle }));
@@ -34,26 +33,24 @@ export default async function CollectionPage({
   if (!collection) notFound();
 
   const items = collectionProducts(handle);
+  const banner = collectionImage(handle) ?? items[0]?.images[0];
 
   return (
     <>
       <Header />
-      <main className="flex-1 pt-28 md:pt-32">
-        <div className="mx-auto max-w-[1500px] px-5 pb-10 md:px-10">
-          <Reveal>
-            <p className="eyebrow text-ash-3">Collection</p>
-          </Reveal>
-          <SplitText text={collection.title} className="mt-3 text-[clamp(2rem,5vw,3.4rem)] text-ink" />
-          {collection.description && (
-            <Reveal delay={0.15}>
-              <p className="mt-4 max-w-xl font-body text-[1rem] leading-relaxed text-ink/60">
-                {collection.description}
-              </p>
-            </Reveal>
-          )}
-        </div>
+      <main className="flex-1">
+        {banner ? (
+          <PageHero
+            eyebrow="Collection"
+            heading={collection.title}
+            image={banner}
+            description={collection.description || undefined}
+          />
+        ) : (
+          <div className="pt-32" />
+        )}
 
-        <div className="mx-auto max-w-[1500px] px-5 pb-24 md:px-10 md:pb-32">
+        <div className="mx-auto max-w-[1500px] px-5 py-16 md:px-10 md:py-24">
           {items.length > 0 ? (
             <ShopGrid baseProducts={items} />
           ) : (

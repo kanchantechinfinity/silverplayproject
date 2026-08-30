@@ -10,9 +10,9 @@ export default function Founder() {
   return (
     <section className="bg-ink py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
-        <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-16 lg:gap-20">
-          <Reveal>
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]">
+        <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20">
+          <Reveal className="md:h-full">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)] shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)] md:aspect-auto md:h-full">
               <Image
                 src={founder.image}
                 alt={founder.name}
