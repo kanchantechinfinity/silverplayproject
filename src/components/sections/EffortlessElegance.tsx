@@ -25,47 +25,9 @@ export default function EffortlessElegance() {
   return (
     <section className="overflow-hidden bg-bone-2 py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
-        <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
-          {/* Left: video + thumbnail selector */}
-          <div className="flex min-w-0 flex-col gap-4">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)]">
-              <video
-                className="h-full w-full object-cover"
-                src={VIDEO_SRC}
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
-            </div>
-
-            <Stagger className="flex justify-center gap-3 sm:gap-4">
-              {picks.map((p, i) => (
-                <StaggerItem key={p.handle}>
-                  <Link
-                    href={`/products/${p.handle}`}
-                    aria-label={`View ${p.title}`}
-                    onMouseEnter={() => setActive(i)}
-                    className={cn(
-                      "group relative block h-16 w-16 shrink-0 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-20 sm:w-20",
-                      active === i ? "ring-[#8a6a2e]" : "ring-transparent",
-                    )}
-                  >
-                    <Image
-                      src={p.images[0]}
-                      alt={p.title}
-                      fill
-                      sizes="5rem"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </Link>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </div>
-
-          {/* Right: heading, copy, CTA, and a small preview that swaps with the hovered thumbnail */}
-          <div className="min-w-0">
+        <div className="grid gap-8 md:grid-cols-[1fr_auto_1.15fr] md:items-stretch md:gap-10 md:h-[560px] lg:h-[640px] lg:gap-14">
+          {/* Text + small preview, filling the space below the CTA */}
+          <div className="flex flex-col justify-center md:justify-start md:pt-2">
             <Reveal>
               <p className="eyebrow text-ash-3">The Edit</p>
             </Reveal>
@@ -91,7 +53,7 @@ export default function EffortlessElegance() {
             </Reveal>
 
             <Reveal delay={0.4}>
-              <div className="relative mt-6 aspect-[21/9] w-full max-w-md overflow-hidden rounded-[var(--radius-md)] bg-bone-3">
+              <div className="relative mt-8 aspect-[16/9] w-full max-w-sm overflow-hidden rounded-[var(--radius-md)] bg-bone-3">
                 <AnimatePresence mode="wait">
                   {shown && (
                     <motion.div
@@ -106,7 +68,7 @@ export default function EffortlessElegance() {
                         src={shown.images[0]}
                         alt={shown.title}
                         fill
-                        sizes="(max-width: 768px) 90vw, 28rem"
+                        sizes="(max-width: 768px) 90vw, 24rem"
                         className="object-cover"
                       />
                     </motion.div>
@@ -114,6 +76,43 @@ export default function EffortlessElegance() {
                 </AnimatePresence>
               </div>
             </Reveal>
+          </div>
+
+          {/* Thumbnail stack — real picks from the edit, hover to preview */}
+          <Stagger className="flex flex-row justify-center gap-4 md:h-full md:flex-col md:justify-between md:gap-5">
+            {picks.map((p, i) => (
+              <StaggerItem key={p.handle} className="md:flex-1">
+                <Link
+                  href={`/products/${p.handle}`}
+                  aria-label={`View ${p.title}`}
+                  onMouseEnter={() => setActive(i)}
+                  className={cn(
+                    "group relative block h-24 w-24 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-28 sm:w-28 md:h-full md:w-32 lg:w-36",
+                    active === i ? "ring-[#8a6a2e]" : "ring-transparent",
+                  )}
+                >
+                  <Image
+                    src={p.images[0]}
+                    alt={p.title}
+                    fill
+                    sizes="6rem"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
+
+          {/* Video */}
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-lg)] md:aspect-auto md:h-full">
+            <video
+              className="h-full w-full object-cover"
+              src={VIDEO_SRC}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
           </div>
         </div>
       </div>
