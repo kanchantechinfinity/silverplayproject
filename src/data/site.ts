@@ -422,6 +422,45 @@ export const founder = {
   image: "https://silverplay.in/cdn/shop/files/Dalljiet_Kaur_in_Silver.jpg?v=1781853368",
 };
 
+/** Real copy + images from silverplay.in/pages/about ("Our Story"). */
+export const aboutPage = {
+  hero: {
+    eyebrow: "Our Story",
+    heading: "The Soul of Indian Silver",
+    image:
+      "https://silverplay.in/cdn/shop/files/Screenshot_2026-05-20_at_1.11.35_PM.png?v=1779293036",
+    badges: [
+      { glyph: "✿", label: "925", sub: "Sterling Silver" },
+      { glyph: "◈", label: "Handcrafted", sub: "By Skilled Karigars" },
+      { glyph: "❖", label: "Stone-Led", sub: "Jewellery" },
+      { glyph: "✦", label: "Gift-Ready", sub: "Premium Packaging" },
+    ],
+  },
+  craft: {
+    eyebrow: "The Hands Behind The Craft",
+    heading: "The Karigars of India",
+    image:
+      "https://silverplay.in/cdn/shop/files/ChatGPT_Image_Jun_20_2026_06_07_08_PM.png?v=1781968003",
+    paragraphs: [
+      "Every Silver Play piece is handcrafted in 925 sterling silver — the international standard for fine silver jewellery. We work with natural, lightly finished stones wherever possible, because we believe the earth's imperfections are part of the beauty, not a flaw to be hidden. No two stones are identical. That means no two Silver Play pieces are ever truly alike. What you receive is genuinely one of a kind.",
+      "Our collection spans a wide range of natural gemstones — each chosen for its visual character and the story it carries. We work with Jaspers from across the world, Opals in colours that shift with the light, grounding stones like Pyrite and Tiger Eye, and rare finds like Scolecite and Purpurite. Each stone is hand-selected. Each has its own mood.",
+    ],
+  },
+  values: {
+    eyebrow: "What We Stand For",
+    heading: "Slow Making, Honest Materials",
+    paragraph:
+      "We are an independent Indian jewellery brand. We believe in slow making over mass production, in natural over synthetic, in stories over trends. We take pride in being transparent about what goes into each piece — the metal grade, the stone type, the craft involved. When you wear a Silver Play piece, you are wearing a moment of craft: a connection between the person who made it, the stone that was chosen, and you. We ship from India to jewellery lovers around the world, and we welcome questions, custom conversations, and customers who want to know what they are wearing and why it matters. Thank you for being here.",
+  },
+  closing: {
+    heading: "Wear Your Story",
+    paragraph:
+      "Silver Play promises jewellery that is elegant, expressive and thoughtfully made. We create 925 silver pieces that feel premium, meaningful and easy to wear — jewellery that adds beauty to everyday moments, grace to celebrations and emotion to gifting. Because silver is not just something you wear. It is something you feel.",
+    ctaLabel: "Explore The Collection",
+    ctaHref: "/shop",
+  },
+};
+
 /**
  * Real Silver Play statements — the brand descriptor, the founder's own
  * Rakhi-box note, and lines from published Journal posts and policy pages.
@@ -468,15 +507,40 @@ export const brandVoices = [
   },
 ] as const;
 
+/** Real published Journal posts — titles, dates, excerpts, categories and
+ *  full body copy are all taken from the live silverplay.in/blogs/journal
+ *  articles (trimmed for length in a couple of the longer ones). */
 export const journal = [
   {
     slug: "raksha-bandhan-silver-gifts-2026",
-    title: "Raksha Bandhan Silver Gifts 2026",
+    title: "Raksha Bandhan Silver Gifts 2026: Rakhis, Pendants & More",
     excerpt:
       "Celebrate Raksha Bandhan 2026 with handcrafted 92.5% sterling silver rakhis, Kavach pendants and 5% off the Rakhi earring edit",
     date: "2026-08-10",
+    readTime: "11 min read",
+    category: "925 Silver",
     image:
       "https://silverplay.in/cdn/shop/articles/sterling-silver-shiva-trishul-rakhi-closeup.png",
+    body: [
+      {
+        text: "A rakhi thread lasts a week, maybe two if you're careful with it. Silver lasts a lot longer. That's really the idea behind this guide: everything worth knowing about silver before you buy a gift this Raksha Bandhan, from what \"925\" actually means to which pendant suits a brother, a sister, or yourself.",
+      },
+      {
+        text: "Raksha Bandhan falls on Friday, 28 August 2026. This guide covers three things: why silver as a metal is worth choosing over almost anything else, how to shop silver pendants (including the spiritual Kavach pendants people search for around this festival), and the details of Silver Play's Rakhi edit, including the 5% off currently running on Rakhi collection earrings.",
+      },
+      {
+        heading: "What Is Silver Jewellery, Really?",
+        text: "Sterling silver jewellery is silver alloyed with about 7.5% other metal, usually copper, to make it strong enough to actually wear. Pure silver on its own is too soft to hold its shape in a ring or an earring hook. That alloy is what the \"925\" stamp means: 925 parts silver out of 1,000, or 92.5% pure silver by weight — the same standard jewellers use worldwide. At Silver Play, every piece, from a ₹1,250 rakhi charm to a statement Kavach pendant, is handcrafted in 92.5% pure sterling silver and carries a BIS Hallmark certification.",
+      },
+      {
+        heading: "Why Choose Silver Over Other Metals?",
+        text: "It's genuinely affordable without feeling cheap — silver costs a fraction of gold per gram, so a Raksha Bandhan budget that buys one modest gold charm can buy a full, considered gift in silver. It's the metal of the Moon: in Indian tradition, silver is associated with Chandra, considered cooling, calming and purifying, which is part of why it's the metal of choice for spiritual and protective jewellery like Kavach pendants. It's kind to skin — a low-reactivity metal most people wear comfortably every day. And it tarnishes, and that's fine: it's a natural reaction with sulphur compounds in the air, not a sign of poor quality, easily reversed with a soft polishing cloth.",
+      },
+      {
+        heading: "Silver vs. Gold vs. Artificial Jewellery",
+        text: "None of this is meant to talk anyone out of gold — it has its own place, especially for milestone gifts. But for a yearly festival like Raksha Bandhan, where the gesture matters more than the carat weight, silver tends to be the more honest choice: real metal, real craftsmanship, at a price that doesn't force you to buy something too small to feel generous.",
+      },
+    ],
   },
   {
     slug: "how-to-wear-meaning",
@@ -484,8 +548,30 @@ export const journal = [
     excerpt:
       "Jewellery can be more than beautiful — it can be intentional. A simple guide to choosing a stone for the chapter you are in.",
     date: "2026-06-13",
+    readTime: "10 min read",
+    category: "Gifting",
     image:
       "https://silverplay.in/cdn/shop/articles/ChatGPT_Image_Jun_20_2026_10_39_39_AM_2.png",
+    body: [
+      {
+        text: "There is a quiet moment, most mornings, when you reach for a piece of jewellery without quite knowing why. A particular ring. A pendant you keep coming back to. It is rarely about how it looks. More often, it is about how you want to feel — steadier, softer, braver, lighter. To wear jewellery this way is to wear meaning, and it is one of the oldest human habits we have.",
+      },
+      {
+        text: "At Silver Play, we hold this tradition gently. We do not promise that a stone will heal a body or change a fate. What we believe is simpler and, perhaps, truer: that choosing a piece with intention changes how you move through your day. It becomes a small daily ritual, a reminder set against your skin.",
+      },
+      {
+        heading: "When You Need Love & Healing",
+        text: "In the language of gemstone meanings, this is the territory of rose quartz, the gentle pink stone long associated with compassion and unconditional love, and of moonstone and pink tourmaline, which tradition links to emotional comfort and quiet repair. Our Prem Moh collection gathers these soft-hearted stones into pieces meant to be worn through tender seasons — not a cure, but a comfort.",
+      },
+      {
+        heading: "When You Need Calm & Clarity",
+        text: "The stones tied to calm in tradition are some of the most beloved in the world: amethyst, with its violet stillness; aquamarine, cool as clear water; blue chalcedony and labradorite, long associated with a settled, spacious mind. Our Mann Shanti collection is built entirely around this need for stillness and spiritual balance — the name itself means peace of mind.",
+      },
+      {
+        heading: "When You Need Strength & Protection",
+        text: "There are days that feel like walking into wind — a difficult conversation ahead, a problem that will not loosen, a stretch of life where you simply need to feel shielded. This is where our Kavach collections live: pieces designed to be worn like a quiet armour, a reminder that you are held.",
+      },
+    ],
   },
   {
     slug: "inside-the-jaipur-atelier",
@@ -493,8 +579,80 @@ export const journal = [
     excerpt:
       "A single pendant can pass through five pairs of hands before it reaches yours. We spent a day in the workshop where heritage is made.",
     date: "2026-06-13",
+    readTime: "11 min read",
+    category: "Behind-the-Scenes",
     image:
       "https://silverplay.in/cdn/shop/articles/ChatGPT_Image_Jun_24_2026_11_11_09_AM.png",
+    body: [
+      {
+        text: "Before the city is fully awake, before the first auto-rickshaw clears its throat on the lane outside, the atelier has already begun to hum. In Jaipur, the day for a silversmith does not start with a bell or a screen. It starts with a quiet ritual: the unlocking of a worn wooden cabinet, the laying out of tools that have outlived the men who first held them, and the slow warming of a small furnace whose blue flame will, by mid-morning, coax solid silver into a glowing, obedient liquid.",
+      },
+      {
+        text: "This is where our jewellery is born. Not in a factory, not on a conveyor belt, but in a modest room thick with the smell of borax and beeswax, where the loudest sound is the patient tapping of a hammer and the brightest light is the one bouncing off a freshly burnished bangle.",
+      },
+      {
+        heading: "First Light: The City That Taught Silver to Sing",
+        text: "Jaipur has been a jeweller's city for centuries. The skill did not arrive overnight; it was layered down, generation upon generation, like the fine sediment of a riverbed. Today the Jaipur jewellery artisans who work with us are the inheritors of that long apprenticeship — men and women who learned not from manuals but from watching a father's wrist, a grandfather's thumb.",
+      },
+      {
+        heading: "The Karigar: A Word That Carries a World",
+        text: "The Hindi word karigar translates loosely as \"craftsman\" or \"artisan,\" but the translation flattens something important. A karigar is not simply someone who performs a task. He is a custodian of a method — a person who has internalised the temperament of metal so completely that his hands seem to think for him. Ask a master karigar how he knows when the silver is hot enough to pour, and he will not quote a temperature. He will tell you it is in the colour, the shimmer, the way the molten metal moves.",
+      },
+    ],
+  },
+  {
+    slug: "a-map-of-stones",
+    title: "A Map of Stones: Where Your Jewellery Was Born",
+    excerpt:
+      "Rose Quartz from Madagascar. Tiger Eye from South Africa. Amethyst from Uruguay. Every stone we set has travelled oceans to reach your wrist.",
+    date: "2026-06-13",
+    readTime: "10 min read",
+    category: "Origins",
+    image:
+      "https://silverplay.in/cdn/shop/articles/ChatGPT_Image_Jun_20_2026_10_39_42_AM_3.png",
+    body: [
+      {
+        text: "Every stone we set has a birthplace. Long before it rested against your collarbone or caught the light at your wrist, it was growing in the dark — pressed into being by heat, water and time inside the body of the earth. To wear a gemstone is to carry a small fragment of geography with you: a piece of a Brazilian hillside, a Sri Lankan riverbed, a Rajasthani quarry warmed by centuries of sun.",
+      },
+      {
+        text: "At Silver Play, we set natural gemstone jewellery in 925 BIS-hallmarked sterling silver, each piece handcrafted in Jaipur, so that the stone's journey continues quietly in yours.",
+      },
+      {
+        heading: "Rose Quartz: Born in Granite, Worn for Love",
+        text: "Rose quartz forms deep within pegmatites — coarse-grained pockets of granite where minerals cool slowly enough to grow large and unhurried. Its blush comes from faint traces of titanium, iron or manganese threaded through the crystal. The finest material has long been associated with Brazil, particularly Minas Gerais, alongside deposits in Madagascar, South Africa and parts of India. This is the spirit behind our Prem Moh collection — gulabi noor, the pink light of love and softness.",
+      },
+      {
+        heading: "Tiger Eye: Banded Light and the Courage to Stand Firm",
+        text: "Few stones are as quietly dramatic as tiger eye. It belongs to the quartz family and earns its shifting golden bands through a phenomenon called chatoyancy — light rolling across fibrous structures within the stone, so that a band of brightness seems to slide as you tilt it, like the eye of a great cat catching the sun. Much of the world's finest tiger eye comes from South Africa, with deposits also found in Western Australia and India.",
+      },
+    ],
+  },
+  {
+    slug: "the-quiet-power-of-925-silver",
+    title: "The Quiet Power of 925 Silver: Why Our Grandmothers Were Right",
+    excerpt:
+      "Before silver was fashion, it was medicine, memory and protection. A short history of the metal that has wrapped Indian wrists for a thousand years.",
+    date: "2026-06-13",
+    readTime: "12 min read",
+    category: "Care",
+    image:
+      "https://silverplay.in/cdn/shop/articles/ChatGPT_Image_Jun_20_2026_10_39_45_AM_4.png",
+    body: [
+      {
+        text: "There is a particular drawer in almost every Indian home. You know the one. It opens with a small creak, and inside, wrapped in soft cloth or tucked into a velvet pouch, lie pieces that have outlived weddings, festivals, and the people who first wore them. These were not bought to be replaced. They were bought to be kept.",
+      },
+      {
+        text: "Our grandmothers understood something that the fast-fashion era nearly made us forget: that real silver is not a trend but an inheritance. At Silver Play, every piece is handcrafted in Jaipur from genuine 925 sterling silver, hallmarked and often set with natural gemstones. This is our small ode to the metal our grandmothers trusted.",
+      },
+      {
+        heading: "What 925 Sterling Silver Actually Means",
+        text: "Pure silver, in its raw form, is too soft for everyday life. So for centuries, silversmiths have blended silver with a small measure of another metal, usually copper, to give it strength without sacrificing its character. The number 925 tells you the recipe precisely: 92.5% pure silver, with the remaining 7.5% made up of copper or other metals that lend durability — the international standard for fine silver jewellery.",
+      },
+      {
+        heading: "The BIS Hallmark: A Quiet Stamp of Trust",
+        text: "In India, the surest way to know your silver is genuine is the hallmark. BIS hallmarked silver jewellery carries the mark of the Bureau of Indian Standards, the national body that certifies purity — a quiet promise stamped into every piece, so you always know exactly what you're wearing.",
+      },
+    ],
   },
 ];
 
