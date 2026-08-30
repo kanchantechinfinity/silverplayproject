@@ -68,6 +68,10 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     background: var(--sp-bone);
+    scrollbar-width: none; /* Firefox */
+  }
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
   }
 
   body {
@@ -77,6 +81,16 @@
     font-size: 1.0625rem;
     line-height: 1.65;
     overflow-x: hidden;
+  }
+
+  /* Scroll still works everywhere (wheel/touch/keyboard) — this only hides
+     the visible track/thumb, on the page and on any internal scroll panel
+     (filter sidebar, mobile drawers, quick-view, etc). */
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
   }
 
   h1, h2, h3, h4 {

@@ -18,11 +18,10 @@ import FAQ from "@/components/sections/FAQ";
 export default function Home() {
   return (
     <>
+      <AssuranceBar />
       <Header />
       <main className="flex-1">
         <CinematicHero />
-
-        <AssuranceBar />
 
         <GenZEdit />
 

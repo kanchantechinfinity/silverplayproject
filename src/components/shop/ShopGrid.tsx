@@ -84,7 +84,16 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
       {/* Sidebar (desktop) — sticks under the header while the grid scrolls,
           and scrolls internally if the filter list runs taller than the
           viewport. */}
-      <aside className="hidden md:block md:sticky md:top-28 md:max-h-[calc(100vh-8rem)] md:self-start md:overflow-y-auto md:pr-2">
+      <aside
+        className="hidden md:block md:pr-2"
+        style={{
+          position: "sticky",
+          top: "7rem",
+          maxHeight: "calc(100vh - 8rem)",
+          overflowY: "auto",
+          alignSelf: "start",
+        }}
+      >
         <FilterPanel
           vibeCollections={vibeCollections}
           types={types}
