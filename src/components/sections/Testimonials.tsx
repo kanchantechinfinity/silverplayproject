@@ -18,11 +18,11 @@ function sagFactor(index: number) {
 
 /**
  * A clothesline of real Silver Play statements, each tied to a sagging rope
- * and swaying gently. Hovering or clicking a card detaches it — not a small
- * in-place scale like a typical gallery hover, but a full pop: the same card
- * (shared via layoutId, so Framer animates the actual handoff) leaves the
- * rope and becomes a centered card. Click it again — or the backdrop — and
- * it eases straight back onto its own spot on the line.
+ * and swaying gently. Clicking a card detaches it — not a small in-place
+ * scale like a typical gallery hover, but a full pop: the same card (shared
+ * via layoutId, so Framer animates the actual handoff) leaves the rope and
+ * becomes a centered card. Click it again — or the backdrop — and it eases
+ * straight back onto its own spot on the line.
  */
 export default function Testimonials() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -154,7 +154,6 @@ function HangingCard({
           type="button"
           layoutId={`voice-card-${voice.id}`}
           onClick={onOpen}
-          onMouseEnter={onOpen}
           style={{ opacity: isOpen ? 0 : 1 }}
           className="block w-[13rem] cursor-pointer text-left sm:w-[15.5rem]"
           aria-label={`Read the full note: ${voice.attribution}`}

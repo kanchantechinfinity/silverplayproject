@@ -22,7 +22,7 @@ export default function AboutPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative flex min-h-[80vh] items-end overflow-hidden bg-ink pt-32">
+        <section className="relative flex min-h-[88vh] items-end overflow-hidden bg-ink pt-32">
           <div className="absolute inset-0">
             <Image
               src={hero.image}
@@ -30,9 +30,9 @@ export default function AboutPage() {
               fill
               priority
               sizes="100vw"
-              className="object-cover opacity-70"
+              className="object-cover object-[50%_18%] opacity-80"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-ink/10" />
           </div>
 
           <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 pb-16 md:px-10 md:pb-24">
@@ -44,16 +44,18 @@ export default function AboutPage() {
               className="mt-4 max-w-3xl text-[clamp(2.6rem,7vw,5.2rem)] leading-[1.02] text-bone"
             />
 
-            <div className="mt-12 grid grid-cols-2 gap-6 border-t border-bone/15 pt-8 sm:grid-cols-4">
+            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {hero.badges.map((b, i) => (
                 <Reveal key={b.label} delay={0.1 * i}>
-                  <p className="font-display text-[1.3rem] text-[#d8b466]" aria-hidden>
-                    {b.glyph}
-                  </p>
-                  <p className="mt-2 font-display text-[0.8rem] uppercase tracking-[0.1em] text-bone">
-                    {b.label}
-                  </p>
-                  <p className="mt-0.5 font-body text-[0.78rem] text-bone/55">{b.sub}</p>
+                  <div className="h-full rounded-[var(--radius-md)] border border-bone/20 bg-ink/55 px-4 py-5 text-center backdrop-blur-md sm:text-left">
+                    <p className="font-display text-[1.3rem] text-[#d8b466]" aria-hidden>
+                      {b.glyph}
+                    </p>
+                    <p className="mt-2 font-display text-[0.8rem] uppercase tracking-[0.1em] text-bone">
+                      {b.label}
+                    </p>
+                    <p className="mt-0.5 font-body text-[0.78rem] text-bone/70">{b.sub}</p>
+                  </div>
                 </Reveal>
               ))}
             </div>
