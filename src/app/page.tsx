@@ -4,6 +4,7 @@ import AssuranceBar from "@/components/sections/AssuranceBar";
 import CinematicHero from "@/components/sections/CinematicHero";
 import GenZEdit from "@/components/sections/GenZEdit";
 import RoyalSimplicity from "@/components/sections/RoyalSimplicity";
+import BestSellers from "@/components/sections/BestSellers";
 import ArchiveTreasure from "@/components/sections/ArchiveTreasure";
 import ShopByOccasion from "@/components/sections/ShopByOccasion";
 import CoolGirlSilver from "@/components/sections/CoolGirlSilver";
@@ -26,6 +27,8 @@ export default function Home() {
         <GenZEdit />
 
         <RoyalSimplicity />
+
+        <BestSellers />
 
         <ArchiveTreasure />
 
