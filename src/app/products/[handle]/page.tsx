@@ -8,10 +8,20 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductBuyBox from "@/components/product/ProductBuyBox";
 import ProductInfoAccordion from "@/components/product/ProductInfoAccordion";
-import { getProduct, products, collectionProducts, chipFor } from "@/lib/catalog";
+import { getProduct, getCollection, products, collections, collectionProducts, chipFor } from "@/lib/catalog";
+import { dummyProductByHandle, dummyCollectionHandle, makeDummyProducts } from "@/lib/dummy";
 
 export function generateStaticParams() {
-  return products.map((p) => ({ handle: p.handle }));
+  const real = products.map((p) => ({ handle: p.handle }));
+
+  // Same real collections that fall back to sample listings on the PLP —
+  // pre-render their sample product pages too, so "View Full Details" from
+  // a sample tile doesn't 404.
+  const dummy = collections
+    .filter((c) => c.count > 0 && collectionProducts(c.handle).length === 0)
+    .flatMap((c) => makeDummyProducts(c.handle, c.title).map((p) => ({ handle: p.handle })));
+
+  return [...real, ...dummy];
 }
 
 export async function generateMetadata({
@@ -20,12 +30,28 @@ export async function generateMetadata({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const product = getProduct(handle);
-  if (!product) return {};
+  const resolved = resolveProduct(handle);
+  if (!resolved) return {};
+  const { product } = resolved;
   return {
     title: `${product.title} — Silver Play`,
     description: product.description.slice(0, 155),
   };
+}
+
+/** Real product first; falls back to a deterministic dummy piece for
+ *  "sample-<collection>-<n>" handles (see collections/[handle]/page.tsx). */
+function resolveProduct(handle: string) {
+  const real = getProduct(handle);
+  if (real) return { product: real, isDummy: false, collectionHandle: null as string | null };
+
+  const collectionHandle = dummyCollectionHandle(handle);
+  if (!collectionHandle) return null;
+  const collection = getCollection(collectionHandle);
+  if (!collection) return null;
+  const dummy = dummyProductByHandle(handle, collection.title);
+  if (!dummy) return null;
+  return { product: dummy, isDummy: true, collectionHandle };
 }
 
 export default async function ProductPage({
@@ -34,12 +60,15 @@ export default async function ProductPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const product = getProduct(handle);
-  if (!product) notFound();
+  const resolved = resolveProduct(handle);
+  if (!resolved) notFound();
+  const { product, isDummy, collectionHandle } = resolved;
 
-  const related = collectionProducts(product.type.toLowerCase(), 5).filter(
-    (p) => p.handle !== product.handle,
-  );
+  const related = isDummy
+    ? makeDummyProducts(collectionHandle!, getCollection(collectionHandle!)!.title).filter(
+        (p) => p.handle !== product.handle,
+      )
+    : collectionProducts(product.type.toLowerCase(), 5).filter((p) => p.handle !== product.handle);
 
   return (
     <>
@@ -51,12 +80,21 @@ export default async function ProductPage({
               Shop
             </Link>
             <span className="mx-2">/</span>
-            <Link href={`/collections/${product.type.toLowerCase()}`} className="hover:text-ink">
+            <Link
+              href={`/collections/${isDummy ? collectionHandle : product.type.toLowerCase()}`}
+              className="hover:text-ink"
+            >
               {product.type}
             </Link>
             <span className="mx-2">/</span>
             <span className="text-ink/75">{product.title}</span>
           </nav>
+
+          {isDummy && (
+            <p className="mt-4 rounded-[var(--radius-sm)] border border-[#8a6a2e]/30 bg-[#f8f0da] px-5 py-3 text-center font-body text-[0.85rem] text-[#6b5326]">
+              Sample product — real pieces for this collection aren&apos;t mapped in our data yet.
+            </p>
+          )}
 
           <div className="mt-6 grid gap-10 pb-24 md:grid-cols-2 md:gap-14 md:pb-32">
             <Reveal>
