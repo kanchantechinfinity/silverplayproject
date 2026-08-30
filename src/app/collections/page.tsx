@@ -30,7 +30,7 @@ export default function CollectionsIndexPage() {
         />
 
         <div className="mx-auto max-w-[1500px] px-5 py-16 md:px-10 md:py-24">
-          <Stagger className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <Stagger className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4" amount={0}>
             {list.map((c) => {
               const image = collectionImage(c.handle);
               return (

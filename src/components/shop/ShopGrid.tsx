@@ -166,7 +166,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
             <p className="mt-2 font-body text-[0.9rem] text-ink/45">Try widening your price range or clearing a filter.</p>
           </div>
         ) : (
-          <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4" amount={0}>
             {filtered.map((p, i) => (
               <StaggerItem key={p.handle}>
                 <ProductCard product={p} priority={i < 4} />

@@ -44,7 +44,7 @@ export default function JournalArchiveGrid() {
         ))}
       </div>
 
-      <Stagger className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3" key={active}>
+      <Stagger className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3" key={active} amount={0}>
         {posts.map((post) => (
           <StaggerItem key={post.slug}>
             <Link href={`/journal/${post.slug}`} className="group block">
