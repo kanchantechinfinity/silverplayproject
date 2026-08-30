@@ -7,7 +7,7 @@ import RoyalSimplicity from "@/components/sections/RoyalSimplicity";
 import ArchiveTreasure from "@/components/sections/ArchiveTreasure";
 import ShopByOccasion from "@/components/sections/ShopByOccasion";
 import CoolGirlSilver from "@/components/sections/CoolGirlSilver";
-import SpotlightGlam from "@/components/sections/SpotlightGlam";
+import Founder from "@/components/sections/Founder";
 import InstagramSlider from "@/components/sections/InstagramSlider";
 import EffortlessElegance from "@/components/sections/EffortlessElegance";
 import JournalShowcase from "@/components/sections/JournalShowcase";
@@ -37,7 +37,7 @@ export default function Home() {
 
         <InstagramSlider />
 
-        <SpotlightGlam />
+        <Founder />
 
         <EffortlessElegance />
 

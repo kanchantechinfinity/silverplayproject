@@ -23,95 +23,97 @@ export default function EffortlessElegance() {
   const shown = picks[active] ?? picks[0];
 
   return (
-    <section className="bg-bone-2 py-20 md:py-28">
+    <section className="overflow-hidden bg-bone-2 py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
-        {/* Heading + copy, up top */}
-        <div className="max-w-xl">
-          <Reveal>
-            <p className="eyebrow text-ash-3">The Edit</p>
-          </Reveal>
-          <SplitText
-            text={edit.title}
-            className="mt-4 text-[clamp(2.1rem,4.6vw,3.4rem)] leading-[1.05] text-ink"
-          />
-          <Reveal delay={0.15}>
-            <p className="mt-5 max-w-sm font-body text-[1rem] leading-relaxed text-ink/60">
-              {edit.copy}
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <Link
-              href={`/collections/${edit.handle}`}
-              className="group mt-7 inline-flex items-center gap-2 font-display text-[0.64rem] uppercase tracking-[0.22em] text-ink/70 transition-colors duration-500 hover:text-ink"
-            >
-              Shop The Edit
-              <span className="transition-transform duration-500 group-hover:translate-x-1">
-                &rarr;
-              </span>
-            </Link>
-          </Reveal>
-        </div>
+        <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
+          {/* Left: video + thumbnail selector */}
+          <div className="flex min-w-0 flex-col gap-4">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-lg)]">
+              <video
+                className="h-full w-full object-cover"
+                src={VIDEO_SRC}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            </div>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-[1.2fr_auto_1.15fr] md:items-stretch md:gap-10 md:h-[420px] lg:h-[460px] lg:gap-14">
-          {/* Live preview — swaps to whichever pick is hovered below */}
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-lg)] bg-bone-3 md:aspect-auto md:h-full">
-            <AnimatePresence mode="wait">
-              {shown && (
-                <motion.div
-                  key={shown.handle}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={shown.images[0]}
-                    alt={shown.title}
-                    fill
-                    sizes="(max-width: 768px) 90vw, 40vw"
-                    className="object-cover"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Stagger className="flex justify-center gap-3 sm:gap-4">
+              {picks.map((p, i) => (
+                <StaggerItem key={p.handle}>
+                  <Link
+                    href={`/products/${p.handle}`}
+                    aria-label={`View ${p.title}`}
+                    onMouseEnter={() => setActive(i)}
+                    className={cn(
+                      "group relative block h-16 w-16 shrink-0 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-20 sm:w-20",
+                      active === i ? "ring-[#8a6a2e]" : "ring-transparent",
+                    )}
+                  >
+                    <Image
+                      src={p.images[0]}
+                      alt={p.title}
+                      fill
+                      sizes="5rem"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </Link>
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
 
-          {/* Thumbnail stack — hover to preview, click to view the piece */}
-          <Stagger className="flex flex-row justify-center gap-4 md:h-full md:flex-col md:justify-between md:gap-5">
-            {picks.map((p, i) => (
-              <StaggerItem key={p.handle} className="md:flex-1">
-                <Link
-                  href={`/products/${p.handle}`}
-                  aria-label={`View ${p.title}`}
-                  onMouseEnter={() => setActive(i)}
-                  className={cn(
-                    "group relative block h-24 w-24 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-28 sm:w-28 md:h-full md:w-32 lg:w-36",
-                    active === i ? "ring-[#8a6a2e]" : "ring-transparent",
-                  )}
-                >
-                  <Image
-                    src={p.images[0]}
-                    alt={p.title}
-                    fill
-                    sizes="6rem"
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </Link>
-              </StaggerItem>
-            ))}
-          </Stagger>
-
-          {/* Video */}
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-lg)] md:aspect-auto md:h-full">
-            <video
-              className="h-full w-full object-cover"
-              src={VIDEO_SRC}
-              autoPlay
-              muted
-              loop
-              playsInline
+          {/* Right: heading, copy, CTA, and a small preview that swaps with the hovered thumbnail */}
+          <div className="min-w-0">
+            <Reveal>
+              <p className="eyebrow text-ash-3">The Edit</p>
+            </Reveal>
+            <SplitText
+              text={edit.title}
+              className="mt-4 text-[clamp(2.1rem,4.6vw,3.4rem)] leading-[1.05] text-ink"
             />
+            <Reveal delay={0.15}>
+              <p className="mt-5 max-w-sm font-body text-[1rem] leading-relaxed text-ink/60">
+                {edit.copy}
+              </p>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <Link
+                href={`/collections/${edit.handle}`}
+                className="group mt-7 inline-flex items-center gap-2 font-display text-[0.64rem] uppercase tracking-[0.22em] text-ink/70 transition-colors duration-500 hover:text-ink"
+              >
+                Shop The Edit
+                <span className="transition-transform duration-500 group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </Reveal>
+
+            <Reveal delay={0.4}>
+              <div className="relative mt-6 aspect-[21/9] w-full max-w-md overflow-hidden rounded-[var(--radius-md)] bg-bone-3">
+                <AnimatePresence mode="wait">
+                  {shown && (
+                    <motion.div
+                      key={shown.handle}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={shown.images[0]}
+                        alt={shown.title}
+                        fill
+                        sizes="(max-width: 768px) 90vw, 28rem"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
