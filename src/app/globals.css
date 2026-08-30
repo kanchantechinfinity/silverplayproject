@@ -93,6 +93,27 @@
 }
 
 @layer utilities {
+  /* Tailwind v4's production build silently drops the *bare* (100%-opacity)
+     text/border utilities for these tokens — the `/NN` opacity variants
+     compile fine, `bg-*` compiles fine, but plain `text-ink`, `text-bone`,
+     etc. vanish from the prod CSS (confirmed: present in `next dev`, absent
+     from `next build` output, both locally and on Vercel — not an
+     environment difference). Declaring them explicitly guarantees they
+     exist regardless of what the generator decides to keep. */
+  .text-ink { color: var(--sp-ink); }
+  .text-ink-2 { color: var(--sp-ink-2); }
+  .text-ink-3 { color: var(--sp-ink-3); }
+  .text-ink-4 { color: var(--sp-ink-4); }
+  .text-bone { color: var(--sp-bone); }
+  .text-bone-2 { color: var(--sp-bone-2); }
+  .text-bone-3 { color: var(--sp-bone-3); }
+  .text-ash { color: var(--sp-ash); }
+  .text-ash-2 { color: var(--sp-ash-2); }
+  .text-ash-3 { color: var(--sp-ash-3); }
+  .border-ink { border-color: var(--sp-ink); }
+  .border-bone { border-color: var(--sp-bone); }
+  .border-ash { border-color: var(--sp-ash); }
+
   .eyebrow {
     font-family: var(--font-display);
     font-size: 0.6875rem;

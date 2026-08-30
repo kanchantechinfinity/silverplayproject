@@ -10,7 +10,7 @@ export default function AssuranceBar() {
         items={assurances.map((a) => (
           <span
             key={a}
-            className="font-display text-[0.63rem] uppercase tracking-[0.3em] text-ink/55"
+            className="font-display text-[0.63rem] uppercase tracking-[0.3em] text-ink/80"
           >
             {a}
           </span>

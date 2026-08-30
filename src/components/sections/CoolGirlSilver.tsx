@@ -7,8 +7,13 @@ import { motion } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { edits } from "@/data/site";
 import { chipFor, collectionProducts } from "@/lib/catalog";
+
+const KAVACH = {
+  handle: "kavach",
+  title: "Kavach",
+  copy: "Earthy stones for strength, grounding, courage and quiet power — Tiger Eye, Blood Stone, Black Banded Agate and more, set in 925 sterling silver as a protective piece worn close.",
+};
 
 /**
  * Compact category-strip band, matching the client's "Explore More" reference:
@@ -18,7 +23,7 @@ import { chipFor, collectionProducts } from "@/lib/catalog";
  * simply stops wherever it's released rather than springing back or coasting.
  */
 export default function CoolGirlSilver() {
-  const edit = edits.find((e) => e.handle === "quiet-luxury-2")!;
+  const edit = KAVACH;
   const picks = collectionProducts(edit.handle, 5);
 
   const trackRef = useRef<HTMLDivElement>(null);

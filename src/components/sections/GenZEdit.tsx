@@ -13,7 +13,7 @@ function newestProducts(limit: number) {
 }
 
 export default function GenZEdit() {
-  const items = newestProducts(4);
+  const items = newestProducts(8);
 
   return (
     <section className="bg-bone-3 py-24 md:py-32">

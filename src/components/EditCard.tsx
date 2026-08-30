@@ -118,7 +118,7 @@ export default function EditCard({
 
         {/* Name + price */}
         <div className="mt-auto px-2 pb-2 pt-5 text-center">
-          <h3 className="font-body text-[0.98rem] leading-snug text-[#6b5326] transition-colors duration-500 group-hover:text-[#3a2b1c]">
+          <h3 className="truncate font-body text-[0.98rem] leading-snug text-[#6b5326] transition-colors duration-500 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
           <p className="mt-2.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 font-display text-[1.06rem] font-semibold tracking-[0.02em] text-[#3a2b1c]">

@@ -113,7 +113,7 @@ export default function ProductCard({
         </div>
 
         <div className="pt-4">
-          <h3 className="font-body text-[1.02rem] leading-snug text-[#3a2b1c]/90 transition-colors duration-400 group-hover:text-[#3a2b1c]">
+          <h3 className="truncate font-body text-[1.02rem] leading-snug text-[#3a2b1c]/90 transition-colors duration-400 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
           <p className="mt-1.5 flex items-baseline gap-2.5 font-display text-[0.82rem] tracking-[0.06em] text-[#3a2b1c]">

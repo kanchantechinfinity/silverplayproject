@@ -27,6 +27,8 @@ function HeritageCard({ entry }: { entry: (typeof heritage)[number] }) {
       role="button"
       tabIndex={0}
       onClick={() => setFlipped((f) => !f)}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -80,9 +82,14 @@ function HeritageCard({ entry }: { entry: (typeof heritage)[number] }) {
             <p className="font-display text-[0.6rem] uppercase tracking-[0.2em] text-bone/70">
               {entry.title}
             </p>
-            <span className="mt-2 inline-flex items-center gap-2 font-display text-[0.56rem] uppercase tracking-[0.18em] text-bone underline decoration-bone/40 underline-offset-4">
+            <Link
+              href={`/collections/${entry.handle}`}
+              onClick={(e) => e.stopPropagation()}
+              className="mt-3 inline-flex items-center gap-2 rounded-full bg-bone px-4 py-2 font-display text-[0.56rem] uppercase tracking-[0.18em] text-ink transition-colors duration-300 hover:bg-[#d8b466]"
+            >
               Shop The Collection
-            </span>
+              <span aria-hidden>&rarr;</span>
+            </Link>
           </div>
         </div>
       </div>
