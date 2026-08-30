@@ -33,12 +33,21 @@ function OccasionCard({
         alt={o.title}
         fill
         sizes="(max-width: 768px) 45vw, 25vw"
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
+        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
       />
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/80 to-transparent" />
-      <p className="absolute bottom-3 left-3 font-display text-[0.62rem] uppercase tracking-[0.2em] text-bone">
-        {o.title}
-      </p>
+      <div className="absolute inset-0 bg-ink/0 transition-colors duration-500 group-hover:bg-ink/20" />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/90 via-ink/25 to-transparent transition-opacity duration-500 group-hover:opacity-100" />
+
+      <div className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-2">
+        <p className="font-display text-[0.62rem] uppercase tracking-[0.2em] text-bone">
+          {o.title}
+        </p>
+        <span className="grid h-8 w-8 shrink-0 translate-y-2 place-items-center rounded-full bg-bone text-ink opacity-0 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-hover:opacity-100">
+          &rarr;
+        </span>
+      </div>
+
+      <span className="absolute inset-0 rounded-[var(--radius-sm)] ring-1 ring-inset ring-bone/0 transition-all duration-500 group-hover:ring-bone/30" />
     </Link>
   );
 }
@@ -49,9 +58,15 @@ export default function ShopByOccasion() {
       <div className="relative mx-auto max-w-[1500px] grid gap-4 md:grid-cols-[minmax(220px,30%)_1fr] md:gap-6 lg:gap-8">
         {/* Headline */}
         <Reveal>
-          <div className="flex flex-col justify-start pt-2">
+          <div className="flex flex-col items-start justify-start pt-2">
             <p className="eyebrow text-ash-3">Dressed For The Moment</p>
-            <h2 className="mt-4 font-display text-[clamp(2.2rem,4.6vw,3.4rem)] uppercase leading-[1.05] text-bone">
+            <Link
+              href="/collections"
+              className="group mt-4 flex h-11 w-fit items-center gap-2 rounded-full border border-bone/40 px-6 font-display text-[0.6rem] uppercase tracking-[0.22em] text-bone transition-colors duration-500 hover:bg-bone hover:text-ink"
+            >
+              Shop Now
+            </Link>
+            <h2 className="mt-5 font-display text-[clamp(2.2rem,4.6vw,3.4rem)] uppercase leading-[1.05] text-bone">
               Shop By
               <br />
               Occasion
@@ -78,13 +93,6 @@ export default function ShopByOccasion() {
             </StaggerItem>
           </div>
         </Stagger>
-
-        <Link
-          href="/collections"
-          className="group flex h-14 w-fit items-center gap-2 self-end justify-self-end rounded-full border border-bone/40 bg-ink px-6 font-display text-[0.62rem] uppercase tracking-[0.22em] text-bone transition-colors duration-500 hover:bg-bone hover:text-ink md:col-start-2 md:mt-6"
-        >
-          Shop Now
-        </Link>
       </div>
     </section>
   );

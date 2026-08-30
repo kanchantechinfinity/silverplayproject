@@ -8,7 +8,7 @@ import ArchiveTreasure from "@/components/sections/ArchiveTreasure";
 import ShopByOccasion from "@/components/sections/ShopByOccasion";
 import CoolGirlSilver from "@/components/sections/CoolGirlSilver";
 import SpotlightGlam from "@/components/sections/SpotlightGlam";
-import TheTreasures from "@/components/sections/TheTreasures";
+import InstagramSlider from "@/components/sections/InstagramSlider";
 import EffortlessElegance from "@/components/sections/EffortlessElegance";
 import JournalShowcase from "@/components/sections/JournalShowcase";
 import Testimonials from "@/components/sections/Testimonials";
@@ -35,7 +35,7 @@ export default function Home() {
 
         <ShopByOccasion />
 
-        <TheTreasures />
+        <InstagramSlider />
 
         <SpotlightGlam />
 

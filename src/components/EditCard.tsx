@@ -3,14 +3,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { chipFor, type Product } from "@/lib/catalog";
+import { AnimatePresence, motion } from "framer-motion";
+import type { Product } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
 import VintageBadge from "@/components/VintageBadge";
+import {
+  placeholderRating,
+  Stars,
+  QuickViewModal,
+  WishlistButton,
+  QuickViewButton,
+} from "@/components/ProductQuickView";
 
 /**
- * Editorial card: a pale panel holding a style chip, the piece, its name and a
- * weighted price. Lifts on hover and cross-fades to the second shot.
+ * Editorial card: a pale panel holding the piece, its name and a weighted
+ * price. Lifts on hover and cross-fades to the second shot.
  */
 export default function EditCard({
   product,
@@ -22,10 +29,14 @@ export default function EditCard({
   priority?: boolean;
 }) {
   const [hover, setHover] = useState(false);
+  const [wishlisted, setWishlisted] = useState(false);
+  const [quickView, setQuickView] = useState(false);
   const alt = product.images[1];
   const sizes = "(max-width: 640px) 88vw, (max-width: 1024px) 44vw, 24vw";
+  const { rating, count } = placeholderRating(product.id);
 
   return (
+    <>
     <Link
       href={`/products/${product.handle}`}
       onMouseEnter={() => setHover(true)}
@@ -51,13 +62,6 @@ export default function EditCard({
               "radial-gradient(140% 160% at 15% -10%, #f8f0da 0%, #f2e8d0 45%, #e6d3a8 100%)",
           }}
         >
-        {/* Style chip */}
-        <div className="flex justify-center pb-3 pt-2">
-          <span className="rounded-full border border-[#8a6a2e]/35 bg-[#f8f0da]/60 px-4 py-1.5 font-display text-[0.56rem] uppercase tracking-[0.2em] text-[#6b5326] transition-colors duration-500 group-hover:border-[#8a6a2e]/60">
-            {chipFor(product)}
-          </span>
-        </div>
-
         {/* Piece */}
         <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-md)] bg-bone-2 shadow-[inset_0_0_0_1px_rgba(138,106,46,0.25)]">
           <motion.div
@@ -103,6 +107,13 @@ export default function EditCard({
               className="absolute left-3 top-3 rotate-6 group-hover:rotate-0"
             />
           )}
+
+          <WishlistButton
+            wishlisted={wishlisted}
+            onToggle={() => setWishlisted((w) => !w)}
+            className="absolute right-3 top-3"
+          />
+          <QuickViewButton onOpen={() => setQuickView(true)} className="absolute bottom-3 right-3" />
         </div>
 
         {/* Name + price */}
@@ -110,18 +121,43 @@ export default function EditCard({
           <h3 className="font-body text-[0.98rem] leading-snug text-[#6b5326] transition-colors duration-500 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
-          <p className="mt-2.5 flex items-center justify-center gap-2 font-display text-[1.06rem] font-semibold tracking-[0.02em] text-[#3a2b1c]">
+          <p className="mt-2.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 font-display text-[1.06rem] font-semibold tracking-[0.02em] text-[#3a2b1c]">
             {inr(product.price)}
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#8a6a2e]/50" />
             {product.compareAt && product.compareAt > product.price && (
               <span className="font-normal text-[0.78rem] text-[#8a6a2e] line-through">
                 {inr(product.compareAt)}
               </span>
             )}
+            <span aria-hidden className="h-1 w-1 rounded-full bg-[#8a6a2e]/40" />
+            <span className="flex items-center gap-1">
+              <Stars rating={rating} size={8} />
+              <span className="font-body text-[0.6rem] font-normal text-[#8a6a2e]">
+                ({count.toLocaleString("en-IN")})
+              </span>
+            </span>
           </p>
+
+          <span
+            role="button"
+            className="mt-4 block w-full rounded-full bg-[#241a10] py-2.5 font-display text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-[#f2e8d0] transition-colors duration-500 group-hover:bg-[#3a2b1c]"
+          >
+            Buy Now
+          </span>
         </div>
         </div>
       </motion.div>
     </Link>
+
+    <AnimatePresence>
+      {quickView && (
+        <QuickViewModal
+          product={product}
+          rating={rating}
+          count={count}
+          onClose={() => setQuickView(false)}
+        />
+      )}
+    </AnimatePresence>
+    </>
   );
 }
