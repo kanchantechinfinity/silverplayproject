@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -17,8 +17,8 @@ import { journal, heritage } from "@/data/site";
 
 const DEPTH = 640; // px the side cards recede into the screen, in 3D space
 const ANGLE = 30; // degrees each neighbouring card rotates away from facing the viewer
-const STEP_VW = 36; // horizontal distance between card slots, in vw — viewport-relative
-                     // so the arc always reaches the section's full width, on any screen
+const STEP_VW = 36; // horizontal distance between card slots, in vw on ordinary screens
+const STEP_MAX = 440; // ...but capped in px past that, or the arc blows apart on ultrawide screens
 
 type Card = {
   key: string;
@@ -74,6 +74,14 @@ export default function JournalShowcase() {
   const cards = useShowcase();
   const n = cards.length;
   const [active, setActive] = useState(0);
+  const [stepPx, setStepPx] = useState(342);
+
+  useEffect(() => {
+    const update = () => setStepPx(Math.min(window.innerWidth * (STEP_VW / 100), STEP_MAX));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
@@ -143,6 +151,7 @@ export default function JournalShowcase() {
                 index={i}
                 total={n}
                 isActive={i === active}
+                stepPx={stepPx}
               />
             ))}
           </div>
@@ -185,17 +194,19 @@ function ArcCard({
   index,
   total,
   isActive,
+  stepPx,
 }: {
   card: Card;
   position: MotionValue<number>;
   index: number;
   total: number;
   isActive: boolean;
+  stepPx: number;
 }) {
   const offset = useTransform(position, (p) => ringOffset(index, p, total));
 
   const rotateY = useTransform(offset, (o) => `${o * -ANGLE}deg`);
-  const x = useTransform(offset, (o) => `${o * STEP_VW}vw`);
+  const x = useTransform(offset, (o) => `${o * stepPx}px`);
   const z = useTransform(offset, (o) => -Math.abs(o) * DEPTH);
   const scale = useTransform(offset, (o) => 1 - Math.min(Math.abs(o), 2) * 0.16);
   const opacity = useTransform(offset, (o) =>
