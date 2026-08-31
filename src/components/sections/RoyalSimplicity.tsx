@@ -134,20 +134,29 @@ export default function RoyalSimplicity() {
           >
             {displayItems.map((p, i) => {
               const isActive = i === active + loopCount;
+              const realIndex = ((i - loopCount) % items.length + items.length) % items.length;
               return (
                 <div
                   key={`${p.handle}-${i}`}
                   ref={i === 0 ? cardRef : undefined}
-                  className="w-[18rem] shrink-0 md:w-[22rem]"
+                  className="w-[18rem] shrink-0 cursor-pointer md:w-[22rem]"
                   aria-hidden={!isActive}
+                  onClick={() => goTo(realIndex)}
                 >
                   <motion.div
                     animate={{
                       scale: isActive ? 1 : 0.84,
                       opacity: isActive ? 1 : 0.42,
                     }}
+                    whileHover={{
+                      scale: isActive ? 1 : 0.9,
+                      opacity: isActive ? 1 : 0.7,
+                    }}
                     transition={{ duration: 0.8, ease }}
-                    className="relative overflow-hidden rounded-[var(--radius-xl)] bg-ink-2"
+                    className={cn(
+                      "relative overflow-hidden rounded-[var(--radius-xl)] bg-ink-2 ring-2 transition-shadow duration-500",
+                      isActive ? "ring-[#d8b466]/70" : "ring-transparent hover:ring-[#d8b466]/45",
+                    )}
                   >
                     <div className="relative aspect-[3/4.4]">
                       <Image
