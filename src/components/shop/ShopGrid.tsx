@@ -18,6 +18,21 @@ const SORTS = [
 
 const GENERIC_HANDLES = new Set(["gift-collection", "sterling-silver-jewellery", "earrings", "pendants", "rakhi"]);
 
+// Lenis hijacks wheel events globally for the whole document, and
+// `data-lenis-prevent` alone doesn't reliably stop it from also scrolling
+// the page underneath a nested panel. Own the scroll ourselves: consume the
+// wheel while there's room left inside this panel, and only let it fall
+// through to the page (Lenis) once the panel has hit its own top/bottom.
+function handlePanelWheel(e: React.WheelEvent<HTMLElement>) {
+  const el = e.currentTarget;
+  const atTop = el.scrollTop <= 0 && e.deltaY < 0;
+  const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1 && e.deltaY > 0;
+  if (atTop || atBottom) return;
+  e.preventDefault();
+  e.stopPropagation();
+  el.scrollTop += e.deltaY;
+}
+
 function useVibeCollections() {
   return useMemo(
     () =>
@@ -87,6 +102,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
       <aside
         className="hidden md:block md:pr-2"
         data-lenis-prevent
+        onWheel={handlePanelWheel}
         style={{
           position: "sticky",
           top: "7rem",
@@ -123,6 +139,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
               transition={{ duration: 0.4, ease }}
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
+              onWheel={handlePanelWheel}
               className="h-full w-[86vw] max-w-xs overflow-y-auto bg-bone p-6"
             >
               <div className="flex items-center justify-between">
@@ -318,7 +335,11 @@ function FilterPanel({
 
       <div>
         <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink/50">Shop by Vibe</p>
-        <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1" data-lenis-prevent>
+        <div
+          className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1"
+          data-lenis-prevent
+          onWheel={handlePanelWheel}
+        >
           {vibeCollections.map((c) => (
             <label
               key={c.handle}
