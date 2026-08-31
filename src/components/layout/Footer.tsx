@@ -14,7 +14,7 @@ export default function Footer() {
               alt={brand.name}
               width={140}
               height={140}
-              className="h-14 w-auto"
+              className="h-24 w-auto"
             />
             <p className="mt-6 max-w-sm font-body text-[1.05rem] italic leading-relaxed text-bone/65">
               {brand.footerStatement}

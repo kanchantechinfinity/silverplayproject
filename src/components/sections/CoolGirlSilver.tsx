@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useMotionValueEvent } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -16,18 +16,36 @@ const KAVACH = {
 };
 
 /**
- * Compact category-strip band, matching the client's "Explore More" reference:
- * heading + tagline on the left, a row of circular picks on the right — the
- * row is drag-scrollable (mouse-drag or touch-swipe, same gesture), clamped
- * to its own container so it can never spill past the card's edge, and it
- * simply stops wherever it's released rather than springing back or coasting.
+ * Compact category-strip band: heading + tagline on the left, a row of
+ * circular picks on the right. The row is an infinite drag loop — one real
+ * set of picks rendered three times back to back; once the drag passes a
+ * full set's width in either direction, the position silently wraps by
+ * exactly one set-width, so the circles appear to repeat forever with no
+ * visible seam or snap-back.
  */
 export default function CoolGirlSilver() {
   const edit = KAVACH;
-  const picks = collectionProducts(edit.handle, 5);
+  const picks = collectionProducts(edit.handle);
+  const loop = picks.length > 0 ? [...picks, ...picks, ...picks] : [];
 
   const trackRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
+  const [setWidth, setSetWidth] = useState(0);
+  const x = useMotionValue(0);
+
+  useEffect(() => {
+    if (!setRef.current) return;
+    const width = setRef.current.getBoundingClientRect().width;
+    setSetWidth(width);
+    x.set(-width);
+  }, [picks.length]);
+
+  useMotionValueEvent(x, "change", (latest) => {
+    if (!setWidth) return;
+    if (latest <= -setWidth * 2) x.set(latest + setWidth);
+    else if (latest > 0) x.set(latest - setWidth);
+  });
 
   return (
     <section className="mx-auto max-w-[1500px] px-5 md:px-10">
@@ -58,46 +76,44 @@ export default function CoolGirlSilver() {
           </Reveal>
         </div>
 
-        {/* Clamps the draggable track to this box — the track can never be
-            pulled (or overflow) past this container's own edges. Note the
-            draggable element must size to its own content (w-max), not
-            stretch to fill the container, or Framer sees "content == box"
-            and there's nothing left to drag. */}
+        {/* Clamps the draggable track to this box so it can never spill past
+            the card's edge — the loop-wrap above is what makes it feel
+            endless, this is just the visible window onto it. */}
         <div ref={trackRef} className="w-full flex-1 overflow-hidden">
           <Stagger as="div" className="flex w-full justify-center md:justify-start">
             <motion.div
               drag="x"
-              dragConstraints={trackRef}
+              style={{ x }}
+              dragConstraints={setWidth ? { left: -setWidth * 2, right: 0 } : undefined}
               dragElastic={0.05}
               dragMomentum={false}
               onDragStart={() => setDragging(true)}
               onDragEnd={() => setDragging(false)}
               className={`flex w-max gap-10 lg:gap-12 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
             >
-              {picks.map((p) => (
-                <StaggerItem
-                  key={p.handle}
-                  className="flex w-28 shrink-0 flex-col items-center gap-3 text-center md:w-32 lg:w-36"
-                >
-                  <Link
-                    href={`/products/${p.handle}`}
-                    draggable={false}
-                    onClickCapture={(e) => dragging && e.preventDefault()}
-                    className="group relative block aspect-square w-28 overflow-hidden rounded-full ring-1 ring-bone/15 transition-shadow duration-500 hover:ring-bone/40 md:w-32 lg:w-36"
-                  >
-                    <Image
-                      src={p.images[0]}
-                      alt={p.title}
-                      fill
-                      sizes="9rem"
+              {loop.map((p, i) => (
+                <div key={`${p.handle}-${i}`} ref={i === picks.length ? setRef : undefined} className="contents">
+                  <StaggerItem className="flex w-28 shrink-0 flex-col items-center gap-3 text-center md:w-32 lg:w-36">
+                    <Link
+                      href={`/products/${p.handle}`}
                       draggable={false}
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                  </Link>
-                  <p className="font-display text-[0.6rem] uppercase tracking-[0.16em] text-bone/60">
-                    {chipFor(p)}
-                  </p>
-                </StaggerItem>
+                      onClickCapture={(e) => dragging && e.preventDefault()}
+                      className="group relative block aspect-square w-28 overflow-hidden rounded-full ring-1 ring-bone/15 transition-shadow duration-500 hover:ring-bone/40 md:w-32 lg:w-36"
+                    >
+                      <Image
+                        src={p.images[0]}
+                        alt={p.title}
+                        fill
+                        sizes="9rem"
+                        draggable={false}
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </Link>
+                    <p className="font-display text-[0.6rem] uppercase tracking-[0.16em] text-bone/60">
+                      {chipFor(p)}
+                    </p>
+                  </StaggerItem>
+                </div>
               ))}
             </motion.div>
           </Stagger>

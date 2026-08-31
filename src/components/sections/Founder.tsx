@@ -18,7 +18,7 @@ export default function Founder() {
                 alt={founder.name}
                 fill
                 sizes="(max-width: 768px) 92vw, 44vw"
-                className="object-cover"
+                className="object-cover object-[50%_18%]"
               />
             </div>
           </Reveal>
