@@ -12,9 +12,9 @@ export default function Footer() {
             <Image
               src={brand.logoMark}
               alt={brand.name}
-              width={140}
-              height={140}
-              className="h-24 w-auto"
+              width={200}
+              height={200}
+              className="h-40 w-auto"
             />
             <p className="mt-6 max-w-sm font-body text-[1.05rem] italic leading-relaxed text-bone/65">
               {brand.footerStatement}
