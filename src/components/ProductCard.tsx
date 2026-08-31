@@ -116,18 +116,28 @@ export default function ProductCard({
           <h3 className="truncate font-body text-[1.02rem] leading-snug text-[#3a2b1c]/90 transition-colors duration-400 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
-          <p className="mt-1.5 flex items-baseline gap-2.5 font-display text-[0.82rem] tracking-[0.06em] text-[#3a2b1c]">
+          <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-display text-[0.82rem] tracking-[0.06em] text-[#3a2b1c]">
             {inr(product.price)}
             {product.compareAt && product.compareAt > product.price && (
               <span className="text-[0.72rem] text-[#8a6a2e] line-through">
                 {inr(product.compareAt)}
               </span>
             )}
+            <span aria-hidden className="h-1 w-1 rounded-full bg-[#8a6a2e]/40" />
+            <span className="flex items-center gap-1">
+              <Stars rating={rating} size={9} />
+              <span className="font-body text-[0.62rem] font-normal text-[#8a6a2e]">
+                ({count.toLocaleString("en-IN")})
+              </span>
+            </span>
           </p>
-          <div className="mt-1.5 flex items-center gap-1.5">
-            <Stars rating={rating} />
-            <span className="font-body text-[0.72rem] text-[#8a6a2e]">({count.toLocaleString("en-IN")})</span>
-          </div>
+
+          <span
+            role="button"
+            className="mt-3 block w-full rounded-full bg-[#241a10] py-2.5 text-center font-display text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-[#f2e8d0] transition-colors duration-500 group-hover:bg-[#3a2b1c]"
+          >
+            Buy Now
+          </span>
         </div>
       </Link>
 

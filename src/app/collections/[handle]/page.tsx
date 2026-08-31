@@ -35,7 +35,6 @@ export default async function CollectionPage({
 
   const realItems = collectionProducts(handle);
   const items = realItems.length > 0 ? realItems : makeDummyProducts(handle, collection.title);
-  const isDummy = realItems.length === 0;
   const banner = collectionImage(handle) ?? items[0]?.images[0];
 
   return (
@@ -54,11 +53,6 @@ export default async function CollectionPage({
         )}
 
         <div className="mx-auto max-w-[1500px] px-5 py-16 md:px-10 md:py-24">
-          {isDummy && (
-            <p className="mb-8 rounded-[var(--radius-sm)] border border-[#8a6a2e]/30 bg-[#f8f0da] px-5 py-3 text-center font-body text-[0.85rem] text-[#6b5326]">
-              Sample layout — real pieces for this collection aren&apos;t mapped in our data yet.
-            </p>
-          )}
           <ShopGrid baseProducts={items} />
         </div>
       </main>

@@ -86,6 +86,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
           viewport. */}
       <aside
         className="hidden md:block md:pr-2"
+        data-lenis-prevent
         style={{
           position: "sticky",
           top: "7rem",
@@ -121,6 +122,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
               exit={{ x: "-100%" }}
               transition={{ duration: 0.4, ease }}
               onClick={(e) => e.stopPropagation()}
+              data-lenis-prevent
               className="h-full w-[86vw] max-w-xs overflow-y-auto bg-bone p-6"
             >
               <div className="flex items-center justify-between">
@@ -316,7 +318,7 @@ function FilterPanel({
 
       <div>
         <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink/50">Shop by Vibe</p>
-        <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
+        <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1" data-lenis-prevent>
           {vibeCollections.map((c) => (
             <label
               key={c.handle}
