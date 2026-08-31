@@ -8,6 +8,8 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductBuyBox from "@/components/product/ProductBuyBox";
 import ProductInfoAccordion from "@/components/product/ProductInfoAccordion";
+import ProductReviews from "@/components/product/ProductReviews";
+import RecentlyViewed from "@/components/product/RecentlyViewed";
 import { getProduct, getCollection, products, collections, collectionProducts, chipFor } from "@/lib/catalog";
 import { dummyProductByHandle, dummyCollectionHandle, makeDummyProducts } from "@/lib/dummy";
 
@@ -102,11 +104,13 @@ export default async function ProductPage({
           </div>
         </div>
 
+        <ProductReviews product={product} />
+
         {related.length > 0 && (
           <section className="border-t border-ink/10 bg-bone-2 py-20 md:py-28">
             <div className="mx-auto max-w-[1500px] px-5 md:px-10">
               <Reveal>
-                <p className="eyebrow text-ash-3">You May Also Love</p>
+                <p className="eyebrow text-ash-3">Similar Products</p>
               </Reveal>
               <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
                 {related.map((p, i) => (
@@ -118,6 +122,8 @@ export default async function ProductPage({
             </div>
           </section>
         )}
+
+        <RecentlyViewed currentHandle={product.handle} />
       </main>
       <Footer />
     </>

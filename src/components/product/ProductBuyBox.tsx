@@ -28,12 +28,12 @@ export default function ProductBuyBox({ product, chip }: { product: Product; chi
         {product.title}
       </h1>
 
-      <div className="mt-3 flex items-center gap-2">
+      <a href="#reviews" className="mt-3 flex w-fit items-center gap-2 transition-opacity duration-300 hover:opacity-70">
         <Stars rating={rating} size={13} />
-        <span className="font-body text-[0.85rem] text-[#8a6a2e]">
+        <span className="font-body text-[0.85rem] text-[#8a6a2e] underline underline-offset-2">
           {rating} ({count.toLocaleString("en-IN")} reviews)
         </span>
-      </div>
+      </a>
 
       <p className="mt-5 flex items-baseline gap-3 font-display text-[1.5rem] font-semibold text-ink">
         {inr(product.price)}
@@ -65,6 +65,47 @@ export default function ProductBuyBox({ product, chip }: { product: Product; chi
       <p className="mt-4 font-body text-[0.82rem] leading-relaxed text-ink/60">
         {product.description.replace(/^\s*Product Overview:\s*/i, "")}
       </p>
+
+      <div className="mt-7 grid grid-cols-3 gap-2 border-t border-ink/10 pt-6">
+        {TRUST_BADGES.map((b) => (
+          <div key={b.label} className="flex flex-col items-center gap-1.5 text-center">
+            <span className="text-[#8a6a2e]" aria-hidden>
+              {b.icon}
+            </span>
+            <span className="font-display text-[0.58rem] uppercase leading-tight tracking-[0.06em] text-ink/55">
+              {b.label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
+const TRUST_BADGES = [
+  {
+    label: "BIS Certified",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    label: "925 Sterling Silver",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Skin-Friendly",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20.5s-7.5-4.6-9.9-9.3C.6 8 1.8 4.3 5.2 3.4c2-.5 4 .3 5.2 2 .5.7 1 1.4 1.6 2.1.6-.7 1.1-1.4 1.6-2.1 1.2-1.7 3.2-2.5 5.2-2 3.4.9 4.6 4.6 3.1 7.8-2.4 4.7-9.9 9.3-9.9 9.3Z" />
+      </svg>
+    ),
+  },
+];
