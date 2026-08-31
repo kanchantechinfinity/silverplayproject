@@ -36,7 +36,7 @@ export default function GenZEdit() {
           </Reveal>
 
           <SplitText
-            text="New Arrivals"
+            text="The Fresh Edit"
             className="mt-4 text-[clamp(1.9rem,4.4vw,3.2rem)] text-ink"
           />
 
@@ -55,7 +55,7 @@ export default function GenZEdit() {
                 type="button"
                 onClick={() => setActive(t.key)}
                 className={cn(
-                  "rounded-full px-5 py-2.5 font-display text-[0.62rem] uppercase tracking-[0.22em] transition-colors duration-400",
+                  "rounded-full px-6 py-3 font-display text-[0.92rem] uppercase tracking-[0.18em] transition-colors duration-400",
                   active === t.key
                     ? "bg-ink text-bone"
                     : "text-ink/55 hover:text-ink",
