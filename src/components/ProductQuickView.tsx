@@ -90,7 +90,7 @@ export function QuickViewModal({
           type="button"
           onClick={onClose}
           aria-label="Close quick view"
-          className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full bg-[#241a10]/85 text-[#f2e8d0] backdrop-blur-sm transition-colors duration-300 hover:bg-[#241a10]"
+          className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-[#241a10]/85 text-[1.6rem] leading-none text-[#f2e8d0] backdrop-blur-sm transition-colors duration-300 hover:bg-[#241a10]"
         >
           ×
         </button>
