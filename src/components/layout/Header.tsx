@@ -54,7 +54,7 @@ export default function Header() {
           }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "pointer-events-auto mx-auto flex items-center gap-6 backdrop-blur-xl",
+            "pointer-events-auto mx-auto flex items-center gap-6 backdrop-blur-xl lg:grid lg:grid-cols-[1fr_auto_1fr]",
             pinned
               ? "w-[calc(100%-28px)] max-w-[1500px] border border-ink/10 shadow-[0_10px_40px_-18px_rgba(26,22,20,0.35)]"
               : "w-full",
@@ -70,7 +70,7 @@ export default function Header() {
             <span className={cn("block h-px w-4", pinned ? "bg-ink" : "bg-bone")} />
           </button>
 
-          <Link href="/" className="shrink-0 origin-left">
+          <Link href="/" className="shrink-0 origin-left lg:justify-self-start">
             <Image
               src={brand.logoMark}
               alt={brand.name}
@@ -85,7 +85,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="mx-auto hidden items-center gap-8 lg:flex">
+          <nav className="hidden items-center gap-8 lg:flex">
             {nav.map((item) => (
               <div
                 key={item.label}
@@ -133,7 +133,7 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-1 lg:ml-0">
+          <div className="ml-auto flex items-center gap-1 lg:ml-0 lg:justify-self-end">
             <HeaderIconLink href="/search" label="Search" pinned={pinned}>
               <circle cx="11" cy="11" r="7.5" />
               <path d="m20.5 20.5-4.35-4.35" />
