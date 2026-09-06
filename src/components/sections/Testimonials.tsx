@@ -287,8 +287,10 @@ function VoiceCard({
 
           <p
             className={
-              (compact ? "text-[1.02rem] leading-snug " : "text-[1.4rem] leading-relaxed ") +
-              "script text-center text-[#3a2c14]"
+              (compact
+                ? "text-[1.2rem] leading-snug "
+                : "text-[2rem] leading-relaxed ") +
+              "text-center font-body font-medium text-[#3a2c14]"
             }
           >
             &ldquo;{voice.quote}&rdquo;
