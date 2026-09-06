@@ -20,6 +20,7 @@ import {
   type Product,
 } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
+import { DECKLE, HeritageMonument, HeritagePhotoVignette } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -104,12 +105,14 @@ export default function RoyalSimplicity() {
   return (
     <section
       ref={wrapRef}
-      className="relative bg-ink pb-24 md:pb-32"
+      className="heritage-sec relative bg-ink pb-24 md:pb-32"
       style={{ height: `${(items.length + 1) * 85}vh` }}
       aria-roledescription="carousel"
       aria-label={edit.title}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        <div className="heritage-wallpaper text-bone-3 opacity-[0.04]" aria-hidden />
+        <HeritageMonument className="pointer-events-none absolute -bottom-6 -right-8 z-[-1] h-[clamp(240px,32vw,400px)] w-auto scale-x-[-1] text-bone-3 opacity-[0.16]" />
         {/* Heading */}
         <div className="mx-auto w-full max-w-3xl px-5 pt-24 pb-8 text-center md:pt-28 md:pb-10">
           <Reveal>
@@ -153,12 +156,24 @@ export default function RoyalSimplicity() {
                       opacity: isActive ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.8, ease }}
-                    className={cn(
-                      "relative overflow-hidden rounded-[var(--radius-xl)] bg-ink-2 ring-2 transition-shadow duration-500",
-                      isActive ? "ring-[#d8b466]/70" : "ring-transparent hover:ring-[#d8b466]/45",
-                    )}
+                    className="relative"
                   >
-                    <div className="relative aspect-[3/4.4]">
+                    {/* Gilt deckle mat — replaces the rounded/ring frame; the
+                        same torn-paper edge used by every other homepage card. */}
+                    <div
+                      className={cn(
+                        "p-[3px] transition-[filter] duration-500",
+                        isActive ? "" : "grayscale-[15%]",
+                      )}
+                      style={{
+                        clipPath: DECKLE,
+                        background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+                        filter: isActive
+                          ? "drop-shadow(0 20px 34px rgba(26,22,20,0.45))"
+                          : "drop-shadow(0 6px 14px rgba(26,22,20,0.25))",
+                      }}
+                    >
+                    <div className="relative aspect-[3/4.4] bg-ink-2" style={{ clipPath: DECKLE }}>
                       <Image
                         src={p.images[0]}
                         alt={p.title}
@@ -167,6 +182,7 @@ export default function RoyalSimplicity() {
                         priority={i < 2}
                         className="object-cover"
                       />
+                      <HeritagePhotoVignette />
 
                       {/* Legibility wash, deeper on the resting cards */}
                       <motion.div
@@ -209,6 +225,7 @@ export default function RoyalSimplicity() {
                           {taglineFor(p)}
                         </motion.p>
                       </div>
+                    </div>
                     </div>
                   </motion.div>
                 </div>

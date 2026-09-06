@@ -121,10 +121,19 @@ export default function JournalShowcase() {
   return (
     <section
       ref={wrapRef}
-      className="relative bg-bone"
+      className="heritage-sec relative bg-bone"
       style={{ height: `${(n + 0.6) * 82}vh` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        <Image
+          src="/heritage/story-veena.jpg"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+        />
+        <div className="pointer-events-none absolute inset-0 z-[-1] bg-bone/80" />
         <div className="mx-auto w-full max-w-2xl px-5 pb-2 pt-8 text-center md:pt-10">
           <Reveal>
             <p className="eyebrow text-ash-3">From The Journal</p>

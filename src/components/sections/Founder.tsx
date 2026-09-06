@@ -8,7 +8,16 @@ import { founder } from "@/data/site";
 /** Real copy + portrait, straight from the live "Our Story" page. */
 export default function Founder() {
   return (
-    <section className="bg-ink py-20 md:py-28">
+    <section className="heritage-sec bg-ink py-20 md:py-28">
+      <Image
+        src="/heritage/manuscript-panels.jpg"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/60" />
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20">
           <Reveal className="md:h-full">

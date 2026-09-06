@@ -43,10 +43,10 @@ export default function Header() {
           initial={false}
           animate={{
             backgroundColor: pinned ? "rgba(245,242,237,0.9)" : "rgba(245,242,237,0)",
-            paddingLeft: pinned ? 24 : 34,
-            paddingRight: pinned ? 24 : 34,
-            paddingTop: pinned ? 12 : 26,
-            paddingBottom: pinned ? 12 : 26,
+            paddingLeft: 34,
+            paddingRight: 34,
+            paddingTop: 10,
+            paddingBottom: 10,
             marginTop: pinned ? 14 : 0,
             marginLeft: pinned ? 14 : 0,
             marginRight: pinned ? 14 : 0,

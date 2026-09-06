@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import EditCard from "@/components/EditCard";
+import HeritageEditCard from "@/components/HeritageEditCard";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -15,7 +16,16 @@ export default function BestSellers() {
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   return (
-    <section className="bg-ink-3 py-24 md:py-32">
+    <section className="heritage-sec bg-ink-3 py-24 md:py-32">
+      <Image
+        src="/heritage/seen-ghat-vista.jpg"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink-3/62" />
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
@@ -40,7 +50,7 @@ export default function BestSellers() {
         >
           {items.map((p, i) => (
             <StaggerItem key={p.handle} className="h-full">
-              <EditCard product={p} priority={i < 2} />
+              <HeritageEditCard product={p} priority={i < 2} />
             </StaggerItem>
           ))}
         </Stagger>

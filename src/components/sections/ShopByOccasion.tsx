@@ -6,6 +6,7 @@ import Reveal from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { occasions } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { HeritageMonument } from "@/components/heritage/deckle";
 
 const byHandle = new Map(occasions.map((o) => [o.handle, o]));
 const bali = byHandle.get("baali-collection")!;
@@ -54,7 +55,9 @@ function OccasionCard({
 
 export default function ShopByOccasion() {
   return (
-    <section className="bg-ink px-5 py-16 md:px-10 md:py-20">
+    <section className="heritage-sec bg-ink px-5 py-16 md:px-10 md:py-20">
+      <div className="heritage-wallpaper text-bone-3 opacity-[0.04]" aria-hidden />
+      <HeritageMonument className="pointer-events-none absolute -bottom-6 -right-8 z-[-1] h-[clamp(240px,32vw,400px)] w-auto scale-x-[-1] text-bone-3 opacity-[0.16]" />
       <div className="relative mx-auto max-w-[1500px] grid gap-4 md:grid-cols-[minmax(220px,30%)_1fr] md:gap-6 lg:gap-8">
         {/* Headline */}
         <Reveal>

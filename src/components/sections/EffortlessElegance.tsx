@@ -10,6 +10,7 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { edits } from "@/data/site";
 import { getProduct } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { DECKLE, HeritagePhotoVignette } from "@/components/heritage/deckle";
 
 const VIDEO_SRC =
   "https://silverplay.in/cdn/shop/videos/c/vp/c5fe9793d6c74021a90c8c9f4d48fb85/c5fe9793d6c74021a90c8c9f4d48fb85.HD-720p-3.0Mbps-88733085.mp4?v=0";
@@ -23,7 +24,16 @@ export default function EffortlessElegance() {
   const shown = picks[active] ?? picks[0];
 
   return (
-    <section className="overflow-hidden bg-bone-2 py-20 md:py-28">
+    <section className="heritage-sec overflow-hidden bg-bone-2 py-20 md:py-28">
+      <Image
+        src="/heritage/elegance-lotus.jpg"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[-1] bg-bone-2/75" />
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="grid gap-8 md:grid-cols-[1fr_auto_1.15fr] md:items-stretch md:gap-10 md:h-[560px] lg:h-[640px] lg:gap-14">
           {/* Text + small preview, filling the space below the CTA */}
@@ -53,7 +63,10 @@ export default function EffortlessElegance() {
             </Reveal>
 
             <Reveal delay={0.4}>
-              <div className="relative mt-8 aspect-[16/9] w-full max-w-sm overflow-hidden rounded-[var(--radius-md)] bg-bone-3">
+              <div
+                className="relative mt-8 aspect-[16/9] w-full max-w-sm bg-bone-3"
+                style={{ clipPath: DECKLE }}
+              >
                 <AnimatePresence mode="wait">
                   {shown && (
                     <motion.div
@@ -71,6 +84,7 @@ export default function EffortlessElegance() {
                         sizes="(max-width: 768px) 90vw, 24rem"
                         className="object-cover"
                       />
+                      <HeritagePhotoVignette />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -98,6 +112,7 @@ export default function EffortlessElegance() {
                     sizes="6rem"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+                  <HeritagePhotoVignette />
                 </Link>
               </StaggerItem>
             ))}

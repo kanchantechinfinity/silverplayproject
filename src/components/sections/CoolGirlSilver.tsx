@@ -8,6 +8,7 @@ import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { chipFor, collectionProducts } from "@/lib/catalog";
+import { HeritagePhotoVignette } from "@/components/heritage/deckle";
 
 const KAVACH = {
   handle: "kavach",
@@ -49,7 +50,18 @@ export default function CoolGirlSilver() {
 
   return (
     <section className="mx-auto max-w-[1500px] px-5 md:px-10">
-      <div className="flex flex-col items-center gap-10 overflow-hidden rounded-[var(--radius-xl)] bg-ink px-6 py-12 md:flex-row md:gap-10 md:px-12 md:py-14">
+      <div className="heritage-sec relative flex flex-col items-center gap-10 overflow-hidden rounded-[var(--radius-xl)] bg-ink px-6 py-12 md:flex-row md:gap-10 md:px-12 md:py-14">
+        <Image
+          src="/heritage/vanity-mood.jpg"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+        />
+        {/* Same ink tone as the rest of the section, washed over the photo
+            so the existing bone/gold text and gold-ringed picks stay legible. */}
+        <div className="pointer-events-none absolute inset-0 z-[-1] bg-gradient-to-r from-ink via-ink/85 to-ink/55" />
         <div className="shrink-0 text-center md:text-left">
           <Reveal>
             <p className="eyebrow text-ash-3">The Edit</p>
@@ -98,7 +110,7 @@ export default function CoolGirlSilver() {
                       href={`/products/${p.handle}`}
                       draggable={false}
                       onClickCapture={(e) => dragging && e.preventDefault()}
-                      className="group relative block aspect-square w-28 overflow-hidden rounded-full ring-1 ring-bone/15 transition-shadow duration-500 hover:ring-bone/40 md:w-32 lg:w-36"
+                      className="group relative block aspect-square w-28 overflow-hidden rounded-full ring-2 ring-[#8a6a2e]/55 transition-shadow duration-500 hover:ring-[#d8b466]/80 md:w-32 lg:w-36"
                     >
                       <Image
                         src={p.images[0]}
@@ -108,6 +120,7 @@ export default function CoolGirlSilver() {
                         draggable={false}
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      <HeritagePhotoVignette />
                     </Link>
                     <p className="font-display text-[0.6rem] uppercase tracking-[0.16em] text-bone/60">
                       {chipFor(p)}
