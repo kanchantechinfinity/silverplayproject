@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { products, collections, collectionProducts, type Product } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
-import { DECKLE, HeritageCornerMark, HeritagePaisleyMark } from "@/components/heritage/deckle";
+import { HeritageCornerMark, HeritagePaisleyMark } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const TYPES = ["Earrings", "Pendants", "Rakhi"];
@@ -88,22 +87,24 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
 
   return (
     <div className="relative isolate">
-      {/* Section-wide backdrop — a bounded band behind the top of the grid,
-          not stretched to the full (233-product-tall) scroll height, which
-          would squash the photo into an imperceptible sliver. Breaks out of
-          the page's own max-w-[1500px] wrapper to bleed full viewport width. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-full w-screen -translate-x-1/2">
-          <Image
-            src="/heritage/archive-balcony.jpg"
-            alt=""
-            aria-hidden
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-bone/70 via-bone/85 to-bone" />
-        </div>
+      {/* Section-wide backdrop, covering the full grid however tall it runs
+          (233 products deep). A plain <img>/next-Image sized to fill that
+          whole height would need to stretch one crop across tens of
+          thousands of px, squashing it to an imperceptible sliver — a
+          fixed-attachment CSS background instead sizes itself to the
+          viewport and stays put as the page scrolls over it, so it reads
+          at its natural resolution for the entire scroll, not just a band
+          at the top. Breaks out of the page's own max-w-[1500px] wrapper
+          to bleed full viewport width, and stretches past this component's
+          own top/bottom edge by exactly the surrounding page wrapper's own
+          py-16 md:py-24 padding, so that padding reads as part of the same
+          backdrop instead of a plain gap before the hero above and the
+          footer below. */}
+      <div
+        className="pointer-events-none absolute left-1/2 -top-16 md:-top-24 -z-10 h-[calc(100%+8rem)] w-screen -translate-x-1/2 bg-cover bg-top bg-fixed md:h-[calc(100%+12rem)]"
+        style={{ backgroundImage: "url(/heritage/archive-balcony.jpg)" }}
+      >
+        <div className="absolute inset-0 bg-bone/78" />
       </div>
 
       <div className="grid gap-10 md:grid-cols-[220px_1fr] md:gap-10 lg:grid-cols-[260px_1fr] lg:gap-14">
@@ -134,18 +135,15 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
       >
         {/* Gilt torn-edge mat — same deckle silhouette as every product
             card, so the filter reads as part of the same paper family
-            rather than a plain settings box. */}
+            rather than a plain settings box — clean rounded edges here,
+            not the torn-paper deckle the product cards use. */}
         <div
-          className="p-[3px]"
-          style={{
-            clipPath: DECKLE,
-            background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
-          }}
+          className="rounded-[var(--radius-lg)] p-[3px]"
+          style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
         >
           <div
-            className="relative isolate px-6 py-9"
+            className="relative isolate overflow-hidden rounded-[calc(var(--radius-lg)-3px)] px-6 py-9"
             style={{
-              clipPath: DECKLE,
               backgroundColor: "#241a10",
               backgroundImage: [
                 "radial-gradient(circle at 88% 8%, rgba(216,180,102,0.14), transparent 42%)",
