@@ -32,7 +32,7 @@ export default function Home() {
 
         <ArchiveTreasure />
 
-        <div className="pb-24 md:pb-32">
+        <div className="py-24 md:py-32">
           <CoolGirlSilver />
         </div>
 

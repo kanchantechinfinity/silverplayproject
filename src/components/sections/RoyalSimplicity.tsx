@@ -20,7 +20,7 @@ import {
   type Product,
 } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
-import { DECKLE, HeritageMonument, HeritagePhotoVignette } from "@/components/heritage/deckle";
+import { DECKLE, HeritageMonument } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -105,7 +105,7 @@ export default function RoyalSimplicity() {
   return (
     <section
       ref={wrapRef}
-      className="heritage-sec relative bg-ink pb-24 md:pb-32"
+      className="heritage-sec relative bg-ink"
       style={{ height: `${(items.length + 1) * 85}vh` }}
       aria-roledescription="carousel"
       aria-label={edit.title}
@@ -182,8 +182,6 @@ export default function RoyalSimplicity() {
                         priority={i < 2}
                         className="object-cover"
                       />
-                      <HeritagePhotoVignette />
-
                       {/* Legibility wash, deeper on the resting cards */}
                       <motion.div
                         animate={{ opacity: isActive ? 1 : 0.55 }}
@@ -200,7 +198,7 @@ export default function RoyalSimplicity() {
                         transition={{ duration: 0.7, ease }}
                         className="absolute inset-x-0 top-5 flex justify-center"
                       >
-                        <span className="rounded-full border border-bone/30 bg-ink/40 px-4 py-1.5 font-display text-[0.54rem] uppercase tracking-[0.2em] text-bone/85 backdrop-blur-md">
+                        <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
                           {inr(p.price)}
                         </span>
                       </motion.div>
@@ -235,7 +233,7 @@ export default function RoyalSimplicity() {
         </div>
 
         {/* Bottom gradient */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink via-ink/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink/60 to-transparent" />
 
         {/* Controls */}
         <div className="relative z-10 flex items-center justify-center gap-3 pb-12">

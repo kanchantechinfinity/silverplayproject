@@ -101,7 +101,7 @@ const headingWords = ["The", "Archive", "Silver", "Treasure"];
 
 export default function ArchiveTreasure() {
   return (
-    <section className="heritage-sec mx-auto max-w-[1500px] px-5 py-24 md:px-10 md:py-32">
+    <section className="heritage-sec py-24 md:py-32">
       <Image
         src="/heritage/archive-balcony.jpg"
         alt=""
@@ -111,7 +111,7 @@ export default function ArchiveTreasure() {
         className="pointer-events-none absolute inset-0 z-[-1] object-cover"
       />
       <div className="pointer-events-none absolute inset-0 z-[-1] bg-bone/75" />
-      <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16">
+      <div className="mx-auto flex max-w-[1500px] flex-col gap-10 px-5 md:px-10 lg:flex-row lg:items-start lg:gap-16">
         {/* Text */}
         <div className="shrink-0 lg:w-[260px] xl:w-[320px] lg:pt-2">
           <Reveal>
