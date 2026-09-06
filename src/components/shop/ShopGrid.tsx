@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { products, collections, collectionProducts, type Product } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { HeritageCornerMark } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const TYPES = ["Earrings", "Pendants", "Rakhi"];
@@ -90,10 +92,10 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
       <button
         type="button"
         onClick={() => setMobileFiltersOpen(true)}
-        className="flex items-center justify-between rounded-full border border-ink/15 px-5 py-3 font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink md:hidden"
+        className="flex items-center justify-between rounded-full border border-[#8a6a2e]/50 bg-ink px-5 py-3 font-display text-[0.68rem] uppercase tracking-[0.2em] text-bone md:hidden"
       >
         Filters
-        <span aria-hidden>⊞</span>
+        <span aria-hidden className="text-[#c9a35c]">⊞</span>
       </button>
 
       {/* Sidebar (desktop) — sticks under the header while the grid scrolls,
@@ -111,15 +113,35 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
           alignSelf: "start",
         }}
       >
-        <FilterPanel
-          vibeCollections={vibeCollections}
-          types={types}
-          vibes={vibes}
-          maxPrice={maxPrice}
-          onToggleType={(v) => toggle(types, setTypes, v)}
-          onToggleVibe={(v) => toggle(vibes, setVibes, v)}
-          onPrice={setMaxPrice}
-        />
+        {/* Gilt mat, same technique as every other heritage card sitewide */}
+        <div
+          className="rounded-[var(--radius-lg)] p-[3px]"
+          style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
+        >
+          <div className="relative isolate overflow-hidden rounded-[calc(var(--radius-lg)-3px)] bg-ink px-6 py-8">
+            <Image
+              src="/heritage/manuscript-panels.jpg"
+              alt=""
+              aria-hidden
+              fill
+              sizes="260px"
+              className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+            />
+            <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/85" />
+            <HeritageCornerMark className="pointer-events-none absolute right-3 top-3 h-6 w-6 -scale-x-100 opacity-60" />
+
+            <p className="eyebrow mb-6 text-[#c9a35c]">Refine</p>
+            <FilterPanel
+              vibeCollections={vibeCollections}
+              types={types}
+              vibes={vibes}
+              maxPrice={maxPrice}
+              onToggleType={(v) => toggle(types, setTypes, v)}
+              onToggleVibe={(v) => toggle(vibes, setVibes, v)}
+              onPrice={setMaxPrice}
+            />
+          </div>
+        </div>
       </aside>
 
       {/* Mobile filter drawer */}
@@ -140,17 +162,26 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
               onWheel={handlePanelWheel}
-              className="h-full w-[86vw] max-w-xs overflow-y-auto bg-bone p-6"
+              className="relative h-full w-[86vw] max-w-xs overflow-y-auto bg-ink p-6"
             >
-              <div className="flex items-center justify-between">
-                <p className="font-display text-[0.9rem] uppercase tracking-[0.15em] text-ink">
+              <Image
+                src="/heritage/manuscript-panels.jpg"
+                alt=""
+                aria-hidden
+                fill
+                sizes="360px"
+                className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/85" />
+              <div className="flex items-center justify-between border-b border-[#8a6a2e]/25 pb-5">
+                <p className="font-display text-[0.9rem] uppercase tracking-[0.2em] text-bone">
                   Filters
                 </p>
                 <button
                   type="button"
                   onClick={() => setMobileFiltersOpen(false)}
                   aria-label="Close filters"
-                  className="grid h-8 w-8 place-items-center rounded-full border border-ink/15"
+                  className="grid h-8 w-8 place-items-center rounded-full border border-[#8a6a2e]/40 text-bone"
                 >
                   ×
                 </button>
@@ -301,9 +332,9 @@ function FilterPanel({
   onPrice: (v: number) => void;
 }) {
   return (
-    <div className="space-y-8">
+    <div className="relative space-y-8">
       <div>
-        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink/50">Price up to</p>
+        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-[#c9a35c]/80">Price up to</p>
         <input
           type="range"
           min={1250}
@@ -311,53 +342,76 @@ function FilterPanel({
           step={250}
           value={maxPrice}
           onChange={(e) => onPrice(Number(e.target.value))}
-          className="mt-4 w-full accent-[#8a6a2e]"
+          className="mt-4 w-full accent-[#c9a35c]"
         />
-        <p className="mt-1 font-body text-[0.85rem] text-ink/70">₹{maxPrice.toLocaleString("en-IN")}</p>
+        <p className="mt-1 font-body text-[0.95rem] text-bone/80">₹{maxPrice.toLocaleString("en-IN")}</p>
       </div>
 
       <div>
-        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink/50">Category</p>
-        <div className="mt-3 space-y-2">
+        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-[#c9a35c]/80">Category</p>
+        <div className="mt-3 space-y-2.5">
           {TYPES.map((t) => (
-            <label key={t} className="flex cursor-pointer items-center gap-2.5 font-body text-[0.9rem] text-ink/75">
-              <input
-                type="checkbox"
-                checked={types.has(t)}
-                onChange={() => onToggleType(t)}
-                className="h-4 w-4 accent-[#8a6a2e]"
-              />
-              {t}
-            </label>
+            <FilterCheckbox key={t} label={t} checked={types.has(t)} onChange={() => onToggleType(t)} />
           ))}
         </div>
       </div>
 
       <div>
-        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-ink/50">Shop by Vibe</p>
+        <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-[#c9a35c]/80">Shop by Vibe</p>
         <div
-          className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1"
+          className="mt-3 max-h-64 space-y-2.5 overflow-y-auto pr-1"
           data-lenis-prevent
           onWheel={handlePanelWheel}
         >
           {vibeCollections.map((c) => (
-            <label
+            <FilterCheckbox
               key={c.handle}
-              className={cn(
-                "flex cursor-pointer items-center gap-2.5 font-body text-[0.9rem] text-ink/75",
-              )}
-            >
-              <input
-                type="checkbox"
-                checked={vibes.has(c.handle)}
-                onChange={() => onToggleVibe(c.handle)}
-                className="h-4 w-4 accent-[#8a6a2e]"
-              />
-              {c.title}
-            </label>
+              label={c.title}
+              checked={vibes.has(c.handle)}
+              onChange={() => onToggleVibe(c.handle)}
+            />
           ))}
         </div>
       </div>
     </div>
+  );
+}
+
+/** Gold-on-dark check, replacing the browser's plain native box — a small
+ *  gilt-bordered square that fills with the same gold gradient used
+ *  throughout the site once checked. */
+function FilterCheckbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <label className="group flex cursor-pointer items-center gap-3 font-body text-[0.95rem] text-bone/75 transition-colors duration-200 hover:text-bone">
+      <span className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border border-[#c9a35c]/45 bg-black/20 transition-colors duration-200 group-hover:border-[#c9a35c]/80">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onChange}
+          className="peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+        />
+        <span
+          className="absolute inset-0 rounded-[3px] opacity-0 transition-opacity duration-200 peer-checked:opacity-100"
+          style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 100%)" }}
+          aria-hidden
+        />
+        <svg
+          viewBox="0 0 16 16"
+          aria-hidden
+          className="relative z-[1] h-3 w-3 scale-0 text-[#2a1d0f] transition-transform duration-150 peer-checked:scale-100"
+        >
+          <path d="M3 8.2 6.2 11.4 13 4.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      {label}
+    </label>
   );
 }
