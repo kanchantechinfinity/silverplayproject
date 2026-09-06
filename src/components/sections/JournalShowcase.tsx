@@ -15,10 +15,10 @@ import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import { journal, heritage } from "@/data/site";
 
-const DEPTH = 640; // px the side cards recede into the screen, in 3D space
-const ANGLE = 30; // degrees each neighbouring card rotates away from facing the viewer
-const STEP_VW = 36; // horizontal distance between card slots, in vw on ordinary screens
-const STEP_MAX = 440; // ...but capped in px past that, or the arc blows apart on ultrawide screens
+const DEPTH = 160; // px the side cards recede into the screen, in 3D space
+const ANGLE = 8; // degrees each neighbouring card rotates away from facing the viewer
+const STEP_VW = 40; // horizontal distance between card slots, in vw on ordinary screens
+const STEP_MAX = 480; // ...but capped in px past that, or the arc blows apart on ultrawide screens
 
 type Card = {
   key: string;
