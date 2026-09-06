@@ -366,3 +366,46 @@ Simplicity's card strip.
 **Verification**
 `npx tsc --noEmit` and `npm run build` clean (558 routes). Confirmed on
 a fresh build. Pushed to `origin/main` at `c099345`.
+
+## 2026-09-06 — Journal Showcase: sticky pin wasn't holding at all
+
+**Requested**
+Direct follow-up: "when I scroll in that section the cards are not
+moving... it's the SECTION that is scrolling" — a different, more basic
+bug than the motion-character fix just shipped.
+
+**Root cause**
+The section used `.heritage-sec` (globals.css:166) for its background-
+photo layering, which bundles `position:relative; isolation:isolate;
+overflow:hidden`. The sticky deck div is a *direct child* of that same
+element, so `overflow:hidden` made it the sticky child's clipping
+ancestor — and since that ancestor never scrolls internally, the sticky
+positioning never actually engaged. Confirmed with
+`getBoundingClientRect()`: at a scroll position 80px into the section,
+`stickyTop` read `-80` (tracking raw scroll 1:1, i.e. not sticky at all)
+before the fix, `0` (properly pinned) after. Royal Simplicity had this
+exact same latent bug — it was fixed incidentally when `heritage-sec` was
+removed during today's earlier paper-design cleanup, which is why it
+pinned correctly and Journal Showcase didn't.
+
+Checked whether the same pattern exists elsewhere (any other
+`heritage-sec` section with a sticky descendant) — no; the shop page's
+sticky filter sidebar uses an unrelated `background-attachment: fixed`
+technique, not `heritage-sec`.
+
+**Change**
+Journal Showcase doesn't have any of the negative-offset decorative
+marks (paisley/corner marks) that need the overflow clipping elsewhere,
+so it only needed two of the three `heritage-sec` properties: swapped to
+`relative isolate` (no `overflow:hidden`), preserving the z:-1
+photo-above-background trick.
+
+**Verification**
+Hit the known transient `.next/dev/types/validator.ts` parse error on a
+standalone `tsc --noEmit` right after this edit (auto-generated file, not
+source) — cleared `.next` and went straight to `npm run build`, which
+regenerates it and includes its own type check; clean, 558 routes.
+Re-confirmed `stickyTop: 0` on the fresh build via real scroll + settle,
+same method as the diagnosis.
+
+Pushed to `origin/main` at `2c6904d`.

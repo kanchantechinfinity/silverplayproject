@@ -72,9 +72,21 @@ buttons are pills.
   modal that lives under a `<Reveal>` (Framer Motion transform breaks
   viewport-relative fixed positioning for descendants). Established pattern —
   reused by QuickViewModal, Tilt3DModal, ReelModal.
-- `.heritage-sec` (CSS: `position:relative; isolation:isolate`) is required on
-  any section that layers a `z-index:-1` photo + overlay background, or the
-  background paints behind the section's own bg instead of above it.
+- `.heritage-sec` (globals.css:166 — CORRECTED, this was previously
+  mis-recorded here as just `position:relative; isolation:isolate`: it
+  ALSO sets `overflow:hidden`) is used for any section that layers a
+  `z-index:-1` photo + overlay background, or the background paints
+  behind the section's own bg instead of above it. But the bundled
+  `overflow:hidden` breaks `position:sticky` for any direct-child sticky
+  element (it becomes the sticky child's clipping ancestor, and since it
+  never scrolls internally, the sticky pin never engages — the element
+  just tracks raw scroll 1:1 instead of holding in place; verify with
+  `getBoundingClientRect().top` staying at 0, not the class name alone).
+  If a section needs the photo-layering trick AND has a sticky
+  scroll-driven child (Royal Simplicity, JournalShowcase), use
+  `relative isolate` directly instead of `heritage-sec` — skip the
+  overflow clipping unless the section also has heritage-sec's
+  negative-offset decorative marks (paisley/corner marks) that need it.
 - CSS Grid sticky sidebar: put `md:items-start` on the grid and
   `md:sticky md:top-N` on the shorter child only — its containing block
   becomes the (taller) row while it stays natural height.
