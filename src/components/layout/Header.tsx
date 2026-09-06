@@ -18,15 +18,33 @@ export default function Header() {
   const [menu, setMenu] = useState(false);
 
   useEffect(() => {
-    // The cinematic hero (when present) reports its own pin-release offset;
-    // fall back to a plain viewport fraction for pages without it.
+    // The cinematic hero (homepage only) reports its own pin-release offset
+    // via the scrubbed ScrollTrigger track. Everywhere else, measure the
+    // real height of whatever page hero is actually on screen instead of
+    // guessing a flat viewport fraction — that guess (70vh) sat well below
+    // PageHero's real ~52vh on interior pages, and even further past pages
+    // with no hero at all (the single product page), so the header stayed
+    // transparent long after the dark banner it's meant to sit over had
+    // already ended.
     const onScroll = () => {
-      const threshold = window.__heroScrollEnd ?? window.innerHeight * 0.7;
+      let threshold = window.__heroScrollEnd;
+      if (threshold == null) {
+        const hero = document.querySelector<HTMLElement>("[data-page-hero]");
+        threshold = hero
+          ? hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight - 1
+          : 1; // no hero on this page at all — pin as soon as any scroll happens
+      }
       setPinned(window.scrollY > threshold);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    // PageHero's height is viewport-relative (minHeight in vh), so the
+    // threshold needs to be recomputed if the viewport is resized.
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   const link = cn(

@@ -19,6 +19,7 @@ export default function PageHero({
 }) {
   return (
     <section
+      data-page-hero
       className="relative flex items-end overflow-hidden bg-ink pt-32"
       style={{ minHeight }}
     >
