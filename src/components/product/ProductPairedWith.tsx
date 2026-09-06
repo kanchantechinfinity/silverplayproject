@@ -19,7 +19,19 @@ export default function ProductPairedWith({
   pair: Product;
 }) {
   return (
-    <section className="border-t border-ink/10 bg-bone py-16 md:py-20">
+    <section className="heritage-sec relative border-t border-ink/10 bg-bone py-16 md:py-20">
+      {/* Same photo EffortlessElegance uses on the homepage, at the same
+          overlay strength, so the two feel like they belong to one site. */}
+      <Image
+        src="/heritage/elegance-lotus.jpg"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[-1] bg-bone/75" />
+
       <div className="mx-auto max-w-[1200px] px-5 md:px-10">
         <div className="text-center">
           <Reveal>

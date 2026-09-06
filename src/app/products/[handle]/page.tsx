@@ -104,8 +104,13 @@ export default async function ProductPage({
             <span className="text-ink/75">{product.title}</span>
           </nav>
 
-          <div className="mt-6 grid gap-10 pb-24 md:grid-cols-2 md:gap-14 md:pb-32">
-            <Reveal>
+          <div className="mt-6 grid gap-10 pb-24 md:grid-cols-2 md:items-start md:gap-14 md:pb-32">
+            {/* Sticky on desktop: the image stays put while the (now much
+                taller, with the gift/PIN/box additions) info column scrolls
+                past it, and only scrolls away itself once that column runs
+                out — rather than the two columns racing at different
+                speeds and leaving a bare gap under the shorter one. */}
+            <Reveal className="md:sticky md:top-32">
               <ProductGallery images={product.images} title={product.title} />
             </Reveal>
 
@@ -130,9 +135,12 @@ export default async function ProductPage({
               <Reveal>
                 <p className="eyebrow text-ash-3">Similar Products</p>
               </Reveal>
-              <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
+              <Stagger className="mt-8 flex flex-wrap justify-center gap-4 sm:gap-6">
                 {related.map((p, i) => (
-                  <StaggerItem key={p.handle}>
+                  <StaggerItem
+                    key={p.handle}
+                    className="w-[calc(50%-0.5rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(20%-1.2rem)]"
+                  >
                     <ProductCard product={p} priority={i === 0} />
                   </StaggerItem>
                 ))}

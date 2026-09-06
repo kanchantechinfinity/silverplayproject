@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Reveal from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { HeritageCornerMark } from "@/components/heritage/deckle";
@@ -48,15 +49,28 @@ export default function ProductBoxContents() {
           className="relative isolate overflow-hidden rounded-[var(--radius-lg)] p-[3px]"
           style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
         >
-          <div className="relative rounded-[calc(var(--radius-lg)-3px)] bg-[#f8f0da] px-6 py-10 md:px-12 md:py-12">
-            <HeritageCornerMark className="pointer-events-none absolute right-4 top-4 h-6 w-6 -scale-x-100 opacity-50" />
-            <HeritageCornerMark className="pointer-events-none absolute bottom-4 left-4 h-6 w-6 -scale-y-100 opacity-50" />
+          {/* Same dark photo + ink wash as Kavach (CoolGirlSilver) — same
+              image too, for a consistent "trust/detail" feel between the
+              two. */}
+          <div className="heritage-sec relative rounded-[calc(var(--radius-lg)-3px)] bg-ink px-6 py-10 md:px-12 md:py-12">
+            <Image
+              src="/heritage/vanity-mood.jpg"
+              alt=""
+              aria-hidden
+              fill
+              sizes="1200px"
+              className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+            />
+            <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/80" />
+
+            <HeritageCornerMark className="pointer-events-none absolute right-4 top-4 h-6 w-6 -scale-x-100 opacity-60 text-bone-3" />
+            <HeritageCornerMark className="pointer-events-none absolute bottom-4 left-4 h-6 w-6 -scale-y-100 opacity-60 text-bone-3" />
 
             <div className="text-center">
               <Reveal>
-                <p className="eyebrow text-[#8a6a2e]">Unboxing</p>
+                <p className="eyebrow text-[#c9a35c]">Unboxing</p>
               </Reveal>
-              <h2 className="mt-3 font-display text-[clamp(1.5rem,3vw,2.1rem)] text-ink">
+              <h2 className="mt-3 font-display text-[clamp(1.5rem,3vw,2.1rem)] text-bone">
                 What&apos;s Inside The Box
               </h2>
             </div>
@@ -65,15 +79,15 @@ export default function ProductBoxContents() {
               {ITEMS.map((item) => (
                 <StaggerItem key={item.title}>
                   <div className="flex flex-col items-center gap-3 text-center">
-                    <span className="grid h-14 w-14 place-items-center rounded-full border border-[#8a6a2e]/35 bg-bone text-[#8a6a2e]" aria-hidden>
+                    <span className="grid h-14 w-14 place-items-center rounded-full border border-[#c9a35c]/40 bg-ink-2 text-[#c9a35c]" aria-hidden>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
                         {item.icon}
                       </svg>
                     </span>
-                    <p className="font-display text-[0.78rem] uppercase tracking-[0.06em] text-ink">
+                    <p className="font-display text-[0.78rem] uppercase tracking-[0.06em] text-bone">
                       {item.title}
                     </p>
-                    <p className="font-body text-[0.78rem] leading-snug text-ink/55">{item.copy}</p>
+                    <p className="font-body text-[0.78rem] leading-snug text-bone/60">{item.copy}</p>
                   </div>
                 </StaggerItem>
               ))}

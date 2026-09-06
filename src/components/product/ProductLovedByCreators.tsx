@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
@@ -11,18 +12,31 @@ import type { Product } from "@/lib/catalog";
 const PROFILE_URL = "https://www.instagram.com/thesilverplay/";
 
 /** Instagram Reels don't exist as embeddable assets in this dataset (no
- *  video files, no post IDs) — same honest constraint InstagramSlider
- *  already works within. Real product photography styled as Reels
- *  thumbnails (play glyph, creator handle), linking out to the real
- *  profile rather than faking playable <video> sources. */
+ *  per-post video files or post IDs) — same honest constraint
+ *  InstagramSlider already works within, so the grid itself stays real
+ *  product photography, not fabricated per-item clips. What IS real: the
+ *  one cinematic brand video Silver Play actually has (the homepage hero
+ *  footage) — clicking any card plays it, rather than the click doing
+ *  nothing more than linking away. */
 export default function ProductLovedByCreators({ picks }: { picks: Product[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   if (picks.length === 0) return null;
 
   return (
-    <section className="bg-ink py-20 md:py-28">
+    <section className="heritage-sec relative bg-ink py-20 md:py-28">
+      <Image
+        src="/heritage/story-veena.jpg"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 z-[-1] object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/82" />
+
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="text-center">
           <Reveal>
@@ -39,7 +53,7 @@ export default function ProductLovedByCreators({ picks }: { picks: Product[] }) 
           </Reveal>
         </div>
 
-        <div ref={trackRef} className="mt-12 w-full overflow-hidden">
+        <div ref={trackRef} className="mt-12 flex w-full justify-center overflow-hidden">
           <motion.div
             drag="x"
             dragConstraints={trackRef}
@@ -50,14 +64,11 @@ export default function ProductLovedByCreators({ picks }: { picks: Product[] }) 
             className={`flex w-max gap-5 md:gap-6 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
           >
             {picks.map((p) => (
-              <Link
+              <button
                 key={p.handle}
-                href={PROFILE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                draggable={false}
-                onClickCapture={(e) => dragging && e.preventDefault()}
-                className="group relative block w-40 shrink-0 overflow-hidden rounded-[var(--radius-md)] p-[3px] transition-transform duration-500 sm:w-48"
+                type="button"
+                onClick={() => !dragging && setPlaying(true)}
+                className="group relative block w-40 shrink-0 overflow-hidden rounded-[var(--radius-md)] p-[3px] text-left transition-transform duration-500 sm:w-48"
                 style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
               >
                 <div className="relative aspect-[9/16] overflow-hidden rounded-[calc(var(--radius-md)-3px)] bg-ink-2">
@@ -83,7 +94,7 @@ export default function ProductLovedByCreators({ picks }: { picks: Product[] }) 
                     @thesilverplay
                   </p>
                 </div>
-              </Link>
+              </button>
             ))}
           </motion.div>
         </div>
@@ -99,6 +110,52 @@ export default function ProductLovedByCreators({ picks }: { picks: Product[] }) 
           </Link>
         </Reveal>
       </div>
+
+      {playing && <ReelModal onClose={() => setPlaying(false)} />}
     </section>
+  );
+}
+
+/** Portalled to <body> — same reason as the 3D-view and quick-view modals:
+ *  a `Reveal` ancestor's Framer Motion transform breaks `position: fixed`
+ *  for anything nested inside it. */
+function ReelModal({ onClose }: { onClose: () => void }) {
+  return createPortal(
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1c130b]/94 p-6 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close video"
+        className="absolute right-6 top-6 grid h-11 w-11 place-items-center rounded-full border border-bone/25 text-bone transition-colors hover:border-bone/60"
+      >
+        ×
+      </button>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-sm overflow-hidden rounded-[var(--radius-lg)] p-[3px]"
+        style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
+      >
+        <div className="relative aspect-[9/16] overflow-hidden rounded-[calc(var(--radius-lg)-3px)] bg-ink-2">
+          <video
+            src="/hero/silverplay-cinematic.mp4"
+            controls
+            autoPlay
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <p className="mt-3 px-2 pb-1 text-center font-body text-[0.78rem] italic text-bone/55">
+          Inside the Jaipur atelier — @thesilverplay
+        </p>
+      </div>
+    </motion.div>,
+    document.body,
   );
 }

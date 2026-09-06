@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Product } from "@/lib/catalog";
 import { Stars } from "@/components/ProductQuickView";
 import { placeholderRating } from "@/lib/rating";
@@ -30,7 +31,7 @@ export default function ProductReviews({ product }: { product: Product }) {
           <p className="eyebrow text-ash-3">Ratings &amp; Reviews</p>
         </Reveal>
 
-        <div className="mt-8 grid gap-10 md:grid-cols-[auto_1fr] md:gap-16">
+        <div className="mt-8 grid gap-10 md:grid-cols-[auto_1fr_auto] md:gap-14">
           {/* Average */}
           <div className="flex shrink-0 flex-col items-center text-center md:items-start md:text-left">
             <p className="font-display text-[3.2rem] leading-none text-ink">{rating}</p>
@@ -41,7 +42,7 @@ export default function ProductReviews({ product }: { product: Product }) {
           </div>
 
           {/* Breakdown */}
-          <div className="w-full max-w-md space-y-2">
+          <div className="w-full max-w-md space-y-2 self-center">
             {counts.map((c, i) => {
               const stars = 5 - i;
               const pct = count > 0 ? Math.round((c / count) * 100) : 0;
@@ -62,6 +63,26 @@ export default function ProductReviews({ product }: { product: Product }) {
                 </div>
               );
             })}
+          </div>
+
+          {/* Illustrative — no real review photos exist yet (no reviews
+              have been written), so this is the product's own second shot,
+              styled as "how it looks" rather than passed off as a customer
+              submission. */}
+          <div
+            className="mx-auto hidden w-[220px] shrink-0 overflow-hidden rounded-[var(--radius-md)] p-[3px] sm:block md:mx-0 md:w-[260px]"
+            style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
+          >
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[calc(var(--radius-md)-3px)] bg-bone-2">
+              <Image
+                src={product.images[1] ?? product.images[0]}
+                alt=""
+                aria-hidden
+                fill
+                sizes="260px"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
 
