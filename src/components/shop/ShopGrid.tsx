@@ -7,7 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { products, collections, collectionProducts, type Product } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
-import { HeritageCornerMark } from "@/components/heritage/deckle";
+import { DECKLE, HeritageCornerMark, HeritagePaisleyMark } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const TYPES = ["Earrings", "Pendants", "Rakhi"];
@@ -87,7 +87,26 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
   }, [source, types, vibeHandles, maxPrice, sort]);
 
   return (
-    <div className="grid gap-10 md:grid-cols-[220px_1fr] md:gap-10 lg:grid-cols-[260px_1fr] lg:gap-14">
+    <div className="relative isolate">
+      {/* Section-wide backdrop — a bounded band behind the top of the grid,
+          not stretched to the full (233-product-tall) scroll height, which
+          would squash the photo into an imperceptible sliver. Breaks out of
+          the page's own max-w-[1500px] wrapper to bleed full viewport width. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] overflow-hidden">
+        <div className="absolute left-1/2 top-0 h-full w-screen -translate-x-1/2">
+          <Image
+            src="/heritage/archive-balcony.jpg"
+            alt=""
+            aria-hidden
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-bone/70 via-bone/85 to-bone" />
+        </div>
+      </div>
+
+      <div className="grid gap-10 md:grid-cols-[220px_1fr] md:gap-10 lg:grid-cols-[260px_1fr] lg:gap-14">
       {/* Mobile filter toggle */}
       <button
         type="button"
@@ -113,22 +132,31 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
           alignSelf: "start",
         }}
       >
-        {/* Gilt mat, same technique as every other heritage card sitewide */}
+        {/* Gilt torn-edge mat — same deckle silhouette as every product
+            card, so the filter reads as part of the same paper family
+            rather than a plain settings box. */}
         <div
-          className="rounded-[var(--radius-lg)] p-[3px]"
-          style={{ background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)" }}
+          className="p-[3px]"
+          style={{
+            clipPath: DECKLE,
+            background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+          }}
         >
-          <div className="relative isolate overflow-hidden rounded-[calc(var(--radius-lg)-3px)] bg-ink px-6 py-8">
-            <Image
-              src="/heritage/manuscript-panels.jpg"
-              alt=""
-              aria-hidden
-              fill
-              sizes="260px"
-              className="pointer-events-none absolute inset-0 z-[-1] object-cover"
-            />
-            <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/85" />
-            <HeritageCornerMark className="pointer-events-none absolute right-3 top-3 h-6 w-6 -scale-x-100 opacity-60" />
+          <div
+            className="relative isolate px-6 py-9"
+            style={{
+              clipPath: DECKLE,
+              backgroundColor: "#241a10",
+              backgroundImage: [
+                "radial-gradient(circle at 88% 8%, rgba(216,180,102,0.14), transparent 42%)",
+                "radial-gradient(circle at 6% 92%, rgba(216,180,102,0.1), transparent 38%)",
+                "linear-gradient(155deg, #2e2115 0%, #241a10 55%, #1a120a 100%)",
+              ].join(", "),
+            }}
+          >
+            <HeritagePaisleyMark className="pointer-events-none absolute left-1/2 top-[55%] z-[-1] h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" />
+            <HeritageCornerMark className="pointer-events-none absolute right-4 top-4 z-[-1] h-6 w-6 -scale-x-100 opacity-60" />
+            <HeritageCornerMark className="pointer-events-none absolute bottom-4 left-4 z-[-1] h-6 w-6 -scale-y-100 opacity-60" />
 
             <p className="eyebrow mb-6 text-[#c9a35c]">Refine</p>
             <FilterPanel
@@ -162,18 +190,19 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
               onWheel={handlePanelWheel}
-              className="relative h-full w-[86vw] max-w-xs overflow-y-auto bg-ink p-6"
+              className="relative isolate h-full w-[86vw] max-w-xs overflow-y-auto p-6"
+              style={{
+                backgroundColor: "#241a10",
+                backgroundImage: [
+                  "radial-gradient(circle at 88% 8%, rgba(216,180,102,0.14), transparent 42%)",
+                  "radial-gradient(circle at 6% 92%, rgba(216,180,102,0.1), transparent 38%)",
+                  "linear-gradient(155deg, #2e2115 0%, #241a10 55%, #1a120a 100%)",
+                ].join(", "),
+              }}
             >
-              <Image
-                src="/heritage/manuscript-panels.jpg"
-                alt=""
-                aria-hidden
-                fill
-                sizes="360px"
-                className="pointer-events-none absolute inset-0 z-[-1] object-cover"
-              />
-              <div className="pointer-events-none absolute inset-0 z-[-1] bg-ink/85" />
-              <div className="flex items-center justify-between border-b border-[#8a6a2e]/25 pb-5">
+              <HeritagePaisleyMark className="pointer-events-none absolute left-1/2 top-[60%] z-[-1] h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" />
+              <HeritageCornerMark className="pointer-events-none absolute bottom-4 left-4 z-[-1] h-6 w-6 -scale-y-100 opacity-50" />
+              <div className="relative flex items-center justify-between border-b border-[#8a6a2e]/25 pb-5">
                 <p className="font-display text-[0.9rem] uppercase tracking-[0.2em] text-bone">
                   Filters
                 </p>
@@ -225,6 +254,7 @@ export default function ShopGrid({ baseProducts }: { baseProducts?: Product[] })
             ))}
           </Stagger>
         )}
+      </div>
       </div>
     </div>
   );
@@ -347,6 +377,8 @@ function FilterPanel({
         <p className="mt-1 font-body text-[0.95rem] text-bone/80">₹{maxPrice.toLocaleString("en-IN")}</p>
       </div>
 
+      <FilterDivider />
+
       <div>
         <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-[#c9a35c]/80">Category</p>
         <div className="mt-3 space-y-2.5">
@@ -355,6 +387,8 @@ function FilterPanel({
           ))}
         </div>
       </div>
+
+      <FilterDivider />
 
       <div>
         <p className="font-display text-[0.68rem] uppercase tracking-[0.2em] text-[#c9a35c]/80">Shop by Vibe</p>
@@ -373,6 +407,19 @@ function FilterPanel({
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+/** A thin gold rule with a small diamond at its centre — the same
+ *  manuscript-divider language as the medallion rules elsewhere on the
+ *  site, scaled down to fit between filter groups. */
+function FilterDivider() {
+  return (
+    <div className="flex items-center gap-3 opacity-60" aria-hidden>
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[#c9a35c]/70" />
+      <span className="h-1.5 w-1.5 rotate-45 bg-[#c9a35c]/70" />
+      <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[#c9a35c]/70" />
     </div>
   );
 }
