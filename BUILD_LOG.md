@@ -337,3 +337,32 @@ scroll-not-advancing complaint as Royal Simplicity did earlier.
   and the Journal Showcase section's new (shorter) height took effect.
 
 Pushed to `origin/main` at `a2e7b85`.
+
+## 2026-09-06 — Journal Showcase: flatten the 3D arc
+
+**Requested**
+Direct follow-up after the pacing fix: "Stories, Worn as Silver ... its
+not moving right or left as the above section her royal simplicity" —
+comparing it against Royal Simplicity's flat horizontal slide.
+
+**Diagnosis**
+The earlier pacing fix (82vh->62vh) made the arc rotate through more per
+scroll input, correctly — but the section's dominant visual motion was
+never horizontal. It's a 3D perspective arc: cards move via `rotateY`
+(30deg/slot) and `translateZ` (640px/slot recede), with horizontal `x`
+translation as a secondary component. That reads as "cards rotating away
+into depth," not "cards sliding left/right," regardless of how much the
+underlying scroll progress changes.
+
+**Change**
+Cut `DEPTH` 640->160 and `ANGLE` 30deg->8deg so the 3D recede/rotate
+becomes a subtle accent instead of the dominant effect; bumped
+`STEP_VW`/`STEP_MAX` (36vw/440px -> 40vw/480px) so horizontal sliding is
+now the obvious, primary motion. Confirmed visually (side-by-side before/
+after screenshots at the same scroll position) that cards now sit much
+flatter and the perceived motion is a horizontal slide, matching Royal
+Simplicity's card strip.
+
+**Verification**
+`npx tsc --noEmit` and `npm run build` clean (558 routes). Confirmed on
+a fresh build. Pushed to `origin/main` at `c099345`.

@@ -129,6 +129,18 @@ buttons are pills.
   Lenis/GSAP" note: prefer small real scroll-wheel steps
   (`computer`/`scroll`) with a settle wait after each, especially for
   anything checking sticky-pin state, not just transform values.
+- "Scroll pacing feels broken" and "doesn't look like it's moving
+  left/right" are two DIFFERENT bugs that can both hide behind the same
+  user complaint. Pacing (how much progress per scroll input) is fixed by
+  the vh-per-item height multiplier — [[silverplay-scroll-carousel]].
+  But a 3D-perspective carousel (JournalShowcase's rotateY/translateZ
+  arc) can have perfect pacing and still not read as "moving left/right"
+  the way a flat horizontal-translateX strip (Royal Simplicity) does,
+  because depth/rotation dominates the perceived motion over the x
+  component. If a user compares one scroll section unfavorably to
+  another by name, check whether the two use the same motion mechanism
+  before assuming it's a pacing-only fix — it may need the dominant axis
+  of motion changed, not just its magnitude.
 
 ## Section queue
 Homepage, shop/collections (dark filter sidebar + fixed bg photo), and product
