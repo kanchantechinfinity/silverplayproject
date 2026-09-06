@@ -161,7 +161,7 @@ export default function RoyalSimplicity() {
                     }}
                     transition={{ duration: 0.8, ease }}
                     className={cn(
-                      "relative aspect-[3/4.4] h-[clamp(240px,48vh,500px)] shrink-0 overflow-hidden rounded-[var(--radius-xl)] bg-ink-2 ring-2 transition-shadow duration-500",
+                      "relative w-[clamp(260px,22vw,440px)] h-[clamp(320px,50vh,540px)] shrink-0 overflow-hidden rounded-[var(--radius-xl)] bg-ink-2 ring-2 transition-shadow duration-500",
                       isActive ? "ring-[#d8b466]/70" : "ring-transparent hover:ring-[#d8b466]/45",
                     )}
                   >
@@ -169,7 +169,7 @@ export default function RoyalSimplicity() {
                       src={p.images[0]}
                       alt={p.title}
                       fill
-                      sizes="(max-width: 768px) 72vw, 420px"
+                      sizes="(max-width: 768px) 72vw, 400px"
                       priority={i < 2}
                       className="object-cover"
                     />
@@ -196,20 +196,10 @@ export default function RoyalSimplicity() {
 
                     {/* Label */}
                     <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-center">
-                      <motion.h3
-                        animate={{
-                          fontSize: isActive ? "1.06rem" : "0.72rem",
-                          opacity: isActive ? 1 : 0.85,
-                        }}
-                        transition={{ duration: 0.7, ease }}
-                        className="uppercase leading-tight tracking-[0.16em] text-bone"
-                      >
-                        {p.title}
-                      </motion.h3>
                       <motion.p
                         animate={{ opacity: isActive ? 1 : 0.5 }}
                         transition={{ duration: 0.7, ease }}
-                        className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
+                        className="mx-auto max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
                       >
                         {taglineFor(p)}
                       </motion.p>
@@ -225,7 +215,7 @@ export default function RoyalSimplicity() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink via-ink/70 to-transparent" />
 
         {/* Controls */}
-        <div className="relative z-10 flex items-center justify-center gap-3 pb-8">
+        <div className="relative z-10 mt-8 flex items-center justify-center gap-3 pb-8">
           <button
             onClick={() => goTo(active === 0 ? last : active - 1)}
             aria-label="Previous piece"
