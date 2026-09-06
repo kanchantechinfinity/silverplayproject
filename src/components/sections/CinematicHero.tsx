@@ -98,6 +98,7 @@ export default function CinematicHero() {
 function HeroSkeleton() {
   return (
     <section
+      data-page-hero
       className="relative h-screen w-full bg-ink"
       style={{
         backgroundImage: `url(${cinematicHero.poster})`,
@@ -115,6 +116,7 @@ function StaticHero() {
 
   return (
     <section
+      data-page-hero
       className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-ink"
       style={{
         backgroundImage: `url(${cinematicHero.poster})`,
@@ -270,7 +272,7 @@ function ScrubbingHero({ src, isMobile }: { src: string; isMobile: boolean }) {
   }, [isMobile]);
 
   return (
-    <div ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-ink">
+    <div ref={sectionRef} data-page-hero className="relative h-screen w-full overflow-hidden bg-ink">
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"

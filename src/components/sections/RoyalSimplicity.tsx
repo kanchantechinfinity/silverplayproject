@@ -20,7 +20,7 @@ import {
   type Product,
 } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
-import { DECKLE, HeritageMonument } from "@/components/heritage/deckle";
+import { HeritageMonument } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -43,9 +43,14 @@ export default function RoyalSimplicity() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(340);
+  const [cardWidth, setCardWidth] = useState(300);
   const [active, setActive] = useState(0);
 
-  /* Measure one card plus its gap so the track maths stay exact at any width. */
+  /* Measure one card plus its gap so the track maths stay exact at any
+   * width — the card's own width is no longer a fixed rem value, it's
+   * derived from the oval frame's viewport-relative height, so both the
+   * track step AND the centering offset below have to be measured rather
+   * than guessed. */
   useEffect(() => {
     const measure = () => {
       const el = cardRef.current;
@@ -53,7 +58,9 @@ export default function RoyalSimplicity() {
       const gap = parseFloat(
         getComputedStyle(el.parentElement!).columnGap || "24",
       );
-      setStep(el.getBoundingClientRect().width + (Number.isNaN(gap) ? 24 : gap));
+      const width = el.getBoundingClientRect().width;
+      setCardWidth(width);
+      setStep(width + (Number.isNaN(gap) ? 24 : gap));
     };
     measure();
     window.addEventListener("resize", measure);
@@ -106,7 +113,7 @@ export default function RoyalSimplicity() {
     <section
       ref={wrapRef}
       className="heritage-sec relative bg-ink"
-      style={{ height: `${(items.length + 1) * 85}vh` }}
+      style={{ height: `${items.length * 85}vh` }}
       aria-roledescription="carousel"
       aria-label={edit.title}
     >
@@ -114,7 +121,7 @@ export default function RoyalSimplicity() {
         <div className="heritage-wallpaper text-bone-3 opacity-[0.04]" aria-hidden />
         <HeritageMonument className="pointer-events-none absolute -bottom-6 -right-8 z-[-1] h-[clamp(240px,32vw,400px)] w-auto scale-x-[-1] text-bone-3 opacity-[0.16]" />
         {/* Heading */}
-        <div className="mx-auto w-full max-w-3xl px-5 pt-24 pb-8 text-center md:pt-28 md:pb-10">
+        <div className="mx-auto w-full max-w-3xl px-5 pt-16 pb-6 text-center md:pt-20 md:pb-8">
           <Reveal>
             <p className="eyebrow text-ash-3">The Edit</p>
           </Reveal>
@@ -132,8 +139,8 @@ export default function RoyalSimplicity() {
         {/* Deck */}
         <div className="relative flex flex-1 items-center">
           <motion.div
-            style={{ x }}
-            className="flex items-center gap-5 pl-[calc(50vw-9rem)] will-change-transform md:gap-7 md:pl-[calc(50vw-11rem)]"
+            style={{ x, paddingLeft: `calc(50vw - ${cardWidth / 2}px)` }}
+            className="flex items-center gap-5 will-change-transform md:gap-7"
           >
             {displayItems.map((p, i) => {
               const isActive = i === active + loopCount;
@@ -142,7 +149,7 @@ export default function RoyalSimplicity() {
                 <div
                   key={`${p.handle}-${i}`}
                   ref={i === 0 ? cardRef : undefined}
-                  className="w-[18rem] shrink-0 cursor-pointer md:w-[22rem]"
+                  className="flex shrink-0 cursor-pointer flex-col items-center"
                   aria-hidden={!isActive}
                   onClick={() => goTo(realIndex)}
                 >
@@ -156,74 +163,76 @@ export default function RoyalSimplicity() {
                       opacity: isActive ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.8, ease }}
-                    className="relative"
+                    className="relative flex flex-col items-center"
                   >
-                    {/* Gilt deckle mat — replaces the rounded/ring frame; the
-                        same torn-paper edge used by every other homepage card. */}
+                    {/* Oval mirror frame — sized off the viewport's own
+                        height (not a fixed width forcing a fixed aspect),
+                        so it always fits the deck's available space instead
+                        of overflowing it on shorter screens. */}
                     <div
                       className={cn(
-                        "p-[3px] transition-[filter] duration-500",
+                        "aspect-[3/4] h-[clamp(190px,36vh,360px)] shrink-0 p-[10px] transition-[filter] duration-500",
                         isActive ? "" : "grayscale-[15%]",
                       )}
                       style={{
-                        clipPath: DECKLE,
+                        borderRadius: "50%",
                         background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
                         filter: isActive
                           ? "drop-shadow(0 20px 34px rgba(26,22,20,0.45))"
                           : "drop-shadow(0 6px 14px rgba(26,22,20,0.25))",
                       }}
                     >
-                    <div className="relative aspect-[3/4.4] bg-ink-2" style={{ clipPath: DECKLE }}>
-                      <Image
-                        src={p.images[0]}
-                        alt={p.title}
-                        fill
-                        sizes="(max-width: 768px) 72vw, 22rem"
-                        priority={i < 2}
-                        className="object-cover"
-                      />
-                      {/* Legibility wash, deeper on the resting cards */}
-                      <motion.div
-                        animate={{ opacity: isActive ? 1 : 0.55 }}
-                        transition={{ duration: 0.8, ease }}
-                        className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent"
-                      />
-
-                      {/* Chip */}
-                      <motion.div
-                        animate={{
-                          opacity: isActive ? 1 : 0,
-                          y: isActive ? 0 : -8,
-                        }}
-                        transition={{ duration: 0.7, ease }}
-                        className="absolute inset-x-0 top-5 flex justify-center"
+                      <div
+                        className="relative h-full w-full overflow-hidden bg-ink-2 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.35),inset_0_10px_26px_rgba(0,0,0,0.4)]"
+                        style={{ borderRadius: "50%" }}
                       >
-                        <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
-                          {inr(p.price)}
-                        </span>
-                      </motion.div>
-
-                      {/* Label */}
-                      <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-center">
-                        <motion.h3
-                          animate={{
-                            fontSize: isActive ? "1.06rem" : "0.72rem",
-                            opacity: isActive ? 1 : 0.85,
-                          }}
+                        <Image
+                          src={p.images[0]}
+                          alt={p.title}
+                          fill
+                          sizes="(max-width: 768px) 60vh, 380px"
+                          priority={i < 2}
+                          className="object-cover"
+                        />
+                        {/* Legibility wash for the price chip, deeper on resting cards */}
+                        <motion.div
+                          animate={{ opacity: isActive ? 1 : 0.55 }}
+                          transition={{ duration: 0.8, ease }}
+                          className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"
+                        />
+                        <motion.div
+                          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -8 }}
                           transition={{ duration: 0.7, ease }}
-                          className="uppercase leading-tight tracking-[0.16em] text-bone"
+                          className="absolute inset-x-0 bottom-[18%] flex justify-center"
                         >
-                          {p.title}
-                        </motion.h3>
-                        <motion.p
-                          animate={{ opacity: isActive ? 1 : 0.5 }}
-                          transition={{ duration: 0.7, ease }}
-                          className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
-                        >
-                          {taglineFor(p)}
-                        </motion.p>
+                          <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
+                            {inr(p.price)}
+                          </span>
+                        </motion.div>
                       </div>
                     </div>
+
+                    {/* Caption plaque, like a label beneath a museum mirror —
+                        living outside the oval mask entirely, so text is
+                        never at risk of being cropped by the curve. */}
+                    <div className="mt-4 max-w-[16rem] text-center">
+                      <motion.h3
+                        animate={{
+                          fontSize: isActive ? "1.06rem" : "0.72rem",
+                          opacity: isActive ? 1 : 0.85,
+                        }}
+                        transition={{ duration: 0.7, ease }}
+                        className="uppercase leading-tight tracking-[0.16em] text-bone"
+                      >
+                        {p.title}
+                      </motion.h3>
+                      <motion.p
+                        animate={{ opacity: isActive ? 1 : 0.5 }}
+                        transition={{ duration: 0.7, ease }}
+                        className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
+                      >
+                        {taglineFor(p)}
+                      </motion.p>
                     </div>
                   </motion.div>
                 </div>
@@ -236,7 +245,7 @@ export default function RoyalSimplicity() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink/60 to-transparent" />
 
         {/* Controls */}
-        <div className="relative z-10 flex items-center justify-center gap-3 pb-12">
+        <div className="relative z-10 flex items-center justify-center gap-3 pb-8">
           <button
             onClick={() => goTo(active === 0 ? last : active - 1)}
             aria-label="Previous piece"

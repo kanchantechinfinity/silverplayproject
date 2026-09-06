@@ -25,14 +25,19 @@ export default function Header() {
     // PageHero's real ~52vh on interior pages, and even further past pages
     // with no hero at all (the single product page), so the header stayed
     // transparent long after the dark banner it's meant to sit over had
-    // already ended.
+    // already ended. A page with no hero marker at all has nothing for the
+    // transparent look to sit over in the first place, so it just starts
+    // already pinned — the same floating cream pill every other page
+    // settles into, from the very first frame instead of scrolling into it.
     const onScroll = () => {
       let threshold = window.__heroScrollEnd;
       if (threshold == null) {
         const hero = document.querySelector<HTMLElement>("[data-page-hero]");
-        threshold = hero
-          ? hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight - 1
-          : 1; // no hero on this page at all — pin as soon as any scroll happens
+        if (!hero) {
+          setPinned(true);
+          return;
+        }
+        threshold = hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight - 1;
       }
       setPinned(window.scrollY > threshold);
     };
