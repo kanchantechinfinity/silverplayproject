@@ -279,3 +279,61 @@ card-width's movement, reading as "not working."
   feels right.
 
 Pushed to `origin/main` at `cee9114`.
+
+## 2026-09-06 — Royal Simplicity sizing/text; Journal Showcase pacing
+
+**Requested**
+From a real-browser screenshot with the product title circled: make Royal
+Simplicity cards bigger so only ~5 fit on screen at once, remove the big
+capitalized product-title text, add space above the "Shop The Edit" row.
+Mid-task: "Stories, Worn as Silver" (JournalShowcase) has the same
+scroll-not-advancing complaint as Royal Simplicity did earlier.
+
+**Changes**
+- `RoyalSimplicity.tsx` card sizing switched from height-only
+  (`aspect-[3/4.4] h-[clamp(...)]`) to independent width and height clamps
+  (`w-[clamp(260px,22vw,440px)] h-[clamp(320px,50vh,540px)]`, no
+  aspect-ratio class) — width now targets a 5-cards-per-screen density
+  directly via `vw`, height stays independently viewport-height-bounded
+  so the short-viewport overflow bug can't reappear. Tuning note: the
+  first attempt (18vw) measured ~6 cards, not 5 — the mistake was
+  measuring an *inactive* card, which renders at 0.84 scale, not the true
+  base size; corrected by measuring an actual active (1.0-scale) card's
+  rendered width against viewport width (22vw landed at ~5.1 visible).
+  Removed the `<motion.h3>` product-title line entirely, keeping the price
+  chip and italic tagline. Controls row: `pt-8` (padding — invisible,
+  doesn't move the box) corrected to `mt-8` (margin — the deck and
+  controls are flex siblings, so only margin creates real space between
+  them); verified 32px gap via `getBoundingClientRect` before/after.
+- `JournalShowcase.tsx`: same root cause as Royal Simplicity's earlier
+  fix — `(n+0.6)*82vh` needed ~5 viewport-heights of scroll to fully
+  rotate the 3D arc, so ordinary scrolling produced too little visible
+  rotation. Cut to `62vh`/item (same ratio as the Royal Simplicity fix).
+  Confirmed via real wheel-scroll input + computed `transform` on the
+  card before/after: the identical physical scroll gesture now produces
+  ~1.4x more transform delta (translateX/Z), matching the height cut.
+
+**Bugs hit while testing (methodology, not product bugs)**
+- A test using a big direct `window.scrollTo()` jump (807px in one call)
+  left the sticky child fully un-pinned/scrolled away even though the
+  numeric scrollY said we were still mid-section — this is the existing
+  documented Lenis-vs-`scrollTo()` desync gotcha (Lenis's own RAF loop
+  fights a jump it didn't initiate), not a real defect. Smaller
+  real-wheel-scroll tests with a settle wait after each step gave
+  consistent, trustworthy results throughout.
+- Right after a fresh navigate, `scrollY` was observed drifting on its
+  own by ~150-2000px with no scroll input — almost certainly Chrome's
+  scroll-anchoring compensating while images/fonts above the fold were
+  still loading/shifting layout on this image-heavy homepage. Waiting
+  ~2.5s after navigate before taking a baseline measurement eliminated
+  the drift.
+
+**Verification**
+- `npx tsc --noEmit` and `npm run build` clean (558 routes). One build
+  attempt hit the known Windows `.next/` EPERM lock (OneDrive-synced
+  folder); `rm -rf .next` and rebuilding resolved it.
+- Confirmed live on a fresh build: ~5.1 cards visible at 1920px width, no
+  `<h3>` in the Royal Simplicity carousel, 32px gap above its controls,
+  and the Journal Showcase section's new (shorter) height took effect.
+
+Pushed to `origin/main` at `a2e7b85`.

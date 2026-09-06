@@ -99,6 +99,36 @@ buttons are pills.
   contradicts a direct DOM/computed-style check, trust the DOM check and
   force a fresh capture via a hard `navigate` reload rather than retrying
   screenshot alone.
+- Sizing a card by BOTH an aspect-ratio class and a height clamp (e.g.
+  `aspect-[3/4.4] h-[clamp(...)]`) makes width a derived, not directly
+  controllable, quantity — to target a specific number of items visible
+  per screen width, set width and height as two independent clamps
+  instead (drop the aspect-ratio class) so each axis can be tuned against
+  what actually bounds it (vw for "N per screen", vh for "never overflow
+  a short viewport"), and let `object-cover` absorb any minor ratio drift.
+- When measuring a scaled/animated card's "base" size in a Framer Motion
+  carousel (active vs. inactive states often differ by a `scale` like
+  0.84), measure the ACTIVE card's rendered rect, not an arbitrary one —
+  an inactive card's `getBoundingClientRect()` already includes the
+  scale-down transform and will read smaller than the real base size.
+- `padding-top` on an element does not create space between it and its
+  previous flex sibling — it only pushes that element's own content down
+  *inside* its box. To add visible gap between two flex/grid siblings,
+  use `margin-top` (or `gap` on the parent) instead.
+- Right after a fresh page navigate, `window.scrollY` can drift on its
+  own for a couple of seconds with zero scroll input (observed as much as
+  ~150-2000px) on this image-heavy homepage — almost certainly Chrome's
+  scroll-anchoring compensating for images/fonts still loading and
+  shifting layout above the fold. Wait ~2-3s after navigate before taking
+  a baseline scroll measurement, or the "before" reading will be bogus.
+- A large direct `window.scrollTo()` jump (many hundreds of px in one
+  call) can leave a Lenis-pinned `position: sticky` section fully
+  un-pinned even though `window.scrollY` reports a position that should
+  still be mid-section — Lenis's own RAF loop fights a jump it didn't
+  originate. Extends the existing "scrollTo is unreliable with
+  Lenis/GSAP" note: prefer small real scroll-wheel steps
+  (`computer`/`scroll`) with a settle wait after each, especially for
+  anything checking sticky-pin state, not just transform values.
 
 ## Section queue
 Homepage, shop/collections (dark filter sidebar + fixed bg photo), and product
