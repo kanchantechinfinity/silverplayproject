@@ -215,5 +215,67 @@ round; see [[memory.md]] for the reusable patterns extracted from all three
 - No horizontal overflow at 1280px (`scrollWidth === clientWidth`).
 
 **Not done / next**
-Nothing outstanding from this round. Commit `3292b05` is local only — not
-pushed (push on explicit request per standing instruction).
+Nothing outstanding from this round. Pushed to `origin/main` at `2113029` on
+explicit request.
+
+## 2026-09-06 — Vercel deploy check; Royal Simplicity paper-card revert
+
+**Requested**
+"Many things are not pushed correctly on Vercel" (no specifics given).
+Then, from a screenshot of the live "Her Royal Simplicity" homepage section:
+the deck isn't visibly advancing left/right on scroll, and remove the
+"ancient paper design" entirely — go back to how the section looked before.
+Two follow-ups: confirmed the re-tuned scroll pacing now works and to keep
+it; make the cards a little taller and restore the visible brown gradient
+behind the card title/tagline (as it looked before the section was trimmed).
+
+**Diagnosis: "not pushed correctly on Vercel"**
+Direct HTTP checks (`curl`, bypassing the Browser pane entirely) showed the
+deployment was actually correct and current: HTML 200, the CSS bundle 200
+and containing the exact `aspect-ratio:4/3` rule from the just-pushed review
+photo fix, heritage photos/video/JS chunks all 200, and the real
+`cdn.shopify.com` image URLs in the rendered HTML 200. What looked broken
+inside the Browser pane itself (`position:static` instead of `relative`,
+an image collapsed to viewport size) traced to the pane's own network layer
+returning `net::ERR_BLOCKED_BY_CLIENT` for `_next/static/*` and `/heritage/*`
+requests — a tooling artifact of that preview browser, not a deployment
+defect. No code change was needed for this part; see [[memory.md]] gotchas.
+
+**Diagnosis: scroll not advancing**
+Dispatched real wheel-scroll input (not `window.scrollTo`, which Lenis/GSAP
+smooth-scroll setups make an unreliable proxy for real interaction — see
+existing gotcha) and read the track's live computed `transform` before and
+after. Scroll position and horizontal transform did correlate correctly, so
+the tracking mechanism itself wasn't broken — but the section's scroll
+distance (`items.length * 85vh`, 4+ viewport-heights to traverse the whole
+deck) meant one normal scroll gesture only produced a small fraction of a
+card-width's movement, reading as "not working."
+
+**Changes** (`RoyalSimplicity.tsx`)
+- Removed the DECKLE clip-path gilt mat, `heritage-sec`/heritage-wallpaper
+  texture, and `HeritageMonument` silhouette entirely. Cards are back to
+  plain `rounded-[var(--radius-xl)]` with a gold ring highlight on the
+  active card — the pre-heritage-styling look from commit `1aaccfd` — but
+  keep the height-driven responsive sizing (`h-[clamp(...)]`) from the
+  overflow-bug fix rather than reverting to the original's fixed width,
+  since that fixed width could still overflow at short viewports.
+- Section height `items.length * 85vh` -> `65vh` so scroll pacing matches
+  real input.
+- Card height clamp `220-420px @44vh` -> `240-500px @48vh` (taller, per
+  follow-up feedback) — verified this still leaves headroom against the
+  deck's available flex height at a short (563px) viewport, no overflow.
+- Bottom-of-section gradient `h-16 from-ink/60` -> `h-32 from-ink
+  via-ink/70 to-transparent` (restores the stronger fade the user
+  remembered, lost during an earlier space-trimming round).
+
+**Verification**
+- `npx tsc --noEmit` and `npm run build` clean (558 routes).
+- Confirmed the paper styling was gone and cards read taller via DOM
+  `className`/computed-size checks — screenshots intermittently returned a
+  stale cached frame mid-session (same known Browser pane issue); a hard
+  navigate reload reliably produced a fresh, correct capture.
+- Re-ran the real-wheel-scroll transform check after the height change to
+  confirm the fix, then got direct user confirmation scroll pacing now
+  feels right.
+
+Pushed to `origin/main` at `cee9114`.

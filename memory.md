@@ -78,6 +78,27 @@ buttons are pills.
 - CSS Grid sticky sidebar: put `md:items-start` on the grid and
   `md:sticky md:top-N` on the shorter child only — its containing block
   becomes the (taller) row while it stays natural height.
+- The Browser pane can spuriously return `net::ERR_BLOCKED_BY_CLIENT` for
+  `_next/static/*`/image requests on a deployed (non-localhost) origin,
+  making a perfectly good deploy look broken (unstyled layout, images
+  collapsed to viewport size) inside the pane. Before concluding a
+  Vercel/production deploy is broken, verify with a direct `curl` (HTML
+  200, the actual CSS bundle 200 and containing the expected rule, a real
+  asset URL 200) — bypasses the pane entirely.
+- Testing a Lenis/GSAP scroll-linked section: `window.scrollTo()` is an
+  unreliable proxy (see existing note). To check whether Framer Motion's
+  `useScroll`/`useTransform` is really tracking, dispatch a real wheel
+  scroll (`computer` tool's `scroll` action) and read the target's live
+  computed `transform`, not just scrollY. A section can be mechanically
+  correct yet still feel "broken" to a user if its scroll distance
+  (e.g. `items.length * 85vh`) is so long that one normal scroll gesture
+  only moves the content a few percent — tune the vh-per-item multiplier
+  for perceptible movement, don't assume the hook is broken.
+- Screenshot staleness (existing gotcha) can persist across several
+  scroll/JS-triggered repaints in the same tab; when a screenshot
+  contradicts a direct DOM/computed-style check, trust the DOM check and
+  force a fresh capture via a hard `navigate` reload rather than retrying
+  screenshot alone.
 
 ## Section queue
 Homepage, shop/collections (dark filter sidebar + fixed bg photo), and product
