@@ -8,8 +8,12 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductBuyBox from "@/components/product/ProductBuyBox";
 import ProductInfoAccordion from "@/components/product/ProductInfoAccordion";
+import ProductBoxContents from "@/components/product/ProductBoxContents";
+import ProductPairedWith from "@/components/product/ProductPairedWith";
 import ProductReviews from "@/components/product/ProductReviews";
+import ProductLovedByCreators from "@/components/product/ProductLovedByCreators";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
+import FAQ from "@/components/sections/FAQ";
 import { getProduct, getCollection, products, collections, collectionProducts, chipFor } from "@/lib/catalog";
 import { dummyProductByHandle, dummyCollectionHandle, makeDummyProducts } from "@/lib/dummy";
 
@@ -72,6 +76,14 @@ export default async function ProductPage({
       )
     : collectionProducts(product.type.toLowerCase(), 5).filter((p) => p.handle !== product.handle);
 
+  // "Complete the look" pairs a genuinely different piece type (a pendant
+  // gets an earring suggestion, not another pendant) — deterministic by
+  // product id rather than random, so the pairing is stable on reload.
+  const otherType = products.filter((p) => p.type !== product.type && p.handle !== product.handle);
+  const pairProduct = otherType.length > 0 ? otherType[product.id % otherType.length] : null;
+
+  const creatorPicks = (related.length > 0 ? related : products.filter((p) => p.handle !== product.handle)).slice(0, 8);
+
   return (
     <>
       <Header />
@@ -104,7 +116,13 @@ export default async function ProductPage({
           </div>
         </div>
 
+        <ProductBoxContents />
+
+        {pairProduct && <ProductPairedWith product={product} pair={pairProduct} />}
+
         <ProductReviews product={product} />
+
+        <ProductLovedByCreators picks={creatorPicks} />
 
         {related.length > 0 && (
           <section className="border-t border-ink/10 bg-bone-2 py-20 md:py-28">
@@ -124,6 +142,8 @@ export default async function ProductPage({
         )}
 
         <RecentlyViewed currentHandle={product.handle} />
+
+        <FAQ />
       </main>
       <Footer />
     </>
