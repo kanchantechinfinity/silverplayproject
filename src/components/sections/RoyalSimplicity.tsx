@@ -20,7 +20,6 @@ import {
   type Product,
 } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
-import { DECKLE, HeritageMonument } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -112,14 +111,12 @@ export default function RoyalSimplicity() {
   return (
     <section
       ref={wrapRef}
-      className="heritage-sec relative bg-ink"
-      style={{ height: `${items.length * 85}vh` }}
+      className="relative bg-ink"
+      style={{ height: `${items.length * 65}vh` }}
       aria-roledescription="carousel"
       aria-label={edit.title}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        <div className="heritage-wallpaper text-bone-3 opacity-[0.04]" aria-hidden />
-        <HeritageMonument className="pointer-events-none absolute -bottom-6 -right-8 z-[-1] h-[clamp(240px,32vw,400px)] w-auto scale-x-[-1] text-bone-3 opacity-[0.16]" />
         {/* Heading */}
         <div className="mx-auto w-full max-w-3xl px-5 pt-16 pb-6 text-center md:pt-20 md:pb-8">
           <Reveal>
@@ -163,77 +160,59 @@ export default function RoyalSimplicity() {
                       opacity: isActive ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.8, ease }}
-                    className="relative"
+                    className={cn(
+                      "relative aspect-[3/4.4] h-[clamp(240px,48vh,500px)] shrink-0 overflow-hidden rounded-[var(--radius-xl)] bg-ink-2 ring-2 transition-shadow duration-500",
+                      isActive ? "ring-[#d8b466]/70" : "ring-transparent hover:ring-[#d8b466]/45",
+                    )}
                   >
-                    {/* Gilt deckle mat — the same torn-paper edge every other
-                        homepage card uses. Height-driven (not a fixed width
-                        forcing a fixed aspect) so it always fits the deck's
-                        available space instead of overflowing it on shorter
-                        screens. */}
-                    <div
-                      className={cn(
-                        "aspect-[3/4.4] h-[clamp(220px,44vh,420px)] shrink-0 p-[3px] transition-[filter] duration-500",
-                        isActive ? "" : "grayscale-[15%]",
-                      )}
-                      style={{
-                        clipPath: DECKLE,
-                        background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
-                        filter: isActive
-                          ? "drop-shadow(0 20px 34px rgba(26,22,20,0.45))"
-                          : "drop-shadow(0 6px 14px rgba(26,22,20,0.25))",
+                    <Image
+                      src={p.images[0]}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width: 768px) 72vw, 420px"
+                      priority={i < 2}
+                      className="object-cover"
+                    />
+                    {/* Legibility wash, deeper on the resting cards */}
+                    <motion.div
+                      animate={{ opacity: isActive ? 1 : 0.55 }}
+                      transition={{ duration: 0.8, ease }}
+                      className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent"
+                    />
+
+                    {/* Chip */}
+                    <motion.div
+                      animate={{
+                        opacity: isActive ? 1 : 0,
+                        y: isActive ? 0 : -8,
                       }}
+                      transition={{ duration: 0.7, ease }}
+                      className="absolute inset-x-0 top-5 flex justify-center"
                     >
-                      <div className="relative h-full w-full bg-ink-2" style={{ clipPath: DECKLE }}>
-                        <Image
-                          src={p.images[0]}
-                          alt={p.title}
-                          fill
-                          sizes="(max-width: 768px) 72vw, 420px"
-                          priority={i < 2}
-                          className="object-cover"
-                        />
-                        {/* Legibility wash, deeper on the resting cards */}
-                        <motion.div
-                          animate={{ opacity: isActive ? 1 : 0.55 }}
-                          transition={{ duration: 0.8, ease }}
-                          className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent"
-                        />
+                      <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
+                        {inr(p.price)}
+                      </span>
+                    </motion.div>
 
-                        {/* Chip */}
-                        <motion.div
-                          animate={{
-                            opacity: isActive ? 1 : 0,
-                            y: isActive ? 0 : -8,
-                          }}
-                          transition={{ duration: 0.7, ease }}
-                          className="absolute inset-x-0 top-5 flex justify-center"
-                        >
-                          <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
-                            {inr(p.price)}
-                          </span>
-                        </motion.div>
-
-                        {/* Label */}
-                        <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-center">
-                          <motion.h3
-                            animate={{
-                              fontSize: isActive ? "1.06rem" : "0.72rem",
-                              opacity: isActive ? 1 : 0.85,
-                            }}
-                            transition={{ duration: 0.7, ease }}
-                            className="uppercase leading-tight tracking-[0.16em] text-bone"
-                          >
-                            {p.title}
-                          </motion.h3>
-                          <motion.p
-                            animate={{ opacity: isActive ? 1 : 0.5 }}
-                            transition={{ duration: 0.7, ease }}
-                            className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
-                          >
-                            {taglineFor(p)}
-                          </motion.p>
-                        </div>
-                      </div>
+                    {/* Label */}
+                    <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-center">
+                      <motion.h3
+                        animate={{
+                          fontSize: isActive ? "1.06rem" : "0.72rem",
+                          opacity: isActive ? 1 : 0.85,
+                        }}
+                        transition={{ duration: 0.7, ease }}
+                        className="uppercase leading-tight tracking-[0.16em] text-bone"
+                      >
+                        {p.title}
+                      </motion.h3>
+                      <motion.p
+                        animate={{ opacity: isActive ? 1 : 0.5 }}
+                        transition={{ duration: 0.7, ease }}
+                        className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
+                      >
+                        {taglineFor(p)}
+                      </motion.p>
                     </div>
                   </motion.div>
                 </div>
@@ -243,7 +222,7 @@ export default function RoyalSimplicity() {
         </div>
 
         {/* Bottom gradient */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink/60 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink via-ink/70 to-transparent" />
 
         {/* Controls */}
         <div className="relative z-10 flex items-center justify-center gap-3 pb-8">
