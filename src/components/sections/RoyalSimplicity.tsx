@@ -20,7 +20,7 @@ import {
   type Product,
 } from "@/lib/catalog";
 import { cn, inr } from "@/lib/utils";
-import { HeritageMonument } from "@/components/heritage/deckle";
+import { DECKLE, HeritageMonument } from "@/components/heritage/deckle";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -149,7 +149,7 @@ export default function RoyalSimplicity() {
                 <div
                   key={`${p.handle}-${i}`}
                   ref={i === 0 ? cardRef : undefined}
-                  className="flex shrink-0 cursor-pointer flex-col items-center"
+                  className="shrink-0 cursor-pointer"
                   aria-hidden={!isActive}
                   onClick={() => goTo(realIndex)}
                 >
@@ -163,76 +163,77 @@ export default function RoyalSimplicity() {
                       opacity: isActive ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.8, ease }}
-                    className="relative flex flex-col items-center"
+                    className="relative"
                   >
-                    {/* Oval mirror frame — sized off the viewport's own
-                        height (not a fixed width forcing a fixed aspect),
-                        so it always fits the deck's available space instead
-                        of overflowing it on shorter screens. */}
+                    {/* Gilt deckle mat — the same torn-paper edge every other
+                        homepage card uses. Height-driven (not a fixed width
+                        forcing a fixed aspect) so it always fits the deck's
+                        available space instead of overflowing it on shorter
+                        screens. */}
                     <div
                       className={cn(
-                        "aspect-[3/4] h-[clamp(190px,36vh,360px)] shrink-0 p-[10px] transition-[filter] duration-500",
+                        "aspect-[3/4.4] h-[clamp(220px,44vh,420px)] shrink-0 p-[3px] transition-[filter] duration-500",
                         isActive ? "" : "grayscale-[15%]",
                       )}
                       style={{
-                        borderRadius: "50%",
+                        clipPath: DECKLE,
                         background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
                         filter: isActive
                           ? "drop-shadow(0 20px 34px rgba(26,22,20,0.45))"
                           : "drop-shadow(0 6px 14px rgba(26,22,20,0.25))",
                       }}
                     >
-                      <div
-                        className="relative h-full w-full overflow-hidden bg-ink-2 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.35),inset_0_10px_26px_rgba(0,0,0,0.4)]"
-                        style={{ borderRadius: "50%" }}
-                      >
+                      <div className="relative h-full w-full bg-ink-2" style={{ clipPath: DECKLE }}>
                         <Image
                           src={p.images[0]}
                           alt={p.title}
                           fill
-                          sizes="(max-width: 768px) 60vh, 380px"
+                          sizes="(max-width: 768px) 72vw, 420px"
                           priority={i < 2}
                           className="object-cover"
                         />
-                        {/* Legibility wash for the price chip, deeper on resting cards */}
+                        {/* Legibility wash, deeper on the resting cards */}
                         <motion.div
                           animate={{ opacity: isActive ? 1 : 0.55 }}
                           transition={{ duration: 0.8, ease }}
-                          className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"
+                          className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent"
                         />
+
+                        {/* Chip */}
                         <motion.div
-                          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -8 }}
+                          animate={{
+                            opacity: isActive ? 1 : 0,
+                            y: isActive ? 0 : -8,
+                          }}
                           transition={{ duration: 0.7, ease }}
-                          className="absolute inset-x-0 bottom-[18%] flex justify-center"
+                          className="absolute inset-x-0 top-5 flex justify-center"
                         >
                           <span className="rounded-full border border-bone/30 bg-ink/40 px-5 py-2 font-display text-[0.9rem] uppercase tracking-[0.1em] text-bone backdrop-blur-md">
                             {inr(p.price)}
                           </span>
                         </motion.div>
-                      </div>
-                    </div>
 
-                    {/* Caption plaque, like a label beneath a museum mirror —
-                        living outside the oval mask entirely, so text is
-                        never at risk of being cropped by the curve. */}
-                    <div className="mt-4 max-w-[16rem] text-center">
-                      <motion.h3
-                        animate={{
-                          fontSize: isActive ? "1.06rem" : "0.72rem",
-                          opacity: isActive ? 1 : 0.85,
-                        }}
-                        transition={{ duration: 0.7, ease }}
-                        className="uppercase leading-tight tracking-[0.16em] text-bone"
-                      >
-                        {p.title}
-                      </motion.h3>
-                      <motion.p
-                        animate={{ opacity: isActive ? 1 : 0.5 }}
-                        transition={{ duration: 0.7, ease }}
-                        className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
-                      >
-                        {taglineFor(p)}
-                      </motion.p>
+                        {/* Label */}
+                        <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-center">
+                          <motion.h3
+                            animate={{
+                              fontSize: isActive ? "1.06rem" : "0.72rem",
+                              opacity: isActive ? 1 : 0.85,
+                            }}
+                            transition={{ duration: 0.7, ease }}
+                            className="uppercase leading-tight tracking-[0.16em] text-bone"
+                          >
+                            {p.title}
+                          </motion.h3>
+                          <motion.p
+                            animate={{ opacity: isActive ? 1 : 0.5 }}
+                            transition={{ duration: 0.7, ease }}
+                            className="mx-auto mt-2 max-w-[24ch] font-body text-[0.86rem] italic leading-snug text-bone/65"
+                          >
+                            {taglineFor(p)}
+                          </motion.p>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 </div>
