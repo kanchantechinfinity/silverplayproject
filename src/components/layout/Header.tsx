@@ -14,30 +14,38 @@ import MegaNav from "./MegaNav";
  */
 export default function Header() {
   const [pinned, setPinned] = useState(false);
+  const [noHero, setNoHero] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
   const [menu, setMenu] = useState(false);
+
+  useEffect(() => {
+    // Checked once against the DOM marker (present on first render, not
+    // dependent on any effect having run yet) rather than
+    // window.__heroScrollEnd, which is set inside the hero's own effect and
+    // could still be undefined the first time this one runs.
+    setNoHero(!document.querySelector("[data-page-hero]"));
+  }, []);
 
   useEffect(() => {
     // The cinematic hero (homepage only) reports its own pin-release offset
     // via the scrubbed ScrollTrigger track. Everywhere else, measure the
     // real height of whatever page hero is actually on screen instead of
     // guessing a flat viewport fraction — that guess (70vh) sat well below
-    // PageHero's real ~52vh on interior pages, and even further past pages
-    // with no hero at all (the single product page), so the header stayed
+    // PageHero's real ~52vh on interior pages, so the header stayed
     // transparent long after the dark banner it's meant to sit over had
-    // already ended. A page with no hero marker at all has nothing for the
-    // transparent look to sit over in the first place, so it just starts
-    // already pinned — the same floating cream pill every other page
-    // settles into, from the very first frame instead of scrolling into it.
+    // already ended. A page with no hero at all (the single product page)
+    // has nothing for the transparent look to sit over in the first place —
+    // it gets a solid brown bar instead of transparent for that same "before
+    // scroll" moment, then settles into the same white pill every other
+    // page does, just after a much shorter scroll (there's no banner height
+    // to wait out).
     const onScroll = () => {
       let threshold = window.__heroScrollEnd;
       if (threshold == null) {
         const hero = document.querySelector<HTMLElement>("[data-page-hero]");
-        if (!hero) {
-          setPinned(true);
-          return;
-        }
-        threshold = hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight - 1;
+        threshold = hero
+          ? hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight - 1
+          : 60;
       }
       setPinned(window.scrollY > threshold);
     };
@@ -65,7 +73,11 @@ export default function Header() {
         <motion.div
           initial={false}
           animate={{
-            backgroundColor: pinned ? "rgba(245,242,237,0.9)" : "rgba(245,242,237,0)",
+            backgroundColor: pinned
+              ? "rgba(245,242,237,0.9)"
+              : noHero
+                ? "rgba(36,26,16,0.97)"
+                : "rgba(245,242,237,0)",
             paddingLeft: 34,
             paddingRight: 34,
             paddingTop: 10,
