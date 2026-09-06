@@ -132,3 +132,88 @@ Three curated edits remain unstyled from screenshots: Cool Girl Silver,
 Spotlight Glam, Effortless Elegance. Shop By Occasion, Archive Silver
 Treasure, Crafted Like Heirlooms, Shop By Intention, Kavach Pendants, Journal,
 FAQ still pending.
+
+## 2026-09-06 — Product page: metafield sections, header fix, centering fixes
+
+**Requested** (spread across several rounds of screenshot feedback)
+Header should read brown-then-white-pill on hero-less pages instead of
+staying transparent or permanently brown; shop/collections background photo
+must stay fixed while filters + grid scroll; add a 3D-view toggle on the
+product gallery; build out the product page using
+`salty.co.in/products/rose-gold-diamond-luxury-watch` as a structural
+reference — What's Inside The Box, Paired With, Loved By Creators (real
+video, not a fake per-post clip), gift/PIN-check controls beside the buy box,
+Ratings & Reviews, FAQ — "give it a touch of ancient Indian heritage." Then:
+center the new sections, play a real video on Loved By Creators click, add a
+photo to Reviews, reuse Kavach's background on Box Contents, reuse homepage
+photos as backgrounds elsewhere, make the gallery image sticky against the
+taller info column. Final round: Loved By Creators and Similar Products
+still weren't centered; review photo should be a rectangle that fills its
+space.
+
+**Built**
+- `ProductGallery` — 3D-view button, cursor-tilt modal (`Tilt3DModal`),
+  portalled to `<body>`.
+- `ProductBuyBox` — savings badge, "sending as a gift" note field, PIN-code
+  delivery-estimate check (illustrative, not a real serviceability API).
+- `ProductBoxContents` (new) — same photo + overlay treatment as Kavach
+  (`vanity-mood.jpg`), real box contents (already promised elsewhere in the
+  accordion/assurance copy, not invented).
+- `ProductPairedWith` (new) — "Complete the look" below the product, using
+  `elegance-lotus.jpg` (same photo as `EffortlessElegance` on the homepage),
+  a real different-type product chosen deterministically by product id.
+- `ProductReviews` (new) — honest ratings/breakdown (no invented reviewer
+  quotes — no review app exists yet), plus a gilt-framed rectangular (4:3)
+  product photo beside the breakdown so the section isn't empty.
+- `ProductLovedByCreators` (new) — draggable card strip (`story-veena.jpg`
+  bg); clicking a card plays the site's one real cinematic video
+  (`/hero/silverplay-cinematic.mp4`) in a portalled `ReelModal`, instead of
+  only linking out to Instagram.
+- Product page grid: `md:items-start` + `md:sticky md:top-32` on the gallery
+  so it holds in place while the (now much taller) info column scrolls past,
+  rather than the two columns finishing at different times and leaving a gap.
+- `Header` — pin threshold now measures the real `[data-page-hero]` element
+  (GSAP `__heroScrollEnd` on the homepage) instead of guessing 70vh; hero-less
+  pages get a `noHero` flag that swaps the pre-pin background to brown
+  (`rgba(36,26,16,0.97)`) while keeping the same scroll-to-white-pill
+  transition as every other page.
+
+**Bugs hit and fixed**
+1. Draggable card track (`ProductLovedByCreators`) stayed visually off-center
+   even after adding `mx-auto` — root cause: Framer Motion's `drag="x"` +
+   `dragConstraints={ref}` was applying an inline
+   `transform: translateX(180px)` that exactly duplicated the `mx-auto`
+   margin, double-shifting the track right (measured `trackLeft:400,
+   trackRight:40` against an expected 220/220). Fixed by removing the margin
+   centering from the draggable element and centering its non-motion parent
+   with `flex justify-center` instead — confirmed symmetric at
+   `180px/180px` with no stray transform. See [[memory.md]] gotchas.
+2. Similar Products used a fixed `grid-cols-2 lg:grid-cols-5`; with fewer
+   than 5 related items the empty trailing columns left the row flush-left.
+   Switched to `flex flex-wrap justify-center` with explicit per-breakpoint
+   item widths matching the old grid's proportions — a partial row (e.g. 4
+   items) now centers as a group.
+3. Enlarging the review photo by changing its width to `w-full max-w-[220px]`
+   collapsed it to 6px wide — a percentage width has no definite size inside
+   a `grid-cols-[auto_1fr_auto]` column, which itself sizes from the child's
+   *intrinsic* contribution. Fixed by using explicit fixed widths
+   (`w-[220px] md:w-[260px]`) instead, same pattern as the original.
+3D-view modal and 3-round header centering issue (measured asymmetric
+stage offsets, fixed via `createPortal`) were resolved earlier in this same
+round; see [[memory.md]] for the reusable patterns extracted from all three
+(portal-for-fixed-under-Reveal, drag+margin, percentage-in-auto-grid).
+
+**Verification**
+- `npx tsc --noEmit` clean; `npm run build` clean across all 558 static
+  routes.
+- Live-measured (not just screenshotted) the Loved By Creators track
+  (`180/180`) and Similar Products row (`40/40` either side, matching the
+  container's own padding) post-fix.
+- Reviews photo confirmed rendering at 260×197 (4:3, `object-fit: cover`).
+- Clicked a Loved By Creators card end-to-end: modal opens centered, video
+  autoplays, close button dismisses it.
+- No horizontal overflow at 1280px (`scrollWidth === clientWidth`).
+
+**Not done / next**
+Nothing outstanding from this round. Commit `3292b05` is local only — not
+pushed (push on explicit request per standing instruction).

@@ -52,12 +52,35 @@ buttons are pills.
   suffix does.
 - Any dark scrim over a hero photo needs an explicit dark container background,
   or the pre-load frame flashes pale.
-- The Browser pane's `preview_start` launcher fails with `EPERM: uv_cwd` on this
-  Mac. Start the dev server from a shell instead.
-- Pane screenshots sometimes return stale blank frames; verify with JS.
+- Pane screenshots sometimes return stale/blank frames after scroll-driven
+  changes; verify via computed style/DOM measurement, not just the image.
+- Windows dev machine: `next build` and `next dev` cannot hold `.next/` at the
+  same time (EPERM) — stop the dev server before building. A transient
+  `Cannot find name 'LayoutProps'` tsc error right after deleting `.next`
+  resolves once `next dev` regenerates route types; not a real bug.
+- Framer Motion `drag="x"` + `mx-auto` (or any margin-based centering) on the
+  *same* element: FM's drag-constraint measurement can apply an inline
+  `transform: translateX(Npx)` that exactly duplicates the margin offset,
+  double-shifting the element off-center. Fix: never center the draggable
+  element itself — wrap it in a plain (non-motion) parent using
+  `flex justify-center` instead.
+- A percentage width (`w-full`, `max-w-*` alone) on a child of a CSS Grid
+  column sized `auto` (e.g. `grid-cols-[auto_1fr_auto]`) has no definite size
+  to resolve against and collapses toward 0. Use an explicit fixed width
+  (`w-[220px]`) for anything living in an `auto` grid track.
+- `createPortal(node, document.body)` is required for any `position: fixed`
+  modal that lives under a `<Reveal>` (Framer Motion transform breaks
+  viewport-relative fixed positioning for descendants). Established pattern —
+  reused by QuickViewModal, Tilt3DModal, ReelModal.
+- `.heritage-sec` (CSS: `position:relative; isolation:isolate`) is required on
+  any section that layers a `z-index:-1` photo + overlay background, or the
+  background paints behind the section's own bg instead of above it.
+- CSS Grid sticky sidebar: put `md:items-start` on the grid and
+  `md:sticky md:top-N` on the shorter child only — its containing block
+  becomes the (taller) row while it stays natural height.
 
 ## Section queue
-Done: Header · Hero · Assurance marquee · Bestsellers · Footer
-Pending screenshots: Featured Collections · Curated Edits · Shop By Occasion ·
-Archive Silver Treasure · Crafted Like Heirlooms · Shop By Intention ·
-Kavach Pendants · Journal · FAQ
+Homepage, shop/collections (dark filter sidebar + fixed bg photo), and product
+page are all fully built out — this list is no longer accurate as a todo and
+is kept only as a historical note. See [[silverplay-product-page]] and
+BUILD_LOG.md for what actually shipped and when.
