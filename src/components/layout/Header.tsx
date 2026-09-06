@@ -48,8 +48,6 @@ export default function Header() {
             paddingTop: 10,
             paddingBottom: 10,
             marginTop: pinned ? 14 : 0,
-            marginLeft: pinned ? 14 : 0,
-            marginRight: pinned ? 14 : 0,
             borderRadius: pinned ? 999 : 0,
           }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
