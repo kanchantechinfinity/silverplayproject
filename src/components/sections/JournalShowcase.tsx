@@ -121,7 +121,7 @@ export default function JournalShowcase() {
   return (
     <section
       ref={wrapRef}
-      className="heritage-sec relative bg-bone"
+      className="relative isolate bg-bone"
       style={{ height: `${(n + 0.6) * 62}vh` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
