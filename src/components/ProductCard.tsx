@@ -116,15 +116,17 @@ export default function ProductCard({
           <h3 className="truncate font-body text-[1.02rem] leading-snug text-[#3a2b1c]/90 transition-colors duration-400 group-hover:text-[#3a2b1c]">
             {product.title}
           </h3>
-          <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-display text-[0.82rem] tracking-[0.06em] text-[#3a2b1c]">
-            {inr(product.price)}
-            {product.compareAt && product.compareAt > product.price && (
-              <span className="text-[0.72rem] text-[#8a6a2e] line-through">
-                {inr(product.compareAt)}
-              </span>
-            )}
-            <span aria-hidden className="h-1 w-1 rounded-full bg-[#8a6a2e]/40" />
-            <span className="flex items-center gap-1">
+          <p className="mt-1.5 flex flex-nowrap items-center justify-between gap-x-2 sm:flex-wrap sm:justify-start gap-y-1 font-display text-[0.82rem] tracking-[0.06em] text-[#3a2b1c]">
+            <span className="flex shrink-0 items-center gap-1.5">
+              {inr(product.price)}
+              {product.compareAt && product.compareAt > product.price && (
+                <span className="text-[0.72rem] text-[#8a6a2e] line-through">
+                  {inr(product.compareAt)}
+                </span>
+              )}
+            </span>
+            <span aria-hidden className="hidden h-1 w-1 rounded-full bg-[#8a6a2e]/40 sm:inline-block" />
+            <span className="flex shrink-0 items-center gap-1">
               <Stars rating={rating} size={9} />
               <span className="font-body text-[0.62rem] font-normal text-[#8a6a2e]">
                 ({count.toLocaleString("en-IN")})

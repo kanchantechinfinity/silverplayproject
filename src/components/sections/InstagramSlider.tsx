@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
+import Marquee from "@/components/motion/Marquee";
 import { treasures } from "@/data/site";
 import { getProduct } from "@/lib/catalog";
 
@@ -61,7 +62,39 @@ export default function InstagramSlider() {
           </Reveal>
         </div>
 
-        <div ref={trackRef} className="mt-10 w-full overflow-hidden md:mt-14">
+        {/* Mobile: continuous auto-scrolling strip — no drag needed to browse. */}
+        <div className="mt-10 md:hidden">
+          <Marquee
+            speed={26}
+            pauseOnHover={false}
+            className="[mask-image:linear-gradient(90deg,transparent,#000_4%,#000_96%,transparent)]"
+            items={picks.map((p) => (
+              <Link
+                key={p.handle}
+                href={PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative block aspect-square w-40 shrink-0 overflow-hidden rounded-[var(--radius-md)] p-[3px]"
+                style={{
+                  background: "linear-gradient(155deg, #d8b466 0%, #8a6a2e 45%, #d8b466 100%)",
+                }}
+              >
+                <span className="relative block h-full w-full overflow-hidden rounded-[calc(var(--radius-md)-3px)] bg-bone-3">
+                  <Image
+                    src={p.images[0]}
+                    alt={p.title}
+                    fill
+                    sizes="10rem"
+                    className="object-cover"
+                  />
+                </span>
+              </Link>
+            ))}
+            separator=""
+          />
+        </div>
+
+        <div ref={trackRef} className="mt-10 hidden w-full overflow-hidden md:mt-14 md:block">
           <motion.div
             drag="x"
             dragConstraints={trackRef}

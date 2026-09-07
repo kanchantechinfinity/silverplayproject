@@ -93,15 +93,15 @@ export default function EffortlessElegance() {
           </div>
 
           {/* Thumbnail stack — real picks from the edit, hover to preview */}
-          <Stagger className="flex flex-row justify-center gap-4 md:h-full md:flex-col md:justify-between md:gap-5">
+          <Stagger className="flex flex-row justify-start gap-4 overflow-x-auto px-1 -mx-1 md:h-full md:flex-col md:justify-between md:gap-5 md:overflow-visible md:px-0 md:mx-0">
             {picks.map((p, i) => (
-              <StaggerItem key={p.handle} className="md:flex-1">
+              <StaggerItem key={p.handle} className="shrink-0 md:flex-1">
                 <Link
                   href={`/products/${p.handle}`}
                   aria-label={`View ${p.title}`}
                   onMouseEnter={() => setActive(i)}
                   className={cn(
-                    "group relative block h-24 w-24 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-28 sm:w-28 md:h-full md:w-32 lg:w-36",
+                    "group relative block h-24 w-24 shrink-0 overflow-hidden rounded-[var(--radius-sm)] ring-2 transition-all duration-400 sm:h-28 sm:w-28 md:h-full md:w-32 lg:w-36",
                     active === i ? "ring-[#8a6a2e]" : "ring-transparent",
                   )}
                 >
