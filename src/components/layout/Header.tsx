@@ -87,7 +87,7 @@ export default function Header() {
           }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "pointer-events-auto mx-auto flex items-center gap-6 backdrop-blur-xl lg:grid lg:grid-cols-[1fr_auto_1fr]",
+            "pointer-events-auto relative mx-auto flex items-center gap-6 backdrop-blur-xl lg:grid lg:grid-cols-[1fr_auto_1fr]",
             pinned
               ? "w-[calc(100%-28px)] max-w-[1500px] border border-ink/10 shadow-[0_10px_40px_-18px_rgba(26,22,20,0.35)]"
               : "w-full",
@@ -103,7 +103,10 @@ export default function Header() {
             <span className={cn("block h-px w-4", pinned ? "bg-ink" : "bg-bone")} />
           </button>
 
-          <Link href="/" className="shrink-0 origin-left lg:justify-self-start">
+          <Link
+            href="/"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:left-auto lg:top-auto lg:translate-x-0 lg:translate-y-0 lg:shrink-0 lg:origin-left lg:justify-self-start"
+          >
             <Image
               src={brand.logoMark}
               alt={brand.name}

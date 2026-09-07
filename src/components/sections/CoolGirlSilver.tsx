@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useMotionValueEvent } from "framer-motion";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
+import Marquee from "@/components/motion/Marquee";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { chipFor, collectionProducts } from "@/lib/catalog";
 import { HeritagePhotoVignette } from "@/components/heritage/deckle";
@@ -91,7 +92,33 @@ export default function CoolGirlSilver() {
         {/* Clamps the draggable track to this box so it can never spill past
             the card's edge — the loop-wrap above is what makes it feel
             endless, this is just the visible window onto it. */}
-        <div ref={trackRef} className="w-full flex-1 overflow-hidden">
+        {/* Mobile: continuous auto-scrolling strip — no drag needed to browse. */}
+        <div className="w-full md:hidden">
+          <Marquee
+            speed={22}
+            pauseOnHover={false}
+            separator=""
+            className="[mask-image:linear-gradient(90deg,transparent,#000_4%,#000_96%,transparent)]"
+            items={picks.map((p) => (
+              <Link
+                key={p.handle}
+                href={`/products/${p.handle}`}
+                className="group relative block aspect-square w-24 shrink-0 overflow-hidden rounded-full ring-2 ring-[#8a6a2e]/55"
+              >
+                <Image
+                  src={p.images[0]}
+                  alt={p.title}
+                  fill
+                  sizes="6rem"
+                  className="object-cover"
+                />
+                <HeritagePhotoVignette />
+              </Link>
+            ))}
+          />
+        </div>
+
+        <div ref={trackRef} className="hidden w-full flex-1 overflow-hidden md:block">
           <Stagger as="div" className="flex w-full justify-center md:justify-start">
             <motion.div
               drag="x"
